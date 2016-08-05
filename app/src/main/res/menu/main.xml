@@ -4,7 +4,7 @@
     <item
         android:id="@+id/add_contact"
         android:orderInCategory="100"
-        android:icon="@drawable/ic_add_black_24dp"
+        android:icon="@drawable/ic_add_white_24dp"
         android:title="@string/add_contact"
         app:showAsAction="always"/>
     <item
