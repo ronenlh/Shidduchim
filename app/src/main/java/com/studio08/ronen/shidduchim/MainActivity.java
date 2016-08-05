@@ -70,6 +70,9 @@ public class MainActivity extends AppCompatActivity
         if (id == R.id.action_settings) {
             return true;
         }
+        if (id == R.id.add_contact) {
+            return true;
+        }
 
         return super.onOptionsItemSelected(item);
     }
