@@ -1,4 +1,4 @@
-package com.studio08.ronen.shidduchim;
+package com.studio08.ronen.Zivug;
 
 import org.junit.Test;
 

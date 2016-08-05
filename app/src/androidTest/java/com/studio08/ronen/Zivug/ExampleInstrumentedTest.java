@@ -1,4 +1,4 @@
-package com.studio08.ronen.shidduchim;
+package com.studio08.ronen.Zivug;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
