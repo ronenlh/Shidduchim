@@ -23,8 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, MenFragment.OnFragmentInteractionListener,
-        WomenFragment.OnFragmentInteractionListener {
+        implements NavigationView.OnNavigationItemSelectedListener, ContactsFragment.OnFragmentInteractionListener {
 
     // Tabs Vars
     private TabLayout tabLayout;
@@ -127,8 +126,8 @@ public class MainActivity extends AppCompatActivity
 
     private void setupViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
-        adapter.addFragment(new MenFragment(), "MEN");
-        adapter.addFragment(new WomenFragment(), "WOMEN");
+        adapter.addFragment(new ContactsFragment(), "MEN");
+        adapter.addFragment(new ContactsFragment(), "WOMEN");
         viewPager.setAdapter(adapter);
     }
 
