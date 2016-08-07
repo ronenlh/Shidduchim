@@ -42,9 +42,6 @@ public class ContactsFragment extends Fragment {
         LINEAR_LAYOUT_MANAGER
     }
 
-    // Arg Gender Values
-    public static final int MEN = 0;
-    public static final int WOMEN = 1;
     private int mGenderParam; // after getInt
 
     protected LayoutManagerType mCurrentLayoutManagerType;
@@ -87,20 +84,20 @@ public class ContactsFragment extends Fragment {
         }
 
         // sample contact list
-        if (mGenderParam == MEN) mMaleContacts = new ArrayList<>();
+        if (mGenderParam == Contact.MALE) mMaleContacts = new ArrayList<>();
         else mFemaleContacts = new ArrayList<>();
         initSampleDataset(mGenderParam);
     }
 
     private void initSampleDataset(int genderParam) {
-        if (mGenderParam == MEN) {
+        if (mGenderParam == Contact.MALE) {
             for (int i = 1; i < 21; i++) {
-                Contact contact = new Contact("Male Contact", "" + i, 25);
+                Contact contact = new Contact("Male Contact", "" + i, 12, Contact.MALE);
                 mMaleContacts.add(contact);
             }
-        } else {
+        } else if (mGenderParam == Contact.FEMALE) {
             for (int i = 1; i < 21; i++) {
-                Contact contact = new Contact("Female Contact", "" + i, 25);
+                Contact contact = new Contact("Female Contact", "" + i, 25, Contact.FEMALE);
                 mFemaleContacts.add(contact);
             }
         }
@@ -129,8 +126,8 @@ public class ContactsFragment extends Fragment {
         }
         setRecyclerViewLayoutManager(mCurrentLayoutManagerType);
 
-        if (mGenderParam == MEN) mAdapter = new CustomAdapter(getContext(), mMaleContacts);
-        else mAdapter = new CustomAdapter(getContext(), mFemaleContacts);
+        if (mGenderParam == Contact.MALE) mAdapter = new CustomAdapter(getContext(), mMaleContacts);
+        else if (mGenderParam == Contact.FEMALE) mAdapter = new CustomAdapter(getContext(), mFemaleContacts);
 
         mRecyclerView.setAdapter(mAdapter);
 

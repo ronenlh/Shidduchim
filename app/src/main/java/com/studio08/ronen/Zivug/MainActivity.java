@@ -25,7 +25,8 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, ContactsFragment.OnFragmentInteractionListener {
 
-    private static final String EXTRA_GENDER = "gender";
+    public static final String EXTRA_GENDER = "gender";
+
     // Tabs Vars
     private TabLayout tabLayout;
     private ViewPager viewPager;
@@ -36,6 +37,10 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        // set logo toolbar
+        getSupportActionBar().setDisplayUseLogoEnabled(true);
+        getSupportActionBar().setLogo(R.mipmap.ic_launcher);
 
         // FAB
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -104,8 +109,8 @@ public class MainActivity extends AppCompatActivity
 
     private void addContact() {
         Intent intent = new Intent(this, AddContactActivity.class);
-//        String message = editText.getText().toString();
-//        intent.putExtra(EXTRA_GENDER, message);
+        int position = tabLayout.getSelectedTabPosition(); // correlates with gender static vars in Contacts Fragment
+        intent.putExtra(EXTRA_GENDER, position);
         startActivity(intent);
     }
 
@@ -136,8 +141,8 @@ public class MainActivity extends AppCompatActivity
 
     private void setupViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
-        adapter.addFragment(ContactsFragment.newInstance(ContactsFragment.MEN), "MEN");
-        adapter.addFragment(ContactsFragment.newInstance(ContactsFragment.WOMEN), "WOMEN");
+        adapter.addFragment(ContactsFragment.newInstance(Contact.MALE), "MALE");
+        adapter.addFragment(ContactsFragment.newInstance(Contact.FEMALE), "FEMALE");
         viewPager.setAdapter(adapter);
     }
 

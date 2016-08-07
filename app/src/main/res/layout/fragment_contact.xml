@@ -4,14 +4,15 @@
              android:layout_height="match_parent"
              android:paddingLeft="@dimen/activity_horizontal_margin"
              android:paddingRight="@dimen/activity_horizontal_margin"
-             android:paddingTop="@dimen/activity_vertical_margin"
-             android:paddingBottom="@dimen/activity_vertical_margin"
              tools:context="com.studio08.ronen.Zivug.ContactsFragment">
+
 
     <android.support.v7.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/contacts_rv"
-        android:layout_marginTop="45dp"/>
+        android:paddingTop="45dp"
+/>
+    <!-- there is a problem with padding/margin and the update animation when scrolling up or down -->
 
 </FrameLayout>
