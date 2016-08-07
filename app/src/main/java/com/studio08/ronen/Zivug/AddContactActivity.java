@@ -1,5 +1,6 @@
 package com.studio08.ronen.Zivug;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -57,5 +58,10 @@ public class AddContactActivity extends AppCompatActivity {
                     mImageView.setImageResource(R.drawable.avatar_21);
                     break;
         }
+    }
+
+    public void setLocation(View view) {
+        Intent intent = new Intent(this, MapActivity.class);
+        startActivityForResult(intent, 1121);
     }
 }

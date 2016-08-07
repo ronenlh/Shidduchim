@@ -47,27 +47,16 @@
         android:id="@+id/til"
         android:layout_below="@id/radio_group"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_alignRight="@+id/add_profile_pic"
+        android:layout_alignEnd="@+id/add_profile_pic">
         <EditText
             android:id="@+id/add_name"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:hint="@string/add_name"
-            android:maxLines="1" />
-    </android.support.design.widget.TextInputLayout>
-
-    <android.support.design.widget.TextInputLayout
-        android:id="@+id/til2"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/til">
-
-        <EditText
-            android:id="@+id/add_location"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/add_location"
-            android:maxLines="1" />
+            android:maxLines="1"
+            android:inputType="textPersonName"/>
     </android.support.design.widget.TextInputLayout>
 
     <android.support.design.widget.TextInputLayout
@@ -83,6 +72,35 @@
             android:hint="@string/add_notes" />
     </android.support.design.widget.TextInputLayout>
 
-<!-- need to add credit to <a href="http://www.freepik.com/free-vector/man-and-woman-avatars_766415.htm">Designed by Freepik</a> -->
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/til2"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/radio_group"
+        android:layout_toRightOf="@+id/til"
+        android:layout_toEndOf="@+id/til">
+
+        <EditText
+            android:id="@+id/add_age"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/add_age"
+            android:inputType="number"
+            android:maxLines="1" />
+    </android.support.design.widget.TextInputLayout>
+
+    <Button
+        android:text="@string/add_location"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/add_location"
+        android:layout_below="@+id/til3"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:onClick="setLocation"/>
+
+    <!-- need to add credit to <a href="http://www.freepik.com/free-vector/man-and-woman-avatars_766415.htm">Designed by Freepik</a> -->
 
 </RelativeLayout>

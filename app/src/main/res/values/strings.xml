@@ -14,7 +14,6 @@
     <string name="previous_dates">Previous Dates</string>
     <string name="notes">Notes</string>
     <string name="add_name">Name</string>
-    <string name="add_location">Location</string>
     <string name="add_notes">Notes</string>
     <string name="add_profile_picture">Profile Picture</string>
     <string name="select_male">Male</string>
@@ -24,4 +23,6 @@
     <string name="nothing_to_show">Nothing to show.</string>
     <string name="no_notes_listed">No Notes Listed.</string>
     <string name="personal_notes">Write here your personal notes on this person.</string>
+    <string name="add_age">Age</string>
+    <string name="add_location">Add Location</string>
 </resources>
