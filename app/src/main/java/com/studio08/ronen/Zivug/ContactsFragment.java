@@ -45,6 +45,7 @@ public class ContactsFragment extends Fragment {
     // Arg Gender Values
     public static final int MEN = 0;
     public static final int WOMEN = 1;
+    private int mGenderParam; // after getInt
 
     protected LayoutManagerType mCurrentLayoutManagerType;
 
@@ -54,9 +55,8 @@ public class ContactsFragment extends Fragment {
     protected RecyclerView mRecyclerView;
     protected CustomAdapter mAdapter;
     protected RecyclerView.LayoutManager mLayoutManager;
-    protected List<Contact> mContacts;
-
-    private String mGenderParam;
+    protected List<Contact> mMaleContacts;
+    protected List<Contact> mFemaleContacts;
 
     private OnFragmentInteractionListener mListener;
 
@@ -83,18 +83,26 @@ public class ContactsFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mGenderParam = getArguments().getString(ARG_GENDER);
+            mGenderParam = getArguments().getInt(ARG_GENDER);
         }
 
         // sample contact list
-        mContacts = new ArrayList<>();
-        initSampleDataset();
+        if (mGenderParam == MEN) mMaleContacts = new ArrayList<>();
+        else mFemaleContacts = new ArrayList<>();
+        initSampleDataset(mGenderParam);
     }
 
-    private void initSampleDataset() {
-        for (int i = 1; i < 21; i++) {
-            Contact contact = new Contact("Contact","" + i,25);
-            mContacts.add(contact);
+    private void initSampleDataset(int genderParam) {
+        if (mGenderParam == MEN) {
+            for (int i = 1; i < 21; i++) {
+                Contact contact = new Contact("Male Contact", "" + i, 25);
+                mMaleContacts.add(contact);
+            }
+        } else {
+            for (int i = 1; i < 21; i++) {
+                Contact contact = new Contact("Female Contact", "" + i, 25);
+                mFemaleContacts.add(contact);
+            }
         }
     }
 
@@ -121,7 +129,9 @@ public class ContactsFragment extends Fragment {
         }
         setRecyclerViewLayoutManager(mCurrentLayoutManagerType);
 
-        mAdapter = new CustomAdapter(getContext(), mContacts);
+        if (mGenderParam == MEN) mAdapter = new CustomAdapter(getContext(), mMaleContacts);
+        else mAdapter = new CustomAdapter(getContext(), mFemaleContacts);
+
         mRecyclerView.setAdapter(mAdapter);
 
         // change the layout of the rv from the UI, maybe from settings
