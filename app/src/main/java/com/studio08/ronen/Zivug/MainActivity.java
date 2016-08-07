@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -137,8 +136,8 @@ public class MainActivity extends AppCompatActivity
 
     private void setupViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
-        adapter.addFragment(new ContactsFragment(), "MEN");
-        adapter.addFragment(new ContactsFragment(), "WOMEN");
+        adapter.addFragment(ContactsFragment.newInstance(ContactsFragment.MEN), "MEN");
+        adapter.addFragment(ContactsFragment.newInstance(ContactsFragment.WOMEN), "WOMEN");
         viewPager.setAdapter(adapter);
     }
 

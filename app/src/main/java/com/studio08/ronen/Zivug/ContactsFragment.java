@@ -30,8 +30,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class ContactsFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    private static final String ARG_GENDER = "gender";
 
     private static final String TAG = "RecyclerViewFragment";
     private static final String KEY_LAYOUT_MANAGER = "layoutManager";
@@ -43,6 +42,10 @@ public class ContactsFragment extends Fragment {
         LINEAR_LAYOUT_MANAGER
     }
 
+    // Arg Gender Values
+    public static final int MEN = 0;
+    public static final int WOMEN = 1;
+
     protected LayoutManagerType mCurrentLayoutManagerType;
 
     protected RadioButton mLinearLayoutRadioButton;
@@ -53,9 +56,7 @@ public class ContactsFragment extends Fragment {
     protected RecyclerView.LayoutManager mLayoutManager;
     protected List<Contact> mContacts;
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    private String mGenderParam;
 
     private OnFragmentInteractionListener mListener;
 
@@ -67,16 +68,13 @@ public class ContactsFragment extends Fragment {
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
+     * @param gender the gender of the Contacts Fragment.
      * @return A new instance of fragment ContactsFragment.
      */
-    // TODO: Rename and change types and number of parameters
-    public static ContactsFragment newInstance(String param1, String param2) {
+    public static ContactsFragment newInstance(int gender) {
         ContactsFragment fragment = new ContactsFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
+        args.putInt(ARG_GENDER, gender);
         fragment.setArguments(args);
         return fragment;
     }
@@ -85,8 +83,7 @@ public class ContactsFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+            mGenderParam = getArguments().getString(ARG_GENDER);
         }
 
         // sample contact list
