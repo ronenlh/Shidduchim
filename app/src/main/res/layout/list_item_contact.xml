@@ -14,21 +14,21 @@
     you have to fetch the image into a Target
     and apply a custom animation yourself when receiving the Bitmap.
     more warnings https://github.com/hdodenhof/CircleImageView -->
-    <!--<de.hdodenhof.circleimageview.CircleImageView-->
-        <!--android:id="@+id/contact_iw"-->
-        <!--android:layout_width="100dp"-->
-        <!--android:layout_height="100dp"-->
-        <!--android:layout_margin="10dp"-->
-        <!--android:elevation="7dp"-->
-        <!--app:civ_border_width="0dp"-->
-        <!--app:civ_border_color="@color/colorPrimary"/>-->
-
-    <com.pkmmte.view.CircularImageView
+    <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/contact_iw"
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:layout_margin="10dp"
-        app:shadow="true" />
+        android:elevation="7dp"
+        app:civ_border_width="0dp"
+        app:civ_border_color="@color/colorPrimary"/>
+
+    <!--<com.pkmmte.view.CircularImageView-->
+        <!--android:id="@+id/contact_iw"-->
+        <!--android:layout_width="100dp"-->
+        <!--android:layout_height="100dp"-->
+        <!--android:layout_margin="10dp"-->
+        <!--app:shadow="true" />-->
 
 
 <TextView

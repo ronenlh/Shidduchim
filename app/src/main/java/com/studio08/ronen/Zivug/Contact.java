@@ -50,6 +50,8 @@ public class Contact {
             R.drawable.avatar_21, R.drawable.avatar_22,
             R.drawable.avatar_24};
 
+
+
     public UUID getId() {
         return mId;
     }
