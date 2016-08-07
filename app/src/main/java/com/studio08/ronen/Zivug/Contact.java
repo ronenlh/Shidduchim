@@ -28,15 +28,24 @@ public class Contact {
         this.gender = gender;
         this.mId = UUID.randomUUID();
 
+
+
+        fillerResourceId = getFillerResourceId(gender);
+    }
+
+    public static int getFillerResourceId(int gender) {
+
         if (r == null) r = new Random();
 
         if (gender == MALE) {
             int randomIndex = r.nextInt(MALE_AVATARS.length);
-            fillerResourceId = MALE_AVATARS[randomIndex];
+            return MALE_AVATARS[randomIndex];
         } else if (gender == FEMALE) {
             int randomIndex = r.nextInt(FEMALE_AVATARS.length);
-            fillerResourceId = FEMALE_AVATARS[randomIndex];
+            return FEMALE_AVATARS[randomIndex];
         }
+
+        return -1;
     }
 
     // avatars
@@ -88,6 +97,8 @@ public class Contact {
     public int getFillerResourceId() {
         return fillerResourceId;
     }
+
+
 
     public int getResourceId() {
         if (resourceId == 0)

@@ -31,12 +31,12 @@ public class AddContactActivity extends AppCompatActivity {
             case Contact.MALE:
                 maleRadioButton.setChecked(true);
                 femaleRadioButton.setChecked(false);
-                mImageView.setImageResource(R.drawable.avatar_01);
+                mImageView.setImageResource(Contact.getFillerResourceId(Contact.MALE));
                 break;
             case Contact.FEMALE:
                 maleRadioButton.setChecked(false);
                 femaleRadioButton.setChecked(true);
-                mImageView.setImageResource(R.drawable.avatar_21);
+                mImageView.setImageResource(Contact.getFillerResourceId(Contact.FEMALE));
                 break;
             case Contact.NOT_SET:
                 break;
