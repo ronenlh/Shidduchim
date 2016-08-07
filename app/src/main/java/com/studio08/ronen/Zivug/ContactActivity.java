@@ -18,8 +18,8 @@ public class ContactActivity extends AppCompatActivity {
     CollapsingToolbarLayout collapsingToolbar;
 
     private static final String EXTRA_CONTACT_ID = "com.studio08.ronen.Zivug.contact_id";
-    private String firstName = "First";
-    private String lastName = "Last";
+
+    private Contact mContact;
 
     public static Intent newIntent(Context packageContext, UUID contactId) {
         Intent intent = new Intent(packageContext, ContactActivity.class);
@@ -32,15 +32,13 @@ public class ContactActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_contact);
 
-        // crashes
-//        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-//        setSupportActionBar(toolbar);
-//        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
+        // get the specific contact
+        UUID contactId = (UUID) getIntent().getSerializableExtra(EXTRA_CONTACT_ID);
+        mContact = ContactLab.get(this).getContact(contactId);
 
         // Setup and initialization collapsing toolbar
         collapsingToolbar = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
-        collapsingToolbar.setTitle(firstName + " " + lastName);
+        collapsingToolbar.setTitle(mContact.getFirstName() + " " + mContact.getLastName());
         collapsingToolbar.setExpandedTitleColor(Color.parseColor("#44ffffff"));
 
         // initialization ImageView

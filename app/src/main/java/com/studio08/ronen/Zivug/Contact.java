@@ -26,10 +26,9 @@ public class Contact {
         this.lastName = lastName;
         this.age = age;
         this.gender = gender;
+        this.mId = UUID.randomUUID();
 
-
-//        if (r != null)
-            r = new Random();
+        if (r == null) r = new Random();
 
         if (gender == MALE) {
             int randomIndex = r.nextInt(MALE_AVATARS.length);

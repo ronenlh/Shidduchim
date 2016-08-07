@@ -44,7 +44,7 @@ public class ContactsFragment extends Fragment {
         LINEAR_LAYOUT_MANAGER
     }
 
-    private int mGenderParam; // after getInt
+    private int mGenderParam = 2; // after getInt
 
     protected LayoutManagerType mCurrentLayoutManagerType;
 
@@ -56,8 +56,8 @@ public class ContactsFragment extends Fragment {
     protected RecyclerView.LayoutManager mLayoutManager;
     protected SwipeRefreshLayout swLayout;
 
-    protected List<Contact> mMaleContacts;
-    protected List<Contact> mFemaleContacts;
+//    protected List<Contact> mMaleContacts;
+//    protected List<Contact> mFemaleContacts;
 
     private OnFragmentInteractionListener mListener;
 
@@ -87,24 +87,6 @@ public class ContactsFragment extends Fragment {
             mGenderParam = getArguments().getInt(ARG_GENDER);
         }
 
-        // sample contact list
-        if (mGenderParam == Contact.MALE) mMaleContacts = new ArrayList<>();
-        else mFemaleContacts = new ArrayList<>();
-        initSampleDataset(mGenderParam);
-    }
-
-    private void initSampleDataset(int genderParam) {
-        if (mGenderParam == Contact.MALE) {
-            for (int i = 1; i < 21; i++) {
-                Contact contact = new Contact("Male Contact", "" + i, 12, Contact.MALE);
-                mMaleContacts.add(contact);
-            }
-        } else if (mGenderParam == Contact.FEMALE) {
-            for (int i = 1; i < 21; i++) {
-                Contact contact = new Contact("Female Contact", "" + i, 25, Contact.FEMALE);
-                mFemaleContacts.add(contact);
-            }
-        }
     }
 
     @Override
@@ -130,8 +112,13 @@ public class ContactsFragment extends Fragment {
         }
         setRecyclerViewLayoutManager(mCurrentLayoutManagerType);
 
-        if (mGenderParam == Contact.MALE) mAdapter = new CustomAdapter(getContext(), mMaleContacts);
-        else if (mGenderParam == Contact.FEMALE) mAdapter = new CustomAdapter(getContext(), mFemaleContacts);
+        if (mGenderParam == Contact.MALE) {
+            List<Contact> mMaleContacts = ContactLab.get(getContext()).getMaleContacts();
+            mAdapter = new CustomAdapter(mMaleContacts);
+        } else if (mGenderParam == Contact.FEMALE) {
+            List<Contact> mFemaleContacts = ContactLab.get(getContext()).getFemaleContacts();
+            mAdapter = new CustomAdapter(mFemaleContacts);
+        }
 
         mRecyclerView.setAdapter(mAdapter);
 
@@ -252,10 +239,8 @@ public class ContactsFragment extends Fragment {
     private class CustomAdapter extends RecyclerView.Adapter<ContactHolder> {
 
         private List<Contact> mContacts;
-        private Context context;
 
-        public CustomAdapter(Context context, List<Contact> contacts) {
-            this.context = context;
+        public CustomAdapter(List<Contact> contacts) {
             this.mContacts = contacts;
         }
 
