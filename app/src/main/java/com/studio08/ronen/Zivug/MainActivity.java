@@ -40,7 +40,7 @@ public class MainActivity extends AppCompatActivity
 
         // set logo toolbar
         getSupportActionBar().setDisplayUseLogoEnabled(true);
-        getSupportActionBar().setLogo(R.mipmap.ic_launcher);
+        getSupportActionBar().setLogo(R.drawable.logo_zivug_white);
 
         // FAB
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
