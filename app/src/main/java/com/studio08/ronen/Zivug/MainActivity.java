@@ -1,5 +1,6 @@
 package com.studio08.ronen.Zivug;
 
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -25,6 +26,7 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, ContactsFragment.OnFragmentInteractionListener {
 
+    private static final String EXTRA_GENDER = "gender";
     // Tabs Vars
     private TabLayout tabLayout;
     private ViewPager viewPager;
@@ -41,8 +43,9 @@ public class MainActivity extends AppCompatActivity
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+//                        .setAction("Action", null).show();
+                addContact();
             }
         });
 
@@ -93,10 +96,18 @@ public class MainActivity extends AppCompatActivity
             return true;
         }
         if (id == R.id.add_contact) {
+            addContact();
             return true;
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void addContact() {
+        Intent intent = new Intent(this, AddContactActivity.class);
+//        String message = editText.getText().toString();
+//        intent.putExtra(EXTRA_GENDER, message);
+        startActivity(intent);
     }
 
     @SuppressWarnings("StatementWithEmptyBody")
@@ -132,7 +143,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
-    public void onFragmentInteraction(Uri uri) {
+    public void onContactsRVFragmentInteraction(Uri uri) {
 
     }
 

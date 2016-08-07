@@ -27,7 +27,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Frédéric Chopin"
+                    android:text="@string/personal_details"
                     android:textColor="@color/colorPrimary"
                     android:textAppearance="@style/TextAppearance.AppCompat.Title" />
 
@@ -58,7 +58,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Étude Op. 10, No. 3 Tristesse"
+                    android:text="@string/overview"
                     android:textColor="@color/colorPrimary"
                     android:textAppearance="@style/TextAppearance.AppCompat.Title" />
 
@@ -89,7 +89,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Étude Op. 25, No. 11 Winter Wind"
+                    android:text="@string/previous_dates"
                     android:textColor="@color/colorPrimary"
                     android:textAppearance="@style/TextAppearance.AppCompat.Title" />
 
@@ -120,7 +120,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Étude Op. 10, No. 5 Black Keys"
+                    android:text="@string/notes"
                     android:textColor="@color/colorPrimary"
                     android:textAppearance="@style/TextAppearance.AppCompat.Title" />
 

@@ -7,9 +7,9 @@ import java.util.UUID;
  */
 public class Contact {
     private UUID mId;
-    String firstName, lastName;
-    int age;
-    int resourceId;
+    private String firstName, lastName;
+    private int age;
+    private int resourceId;
 
     public Contact(String firstName, String lastName, int age) {
         this.firstName = firstName;

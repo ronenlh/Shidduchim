@@ -1,25 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
               android:orientation="vertical"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent">
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content">
 
+
+    <!-- for de.hdodenhof.circleimageview.CircleImageView
+    If you use an image loading library like Picasso or Glide,
+    you need to disable their fade animations to avoid messed up images.
+    For Picasso use the noFade() option, for Glide use dontAnimate().
+    If you want to keep the fadeIn animation,
+    you have to fetch the image into a Target
+    and apply a custom animation yourself when receiving the Bitmap.
+    more warnings https://github.com/hdodenhof/CircleImageView -->
     <de.hdodenhof.circleimageview.CircleImageView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/contact_iw"/>
+        android:id="@+id/contact_iw"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_margin="10dp"
+        android:elevation="7dp"
+        app:civ_border_width="2dp"
+        app:civ_border_color="@color/colorPrimary"
+        android:src="@drawable/fem3"
+        android:background="@color/colorAccent"/>
 
     <TextView
         android:text="First Name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/first_name_tw"/>
+        android:id="@+id/first_name_tw" />
 
     <TextView
         android:text="Last Name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/last_name_tw"/>
+        android:id="@+id/last_name_tw" />
 
 
 </LinearLayout>

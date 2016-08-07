@@ -35,7 +35,7 @@ public class ContactsFragment extends Fragment {
 
     private static final String TAG = "RecyclerViewFragment";
     private static final String KEY_LAYOUT_MANAGER = "layoutManager";
-    private static final int SPAN_COUNT = 2;
+    private static final int SPAN_COUNT = 3;
     private static final int DATASET_COUNT = 60;
 
     private enum LayoutManagerType {
@@ -150,7 +150,7 @@ public class ContactsFragment extends Fragment {
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
+            mListener.onContactsRVFragmentInteraction(uri);
         }
     }
 
@@ -223,8 +223,8 @@ public class ContactsFragment extends Fragment {
      * activity.
      */
     public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
+        // TODO: Update argument type
+        void onContactsRVFragmentInteraction(Uri uri);
     }
 
     private class CustomAdapter extends RecyclerView.Adapter<ContactHolder> {
@@ -262,9 +262,9 @@ public class ContactsFragment extends Fragment {
     }
 
     private class ContactHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        public TextView mFirstNameTextView;
-        public TextView mLastNameTextView;
-        public CircleImageView mPictureImageView;
+        TextView mFirstNameTextView;
+        TextView mLastNameTextView;
+        CircleImageView mPictureImageView;
 
         private Contact mContact;
 
