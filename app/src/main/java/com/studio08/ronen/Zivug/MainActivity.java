@@ -141,8 +141,8 @@ public class MainActivity extends AppCompatActivity
 
     private void setupViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
-        adapter.addFragment(ContactsFragment.newInstance(Contact.MALE), "MALE");
-        adapter.addFragment(ContactsFragment.newInstance(Contact.FEMALE), "FEMALE");
+        adapter.addFragment(ContactsFragment.newInstance(Contact.MALE), "MEN");
+        adapter.addFragment(ContactsFragment.newInstance(Contact.FEMALE), "WOMEN");
         viewPager.setAdapter(adapter);
     }
 
