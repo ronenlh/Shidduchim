@@ -4,13 +4,17 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.TextView;
 
@@ -52,6 +56,8 @@ public class ContactsFragment extends Fragment {
     protected RecyclerView mRecyclerView;
     protected CustomAdapter mAdapter;
     protected RecyclerView.LayoutManager mLayoutManager;
+    protected SwipeRefreshLayout swLayout;
+
     protected List<Contact> mMaleContacts;
     protected List<Contact> mFemaleContacts;
 
@@ -147,6 +153,20 @@ public class ContactsFragment extends Fragment {
                 setRecyclerViewLayoutManager(LayoutManagerType.GRID_LAYOUT_MANAGER);
             }
         });*/
+
+        swLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.swlayout);
+
+        swLayout.setColorSchemeResources(R.color.colorAccent,R.color.colorPrimary);
+        swLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                new Handler().postDelayed(new Runnable() {
+                    @Override public void run() {
+                        swLayout.setRefreshing(false);
+                    }
+                }, 5000);
+            }
+        });
 
         return rootView;
     }

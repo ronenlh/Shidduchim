@@ -6,6 +6,11 @@
              android:paddingRight="@dimen/activity_horizontal_margin"
              tools:context="com.studio08.ronen.Zivug.ContactsFragment">
 
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/swlayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
     <android.support.v7.widget.RecyclerView
         android:layout_width="match_parent"
@@ -14,5 +19,5 @@
         android:paddingTop="45dp"
 />
     <!-- there is a problem with padding/margin and the update animation when scrolling up or down -->
-
+</android.support.v4.widget.SwipeRefreshLayout>
 </FrameLayout>
