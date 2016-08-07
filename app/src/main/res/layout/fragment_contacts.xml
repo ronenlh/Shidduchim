@@ -4,7 +4,7 @@
              android:layout_height="match_parent"
              android:paddingLeft="@dimen/activity_horizontal_margin"
              android:paddingRight="@dimen/activity_horizontal_margin"
-             tools:context="com.studio08.ronen.Zivug.ContactsFragment">
+             tools:context="com.studio08.ronen.Zivug.ContactsRVFragment">
 
     <android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/swlayout"

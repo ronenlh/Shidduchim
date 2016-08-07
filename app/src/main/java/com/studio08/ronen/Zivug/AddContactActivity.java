@@ -7,9 +7,12 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
 public class AddContactActivity extends AppCompatActivity {
 
     private RadioButton maleRadioButton, femaleRadioButton;
+    private CircleImageView mImageView;
     int genderSelection = 2;
 
     @Override
@@ -18,7 +21,7 @@ public class AddContactActivity extends AppCompatActivity {
         setContentView(R.layout.activity_add_contact);
 
         genderSelection = getIntent().getIntExtra(MainActivity.EXTRA_GENDER, 2);
-
+        mImageView = (CircleImageView) findViewById(R.id.add_profile_pic);
         maleRadioButton = (RadioButton) findViewById(R.id.male_selection);
         femaleRadioButton = (RadioButton) findViewById(R.id.female_selection);
 
@@ -27,10 +30,12 @@ public class AddContactActivity extends AppCompatActivity {
             case Contact.MALE:
                 maleRadioButton.setChecked(true);
                 femaleRadioButton.setChecked(false);
+                mImageView.setImageResource(R.drawable.avatar_01);
                 break;
             case Contact.FEMALE:
                 maleRadioButton.setChecked(false);
                 femaleRadioButton.setChecked(true);
+                mImageView.setImageResource(R.drawable.avatar_21);
                 break;
             case Contact.NOT_SET:
                 break;
@@ -45,11 +50,11 @@ public class AddContactActivity extends AppCompatActivity {
         switch(view.getId()) {
             case R.id.male_selection:
                 if (checked)
-
+                    mImageView.setImageResource(R.drawable.avatar_01);
                     break;
             case R.id.female_selection:
                 if (checked)
-
+                    mImageView.setImageResource(R.drawable.avatar_21);
                     break;
         }
     }

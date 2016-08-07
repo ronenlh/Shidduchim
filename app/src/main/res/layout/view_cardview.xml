@@ -35,7 +35,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textColor="#000000"
-                    android:text="test1" />
+                    android:id="@+id/contact_details"
+                    android:text="@string/no_contact_details_listed" />
 
 
             </LinearLayout>
@@ -66,7 +67,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textColor="#000000"
-                    android:text="test 2" />
+                    android:id="@+id/contact_overview"
+                    android:text="@string/nothing_to_show" />
 
             </LinearLayout>
 
@@ -97,7 +99,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textColor="#000000"
-                    android:text="test 3" />
+                    android:id="@+id/contact_dates"
+                    android:text="@string/no_previous_dates_listed" />
 
             </LinearLayout>
 
@@ -127,8 +130,9 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:id="@+id/contact_notes"
                     android:textColor="#000000"
-                    android:text="test 4" />
+                    android:text="@string/personal_notes" />
 
             </LinearLayout>
 

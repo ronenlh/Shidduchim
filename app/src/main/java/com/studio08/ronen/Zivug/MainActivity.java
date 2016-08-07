@@ -23,7 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, ContactsFragment.OnFragmentInteractionListener {
+        implements NavigationView.OnNavigationItemSelectedListener, ContactsRVFragment.OnFragmentInteractionListener {
 
     public static final String EXTRA_GENDER = "gender";
 
@@ -141,8 +141,8 @@ public class MainActivity extends AppCompatActivity
 
     private void setupViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
-        adapter.addFragment(ContactsFragment.newInstance(Contact.MALE), "MEN");
-        adapter.addFragment(ContactsFragment.newInstance(Contact.FEMALE), "WOMEN");
+        adapter.addFragment(ContactsRVFragment.newInstance(Contact.MALE), "MEN");
+        adapter.addFragment(ContactsRVFragment.newInstance(Contact.FEMALE), "WOMEN");
         viewPager.setAdapter(adapter);
     }
 

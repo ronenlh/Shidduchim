@@ -16,7 +16,6 @@ import android.view.ViewGroup;
 import android.widget.RadioButton;
 import android.widget.TextView;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -24,12 +23,12 @@ import de.hdodenhof.circleimageview.CircleImageView;
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link ContactsFragment.OnFragmentInteractionListener} interface
+ * {@link ContactsRVFragment.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link ContactsFragment#newInstance} factory method to
+ * Use the {@link ContactsRVFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class ContactsFragment extends Fragment {
+public class ContactsRVFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_GENDER = "gender";
@@ -61,7 +60,7 @@ public class ContactsFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
 
-    public ContactsFragment() {
+    public ContactsRVFragment() {
         // Required empty public constructor
     }
 
@@ -70,10 +69,10 @@ public class ContactsFragment extends Fragment {
      * this fragment using the provided parameters.
      *
      * @param gender the gender of the Contacts Fragment.
-     * @return A new instance of fragment ContactsFragment.
+     * @return A new instance of fragment ContactsRVFragment.
      */
-    public static ContactsFragment newInstance(int gender) {
-        ContactsFragment fragment = new ContactsFragment();
+    public static ContactsRVFragment newInstance(int gender) {
+        ContactsRVFragment fragment = new ContactsRVFragment();
         Bundle args = new Bundle();
         args.putInt(ARG_GENDER, gender);
         fragment.setArguments(args);
