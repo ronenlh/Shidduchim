@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.RadioButton;
@@ -120,5 +121,8 @@ public class AddContactActivity extends AppCompatActivity {
                 // the name of a column in which the framework can insert NULL in the event that the ContentValues is empty
                 DatabaseContract.Entry.COLUMN_NAME_NULLABLE,
                 values);
+        
+        if (newRowId < 0) Toast.makeText(this, "error", Toast.LENGTH_SHORT).show();
+        Log.d("DbHelper", ""+newRowId );
     }
 }
