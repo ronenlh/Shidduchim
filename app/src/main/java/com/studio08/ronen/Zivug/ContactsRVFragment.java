@@ -36,7 +36,6 @@ public class ContactsRVFragment extends Fragment {
     private static final String TAG = "RecyclerViewFragment";
     private static final String KEY_LAYOUT_MANAGER = "layoutManager";
     private static final int SPAN_COUNT = 3;
-    private static final int DATASET_COUNT = 60;
 
     private enum LayoutManagerType {
         GRID_LAYOUT_MANAGER,
@@ -47,16 +46,13 @@ public class ContactsRVFragment extends Fragment {
 
     protected LayoutManagerType mCurrentLayoutManagerType;
 
-    protected RadioButton mLinearLayoutRadioButton;
-    protected RadioButton mGridLayoutRadioButton;
+//    protected RadioButton mLinearLayoutRadioButton;
+//    protected RadioButton mGridLayoutRadioButton;
 
     protected RecyclerView mRecyclerView;
     protected CustomAdapter mAdapter;
     protected RecyclerView.LayoutManager mLayoutManager;
     protected SwipeRefreshLayout swLayout;
-
-//    protected List<Contact> mMaleContacts;
-//    protected List<Contact> mFemaleContacts;
 
     private OnFragmentInteractionListener mListener;
 
@@ -139,7 +135,6 @@ public class ContactsRVFragment extends Fragment {
         });*/
 
         swLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.swlayout);
-
         swLayout.setColorSchemeResources(R.color.colorAccent,R.color.colorPrimary);
         swLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -155,7 +150,6 @@ public class ContactsRVFragment extends Fragment {
         return rootView;
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
             mListener.onContactsRVFragmentInteraction(uri);

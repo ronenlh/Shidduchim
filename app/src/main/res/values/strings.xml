@@ -25,4 +25,6 @@
     <string name="personal_notes">Write here your personal notes on this person.</string>
     <string name="add_age">Age</string>
     <string name="add_location">Add Location</string>
+    <string name="no_name_inserted">No name inserted</string>
+    <string name="no_gender_selected">Please select a gender.</string>
 </resources>
