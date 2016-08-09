@@ -13,15 +13,16 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.mikhaellopez.circularimageview.CircularImageView;
+
 import java.util.UUID;
 
-import de.hdodenhof.circleimageview.CircleImageView;
 
 public class AddContactActivity extends AppCompatActivity {
 
     private RadioGroup radioGroup;
     private RadioButton maleRadioButton, femaleRadioButton;
-    private CircleImageView mImageView;
+    private CircularImageView mImageView;
     int genderSelection = 2;
 
     EditText nameEditText, ageEditText, notesEditText;
@@ -33,7 +34,7 @@ public class AddContactActivity extends AppCompatActivity {
 
         radioGroup = (RadioGroup) findViewById(R.id.radio_group);
         genderSelection = getIntent().getIntExtra(MainActivity.EXTRA_GENDER, 2);
-        mImageView = (CircleImageView) findViewById(R.id.add_profile_pic);
+        mImageView = (CircularImageView) findViewById(R.id.add_profile_pic);
         maleRadioButton = (RadioButton) findViewById(R.id.male_selection);
         femaleRadioButton = (RadioButton) findViewById(R.id.female_selection);
 

@@ -16,9 +16,11 @@ import android.view.ViewGroup;
 import android.widget.RadioButton;
 import android.widget.TextView;
 
+import com.mikhaellopez.circularimageview.CircularImageView;
+
 import java.util.List;
 
-import de.hdodenhof.circleimageview.CircleImageView;
+//import de.hdodenhof.circleimageview.CircleImageView;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -264,7 +266,7 @@ public class ContactsRVFragment extends Fragment {
     private class ContactHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         TextView mFirstNameTextView;
         TextView mLastNameTextView;
-        CircleImageView mPictureImageView;
+        CircularImageView mPictureImageView;
 
         private Contact mContact;
 
@@ -274,7 +276,7 @@ public class ContactsRVFragment extends Fragment {
 
             mFirstNameTextView = (TextView) itemView.findViewById(R.id.first_name_tw);
             mLastNameTextView = (TextView) itemView.findViewById(R.id.last_name_tw);
-            mPictureImageView = (CircleImageView) itemView.findViewById(R.id.contact_iw);
+            mPictureImageView = (CircularImageView) itemView.findViewById(R.id.contact_iw);
         }
 
         @Override
