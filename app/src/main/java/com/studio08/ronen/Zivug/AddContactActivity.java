@@ -27,6 +27,7 @@ public class AddContactActivity extends AppCompatActivity {
     private RadioButton maleRadioButton, femaleRadioButton;
     private CircularImageView mImageView;
     int genderSelection = 2;
+    int imageResourceId;
 
     EditText nameEditText, ageEditText, notesEditText;
 
@@ -50,12 +51,14 @@ public class AddContactActivity extends AppCompatActivity {
             case Contact.MALE:
                 maleRadioButton.setChecked(true);
                 femaleRadioButton.setChecked(false);
-                mImageView.setImageResource(Contact.getFillerResourceId(Contact.MALE));
+                imageResourceId = Contact.getFillerResourceId(Contact.MALE);
+                mImageView.setImageResource(imageResourceId);
                 break;
             case Contact.FEMALE:
                 maleRadioButton.setChecked(false);
                 femaleRadioButton.setChecked(true);
-                mImageView.setImageResource(Contact.getFillerResourceId(Contact.FEMALE));
+                imageResourceId = Contact.getFillerResourceId(Contact.MALE);
+                mImageView.setImageResource(imageResourceId);
                 break;
             case Contact.NOT_SET:
                 break;
@@ -107,6 +110,7 @@ public class AddContactActivity extends AppCompatActivity {
         String notes = notesEditText.getText().toString();
 
 
+
         DatabaseHelper mDbHelper = new DatabaseHelper(this);
 
         // Gets the data repository in write mode
@@ -118,6 +122,7 @@ public class AddContactActivity extends AppCompatActivity {
         values.put(DatabaseContract.Entry.COLUMN_NAME_NAME, name);
         values.put(DatabaseContract.Entry.COLUMN_NAME_GENDER, gender);
         values.put(DatabaseContract.Entry.COLUMN_NAME_AGE, age);
+        values.put(DatabaseContract.Entry.COLUMN_NAME_IMAGE_RESOURCE, imageResourceId);
         values.put(DatabaseContract.Entry.COLUMN_NAME_NOTES, notes);
 //        values.put(DatabaseContract.Entry.COLUMN_NAME_LOCATION, content);
 //        values.put(DatabaseContract.Entry.COLUMN_NAME_TAGS, content);

@@ -1,7 +1,8 @@
 package com.studio08.ronen.Zivug;
 
 import android.content.Context;
-import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -13,12 +14,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.RadioButton;
-import android.widget.TextView;
-
-import com.mikhaellopez.circularimageview.CircularImageView;
-
-import java.util.List;
 
 //import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -52,7 +47,7 @@ public class ContactsRVFragment extends Fragment {
 //    protected RadioButton mGridLayoutRadioButton;
 
     protected RecyclerView mRecyclerView;
-    protected CustomAdapter mAdapter;
+    protected ContactsRVCursorAdapter mCursorAdapter;
     protected RecyclerView.LayoutManager mLayoutManager;
     protected SwipeRefreshLayout swLayout;
 
@@ -109,15 +104,20 @@ public class ContactsRVFragment extends Fragment {
         }
         setRecyclerViewLayoutManager(mCurrentLayoutManagerType);
 
-        if (mGenderParam == Contact.MALE) {
-            List<Contact> mMaleContacts = ContactLab.get(getContext()).getMaleContacts();
-            mAdapter = new CustomAdapter(mMaleContacts);
-        } else if (mGenderParam == Contact.FEMALE) {
-            List<Contact> mFemaleContacts = ContactLab.get(getContext()).getFemaleContacts();
-            mAdapter = new CustomAdapter(mFemaleContacts);
-        }
+        Cursor c = getCursorQuery(null, null);
+        mCursorAdapter = new ContactsRVCursorAdapter(getContext(), c);
 
-        mRecyclerView.setAdapter(mAdapter);
+//        if (mGenderParam == Contact.MALE) {
+//            List<Contact> mMaleContacts = ContactLab.get(getContext()).getMaleContacts();
+//            mCursorAdapter = new CustomAdapter(mMaleContacts);
+//        } else if (mGenderParam == Contact.FEMALE) {
+//            List<Contact> mFemaleContacts = ContactLab.get(getContext()).getFemaleContacts();
+//            mCursorAdapter = new CustomAdapter(mFemaleContacts);
+//        }
+
+
+
+        mRecyclerView.setAdapter(mCursorAdapter);
 
         // change the layout of the rv from the UI, maybe from settings
         /*mLinearLayoutRadioButton = (RadioButton) rootView.findViewById(R.id.linear_layout_rb);
@@ -150,6 +150,41 @@ public class ContactsRVFragment extends Fragment {
         });
 
         return rootView;
+    }
+
+    private Cursor getCursorQuery(String selection, String[] selectionArgs) {
+
+        DatabaseHelper mDbHelper = new DatabaseHelper(getContext());
+        SQLiteDatabase db = mDbHelper.getReadableDatabase();
+
+    // Define a projection that specifies which columns from the database
+    // you will actually use after this query.
+        String[] projection = {
+                DatabaseContract.Entry._ID,
+                DatabaseContract.Entry.COLUMN_NAME_NAME,
+                DatabaseContract.Entry.COLUMN_NAME_GENDER,
+                DatabaseContract.Entry.COLUMN_NAME_AGE,
+                DatabaseContract.Entry.COLUMN_NAME_NOTES,
+                DatabaseContract.Entry.COLUMN_NAME_LOCATION,
+                DatabaseContract.Entry.COLUMN_NAME_TAGS,
+                DatabaseContract.Entry.COLUMN_NAME_PREV_DATES
+        };
+
+    // How you want the results sorted in the resulting Cursor
+        String sortOrder =
+                DatabaseContract.Entry.COLUMN_NAME_NAME + " DESC";
+
+        Cursor c = db.query(
+                DatabaseContract.Entry.TABLE_NAME,  // The table to query
+                projection,                               // The columns to return
+                selection,                                // The columns for the WHERE clause
+                selectionArgs,                            // The values for the WHERE clause
+                null,                                     // don't group the rows
+                null,                                     // don't filter by row groups
+                sortOrder                                 // The sort order
+        );
+
+        return c;
     }
 
     public void onButtonPressed(Uri uri) {
@@ -217,7 +252,7 @@ public class ContactsRVFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        mAdapter.notifyDataSetChanged();
+        mCursorAdapter.notifyDataSetChanged();
     }
 
     /**
@@ -229,61 +264,6 @@ public class ContactsRVFragment extends Fragment {
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type
         void onContactsRVFragmentInteraction(Uri uri);
-    }
-
-    private class CustomAdapter extends RecyclerView.Adapter<ContactHolder> {
-
-        private List<Contact> mContacts;
-
-        public CustomAdapter(List<Contact> contacts) {
-            this.mContacts = contacts;
-        }
-
-        @Override
-        public ContactHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            // called by the RecyclerView when it needs a new view to display an item
-            // I create a view and wrap it in a ViewHolder
-            LayoutInflater layoutInflater = LayoutInflater.from(getContext());
-            View view = layoutInflater.inflate(R.layout.list_item_contact, parent, false);
-            return new ContactHolder(view);
-        }
-
-        @Override
-        public void onBindViewHolder(ContactHolder holder, int position) {
-            // bind viewHolder's view to model object
-            holder.mContact = mContacts.get(position);
-            holder.mFirstNameTextView.setText(mContacts.get(position).getFirstName());
-            holder.mLastNameTextView.setText(mContacts.get(position).getLastName());
-            holder.mPictureImageView.setImageResource(mContacts.get(position).getResourceId());
-        }
-
-        @Override
-        public int getItemCount() {
-            return mContacts.size();
-        }
-    }
-
-    private class ContactHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        TextView mFirstNameTextView;
-        TextView mLastNameTextView;
-        CircularImageView mPictureImageView;
-
-        private Contact mContact;
-
-        public ContactHolder(View itemView) {
-            super(itemView);
-            itemView.setOnClickListener(this);
-
-            mFirstNameTextView = (TextView) itemView.findViewById(R.id.first_name_tw);
-            mLastNameTextView = (TextView) itemView.findViewById(R.id.last_name_tw);
-            mPictureImageView = (CircularImageView) itemView.findViewById(R.id.contact_iw);
-        }
-
-        @Override
-        public void onClick(View view) {
-            Intent intent = ContactActivity.newIntent(getActivity(), mContact.getId());
-            startActivity(intent);
-        }
     }
 }
 

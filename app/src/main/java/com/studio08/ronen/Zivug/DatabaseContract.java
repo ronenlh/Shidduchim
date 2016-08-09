@@ -22,12 +22,13 @@ public class DatabaseContract {
         public static final String COLUMN_NAME_NAME = "name";
         public static final String COLUMN_NAME_GENDER = "gender";
         public static final String COLUMN_NAME_AGE = "age";
+        public static final String COLUMN_NAME_IMAGE_RESOURCE = "image";
         public static final String COLUMN_NAME_NOTES = "notes";
         public static final String COLUMN_NAME_LOCATION = "location";
         public static final String COLUMN_NAME_TAGS = "tags";
         public static final String COLUMN_NAME_PREV_DATES = "dates";
         public static final String COLUMN_NAME_NULLABLE = "nullable";
-        // if add remember to change as well in DatabaseHelper in SQL_CREATE_ENTRIES
+        // remember to change as well in DatabaseHelper in SQL_CREATE_ENTRIES
     }
 
 }
