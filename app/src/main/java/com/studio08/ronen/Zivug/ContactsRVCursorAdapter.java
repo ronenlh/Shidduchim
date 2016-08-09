@@ -42,23 +42,21 @@ public class ContactsRVCursorAdapter extends CursorRecyclerAdapter<ContactsRVCur
         contact = ContactLab.get(context).getContact(UUID.fromString(uuidString));
 
         // bind viewHolder's view to model object
-        holder.mFirstNameTextView.setText(contact.getName());
+        holder.mNameTextView.setText(contact.getName());
         holder.mPictureImageView.setImageResource(contact.getResourceId());
 
         Log.i("ContactsRVCursorAdapter", "Cursor(0)" + cursor.getColumnName(0));
     }
 
     class ContactHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        TextView mFirstNameTextView;
-        TextView mLastNameTextView;
+        TextView mNameTextView;
         CircularImageView mPictureImageView;
 
         public ContactHolder(View itemView) {
             super(itemView);
             itemView.setOnClickListener(this);
 
-            mFirstNameTextView = (TextView) itemView.findViewById(R.id.first_name_tw);
-            mLastNameTextView = (TextView) itemView.findViewById(R.id.last_name_tw);
+            mNameTextView = (TextView) itemView.findViewById(R.id.name_tv);
             mPictureImageView = (CircularImageView) itemView.findViewById(R.id.contact_iw);
         }
 

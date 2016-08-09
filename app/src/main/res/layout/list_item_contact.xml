@@ -5,24 +5,6 @@
               android:layout_width="wrap_content"
               android:layout_height="wrap_content">
 
-
-    <!-- for de.hdodenhof.circleimageview.CircleImageView
-    If you use an image loading library like Picasso or Glide,
-    you need to disable their fade animations to avoid messed up images.
-    For Picasso use the noFade() option, for Glide use dontAnimate().
-    If you want to keep the fadeIn animation,
-    you have to fetch the image into a Target
-    and apply a custom animation yourself when receiving the Bitmap.
-    more warnings https://github.com/hdodenhof/CircleImageView -->
-    <!--<de.hdodenhof.circleimageview.CircleImageView-->
-        <!--android:id="@+id/contact_iw"-->
-        <!--android:layout_width="100dp"-->
-        <!--android:layout_height="100dp"-->
-        <!--android:layout_margin="10dp"-->
-        <!--android:elevation="7dp"-->
-        <!--app:civ_border_width="1dp"-->
-        <!--app:civ_border_overlay="true"-->
-        <!--app:civ_border_color="@color/colorPrimary"/>-->
     <com.mikhaellopez.circularimageview.CircularImageView
         android:id="@+id/contact_iw"
         android:layout_width="100dp"
@@ -33,25 +15,14 @@
         app:civ_shadow="true"
         app:civ_shadow_radius="10"
         app:civ_shadow_color="@color/colorPrimaryDark"/>
-    <!--<com.pkmmte.view.CircularImageView-->
-        <!--android:id="@+id/contact_iw"-->
-        <!--android:layout_width="100dp"-->
-        <!--android:layout_height="100dp"-->
-        <!--android:layout_margin="10dp"-->
-        <!--app:shadow="true" />-->
 
 
 <TextView
-    android:text="First Name"
+    android:text=""
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:id="@+id/first_name_tw" />
-
-<TextView
-    android:text="Last Name"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:id="@+id/last_name_tw" />
+    android:gravity="center"
+    android:id="@+id/name_tv" />
 
 
 </LinearLayout>
