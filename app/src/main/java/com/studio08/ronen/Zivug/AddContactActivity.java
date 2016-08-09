@@ -116,5 +116,6 @@ public class AddContactActivity extends AppCompatActivity {
 
         ContactLab.get(this).addContact(contact);
 
+        finish();
     }
 }

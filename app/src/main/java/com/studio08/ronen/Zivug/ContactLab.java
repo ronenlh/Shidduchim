@@ -27,7 +27,7 @@ public class ContactLab {
     }
 
     public ContactLab(Context context) {
-        this.mContext = context;
+        this.mContext = context.getApplicationContext(); // because it is a singleton, we use the application context so we don't maintain a link to an activity than should be garbage collected.
         this.mDatabase = new DatabaseHelper(mContext).getWritableDatabase();
     }
 

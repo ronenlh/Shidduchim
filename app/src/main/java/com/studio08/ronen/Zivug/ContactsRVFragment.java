@@ -2,7 +2,6 @@ package com.studio08.ronen.Zivug;
 
 import android.content.Context;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -104,34 +103,7 @@ public class ContactsRVFragment extends Fragment {
         }
         setRecyclerViewLayoutManager(mCurrentLayoutManagerType);
 
-        Cursor cursor;
-        if (mGenderParam == Contact.MALE) {
-             cursor = ContactLab.get(getContext()).queryContacts(
-                     DatabaseContract.Entry.COLUMN_NAME_GENDER + " = ?",
-                     new String[] { "" + Contact.MALE }
-             );
-        } else if (mGenderParam == Contact.FEMALE) {
-             cursor = ContactLab.get(getContext()).queryContacts(
-                     DatabaseContract.Entry.COLUMN_NAME_GENDER + " = ?",
-                     new String[] { "" + Contact.FEMALE }
-             );
-        } else {
-            cursor = ContactLab.get(getContext()).queryContacts(null, null);
-        }
-
-        mCursorAdapter = new ContactsRVCursorAdapter(getContext(), cursor);
-
-//        if (mGenderParam == Contact.MALE) {
-//            List<Contact> mMaleContacts = ContactLab.get(getContext()).getMaleContacts();
-//            mCursorAdapter = new CustomAdapter(mMaleContacts);
-//        } else if (mGenderParam == Contact.FEMALE) {
-//            List<Contact> mFemaleContacts = ContactLab.get(getContext()).getFemaleContacts();
-//            mCursorAdapter = new CustomAdapter(mFemaleContacts);
-//        }
-
-
-
-        mRecyclerView.setAdapter(mCursorAdapter);
+        updateUI();
 
         // change the layout of the rv from the UI, maybe from settings
         /*mLinearLayoutRadioButton = (RadioButton) rootView.findViewById(R.id.linear_layout_rb);
@@ -164,6 +136,33 @@ public class ContactsRVFragment extends Fragment {
         });
 
         return rootView;
+    }
+
+    private void updateUI() {
+        ContactLab contactLab = ContactLab.get(getContext());
+        Cursor cursor;
+
+        if (mGenderParam == Contact.MALE) {
+            cursor = contactLab.queryContacts(
+                    DatabaseContract.Entry.COLUMN_NAME_GENDER + " = ?",
+                    new String[] { "" + Contact.MALE }
+            );
+        } else if (mGenderParam == Contact.FEMALE) {
+            cursor = contactLab.queryContacts(
+                    DatabaseContract.Entry.COLUMN_NAME_GENDER + " = ?",
+                    new String[] { "" + Contact.FEMALE }
+            );
+        } else {
+            cursor = ContactLab.get(getContext()).queryContacts(null, null);
+        }
+
+        if (mCursorAdapter == null) {
+            mCursorAdapter = new ContactsRVCursorAdapter(getContext(), cursor);
+            mRecyclerView.setAdapter(mCursorAdapter);
+        } else {
+            mCursorAdapter.swapCursor(cursor);
+//            mCursorAdapter.notifyDataSetChanged();
+        }
     }
 
     public void onButtonPressed(Uri uri) {
@@ -231,7 +230,7 @@ public class ContactsRVFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        mCursorAdapter.notifyDataSetChanged();
+        updateUI();
     }
 
 

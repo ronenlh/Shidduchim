@@ -32,7 +32,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             "DROP TABLE IF EXISTS " + DatabaseContract.Entry.TABLE_NAME;
 
     // If you change the database schema, you must increment the database version.
-    public static final int DATABASE_VERSION = 13;
+    public static final int DATABASE_VERSION = 14;
     public static final String DATABASE_NAME = "Zivug.db";
 
     public DatabaseHelper(Context context) {

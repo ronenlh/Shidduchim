@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.mikhaellopez.circularimageview.CircularImageView;
 
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -33,6 +34,10 @@ public class ContactsRVCursorAdapter extends CursorRecyclerAdapter<ContactsRVCur
         View view = layoutInflater.inflate(R.layout.list_item_contact, parent, false);
 
         return new ContactsRVCursorAdapter.ContactHolder(view);
+    }
+
+    public void setCursor(Cursor cursor) {
+//        mContacts = cursor;
     }
 
     @Override
