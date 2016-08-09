@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingBottom="@dimen/activity_vertical_margin"
+                tools:context=".AddContactActivity" >
+
+    <com.mikhaellopez.circularimageview.CircularImageView
+        android:id="@+id/add_profile_pic"
+        android:contentDescription="@string/add_profile_picture"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:layout_margin="10dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        app:civ_border_color="#EEEEEE"
+        app:civ_border_width="4dp"
+        app:civ_shadow="true"
+        app:civ_shadow_radius="10"
+        app:civ_shadow_color="@color/colorPrimaryDark"/>
+
+    <RadioGroup
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:id="@+id/radio_group"
+        android:layout_below="@+id/add_profile_pic"
+        android:layout_centerHorizontal="true">
+
+        <RadioButton
+            android:text="@string/select_male"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/male_selection"
+            android:layout_weight="1"
+            android:onClick="onRadioButtonClicked" />
+
+        <RadioButton
+            android:text="@string/select_female"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/female_selection"
+            android:layout_weight="1"
+            android:onClick="onRadioButtonClicked" />
+
+    </RadioGroup>
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/til"
+        android:layout_below="@id/radio_group"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignRight="@+id/add_profile_pic"
+        android:layout_alignEnd="@+id/add_profile_pic">
+        <EditText
+            android:id="@+id/add_name"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/add_name"
+            android:maxLines="1"
+            android:inputType="textPersonName"/>
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/til3"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/til2">
+
+        <EditText
+            android:id="@+id/add_notes"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/add_notes" />
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/til2"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/radio_group"
+        android:layout_toRightOf="@+id/til"
+        android:layout_toEndOf="@+id/til">
+
+        <EditText
+            android:id="@+id/add_age"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/add_age"
+            android:inputType="number"
+            android:maxLines="1" />
+    </android.support.design.widget.TextInputLayout>
+
+    <Button
+        android:text="@string/add_location"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/add_location"
+        android:layout_below="@id/til3"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:onClick="setLocation"/>
+
+    <Button
+        android:text="@string/add_tags"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/add_tags"
+        android:layout_below="@id/add_location"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:onClick="setTags"/>
+
+    <Button
+        android:text="Done"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/add_tags"
+        android:id="@+id/add_contact"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:onClick="addContact"/>
+
+    <!-- need to add credit to <a href="http://www.freepik.com/free-vector/man-and-woman-avatars_766415.htm">Designed by Freepik</a> -->
+
+</RelativeLayout>

@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.support.v7.graphics.Palette;
 
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import java.util.UUID;
 
@@ -21,6 +22,10 @@ public class ContactActivity extends AppCompatActivity {
     private static final String EXTRA_CONTACT_ID = "com.studio08.ronen.Zivug.contact_id";
 
     private Contact mContact;
+    TextView contactDetails;
+    TextView contactOverview;
+    TextView contactDates;
+    TextView contactNotes;
 
     public static Intent newIntent(Context packageContext, UUID contactId) {
         Intent intent = new Intent(packageContext, ContactActivity.class);
@@ -36,7 +41,6 @@ public class ContactActivity extends AppCompatActivity {
 
         // get the specific contact
         UUID contactId = (UUID) getIntent().getSerializableExtra(EXTRA_CONTACT_ID);
-
         mContact = ContactLab.get(this).getContact(contactId);
 
         // Setup and initialization collapsing toolbar
@@ -62,6 +66,24 @@ public class ContactActivity extends AppCompatActivity {
                 collapsingToolbar.setExpandedTitleColor(lightMutedColor);
             }
         });
+
+        initViews();
+        initInfo();
+    }
+
+    private void initViews() {
+        contactDetails = (TextView) findViewById(R.id.contact_details);
+        contactOverview = (TextView) findViewById(R.id.contact_overview);
+        contactDates = (TextView) findViewById(R.id.contact_dates);
+        contactNotes = (TextView) findViewById(R.id.contact_notes);
+    }
+
+    private void initInfo() {
+        String mDetails = "Age: " + mContact.getAge();
+        contactDetails.setText(mDetails);
+
+        String mNotes = mContact.getNotes();
+        contactNotes.setText(mNotes);
     }
 
     @Override
