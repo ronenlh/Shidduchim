@@ -20,6 +20,8 @@ import java.util.UUID;
 
 public class AddContactActivity extends AppCompatActivity {
 
+    private static String TAG = "AddContactActivity";
+
     private RadioGroup radioGroup;
     private RadioButton maleRadioButton, femaleRadioButton;
     private CircularImageView mImageView;
@@ -124,6 +126,6 @@ public class AddContactActivity extends AppCompatActivity {
                 values);
         
         if (newRowId < 0) Toast.makeText(this, "error", Toast.LENGTH_SHORT).show();
-        Log.d("DbHelper", ""+newRowId );
+        Log.d(TAG, "Row Id: "+newRowId );
     }
 }

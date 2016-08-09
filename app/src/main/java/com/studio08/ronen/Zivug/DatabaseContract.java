@@ -27,6 +27,7 @@ public class DatabaseContract {
         public static final String COLUMN_NAME_TAGS = "tags";
         public static final String COLUMN_NAME_PREV_DATES = "dates";
         public static final String COLUMN_NAME_NULLABLE = "nullable";
+        // if add remember to change as well in DatabaseHelper in SQL_CREATE_ENTRIES
     }
 
 }

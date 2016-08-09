@@ -18,6 +18,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     DatabaseContract.Entry._ID + " INTEGER PRIMARY KEY," +
                     DatabaseContract.Entry.COLUMN_NAME_ENTRY_ID + TEXT_TYPE + COMMA_SEP +
                     DatabaseContract.Entry.COLUMN_NAME_NAME + TEXT_TYPE + COMMA_SEP +
+                    DatabaseContract.Entry.COLUMN_NAME_GENDER + TEXT_TYPE + COMMA_SEP +
                     DatabaseContract.Entry.COLUMN_NAME_AGE + TEXT_TYPE + COMMA_SEP +
                     DatabaseContract.Entry.COLUMN_NAME_NOTES + TEXT_TYPE + COMMA_SEP +
                     DatabaseContract.Entry.COLUMN_NAME_LOCATION + TEXT_TYPE + COMMA_SEP +
@@ -29,7 +30,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             "DROP TABLE IF EXISTS " + DatabaseContract.Entry.TABLE_NAME;
 
     // If you change the database schema, you must increment the database version.
-    public static final int DATABASE_VERSION = 2;
+    public static final int DATABASE_VERSION = 3;
     public static final String DATABASE_NAME = "Zivug.db";
 
     public DatabaseHelper(Context context) {
