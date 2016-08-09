@@ -23,19 +23,14 @@ public class Contact {
 
     private static Random r;
 
-    public Contact(UUID id) {
-        mId = id;
+    public Contact() {
+        mId = UUID.randomUUID();
         mDate = new Date();
     }
 
-    public Contact(String name, int gender, int age, int image, String notes, String location, String tags, String dates) {
-        this.mName = name;
-        this.mGender = gender;
-        this.mAge = age;
-        this.mResourceId = getFillerResourceId(gender); // for now
-        this.mId = UUID.randomUUID();
-        this.mNotes = notes;
-        this.fillerResourceId = getFillerResourceId(gender);
+    public Contact(UUID id) {
+        mId = id;
+        mDate = new Date();
     }
 
     public String getName() {
@@ -44,21 +39,6 @@ public class Contact {
 
     public int getGender() {
         return mGender;
-    }
-
-    public static int getFillerResourceId(int gender) {
-
-        if (r == null) r = new Random();
-
-        if (gender == MALE) {
-            int randomIndex = r.nextInt(MALE_AVATARS.length);
-            return MALE_AVATARS[randomIndex];
-        } else if (gender == FEMALE) {
-            int randomIndex = r.nextInt(FEMALE_AVATARS.length);
-            return FEMALE_AVATARS[randomIndex];
-        }
-
-        return -1;
     }
 
     // avatars
@@ -94,7 +74,31 @@ public class Contact {
         return fillerResourceId;
     }
 
+    private void setFillerResourceId(int gender) {
+        if (r == null) r = new Random();
 
+        if (gender == MALE) {
+            int randomIndex = r.nextInt(MALE_AVATARS.length);
+            fillerResourceId = MALE_AVATARS[randomIndex];
+        } else if (gender == FEMALE) {
+            int randomIndex = r.nextInt(FEMALE_AVATARS.length);
+            fillerResourceId = FEMALE_AVATARS[randomIndex];
+        }
+        fillerResourceId = -1;
+    }
+
+    public static int getInitialFillerResourceId(int gender) {
+        if (r == null) r = new Random();
+
+        if (gender == MALE) {
+            int randomIndex = r.nextInt(MALE_AVATARS.length);
+            return MALE_AVATARS[randomIndex];
+        } else if (gender == FEMALE) {
+            int randomIndex = r.nextInt(FEMALE_AVATARS.length);
+            return FEMALE_AVATARS[randomIndex];
+        }
+        return -1;
+    }
 
     public int getResourceId() {
         if (mResourceId == 0)
@@ -117,6 +121,7 @@ public class Contact {
 
     public void setGender(int gender) {
         mGender = gender;
+        setFillerResourceId(mGender);
     }
 
     public void setResourceId(int resourceId) {

@@ -51,13 +51,13 @@ public class AddContactActivity extends AppCompatActivity {
             case Contact.MALE:
                 maleRadioButton.setChecked(true);
                 femaleRadioButton.setChecked(false);
-                imageResourceId = Contact.getFillerResourceId(Contact.MALE);
+                imageResourceId = Contact.getInitialFillerResourceId(Contact.MALE);
                 mImageView.setImageResource(imageResourceId);
                 break;
             case Contact.FEMALE:
                 maleRadioButton.setChecked(false);
                 femaleRadioButton.setChecked(true);
-                imageResourceId = Contact.getFillerResourceId(Contact.MALE);
+                imageResourceId = Contact.getInitialFillerResourceId(Contact.MALE);
                 mImageView.setImageResource(imageResourceId);
                 break;
             case Contact.NOT_SET:
@@ -103,13 +103,16 @@ public class AddContactActivity extends AppCompatActivity {
             return;
         }
 
-        String id = UUID.randomUUID().toString();
         String name = nameEditText.getText().toString();
         int age = Integer.parseInt(ageEditText.getText().toString());
         int gender = maleRadioButton.isChecked()? Contact.MALE : Contact.FEMALE;
         String notes = notesEditText.getText().toString();
 
-        Contact contact = new Contact(name, gender, age, -1, notes, null, null, null);
+        Contact contact = new Contact();
+        contact.setName(name);
+        contact.setGender(gender);
+        contact.setNotes(notes);
+        contact.setAge(age);
 
         ContactLab.get(this).addContact(contact);
 
