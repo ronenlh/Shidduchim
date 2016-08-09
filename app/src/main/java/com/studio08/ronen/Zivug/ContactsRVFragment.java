@@ -127,6 +127,7 @@ public class ContactsRVFragment extends Fragment {
         swLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
+                updateUI();
                 new Handler().postDelayed(new Runnable() {
                     @Override public void run() {
                         swLayout.setRefreshing(false);
