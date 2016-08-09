@@ -36,10 +36,6 @@ public class ContactsRVCursorAdapter extends CursorRecyclerAdapter<ContactsRVCur
         return new ContactsRVCursorAdapter.ContactHolder(view);
     }
 
-    public void setCursor(Cursor cursor) {
-//        mContacts = cursor;
-    }
-
     @Override
     public void onBindViewHolderCursor(ContactsRVCursorAdapter.ContactHolder holder, Cursor cursor) {
 
@@ -48,7 +44,10 @@ public class ContactsRVCursorAdapter extends CursorRecyclerAdapter<ContactsRVCur
 
         // bind viewHolder's view to model object
         holder.mNameTextView.setText(contact.getName());
-        holder.mPictureImageView.setImageResource(contact.getResourceId());
+        int resourceId = contact.getResourceId();
+        Log.d("onBindViewHolderCursor", ""+resourceId);
+        holder.mPictureImageView.setImageResource(resourceId);
+        holder.mView.setTag(contact.getId());
 
         Log.i("ContactsRVCursorAdapter", "Cursor(0)" + cursor.getColumnName(0));
     }
@@ -56,6 +55,7 @@ public class ContactsRVCursorAdapter extends CursorRecyclerAdapter<ContactsRVCur
     class ContactHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         TextView mNameTextView;
         CircularImageView mPictureImageView;
+        View mView;
 
         public ContactHolder(View itemView) {
             super(itemView);
@@ -63,11 +63,12 @@ public class ContactsRVCursorAdapter extends CursorRecyclerAdapter<ContactsRVCur
 
             mNameTextView = (TextView) itemView.findViewById(R.id.name_tv);
             mPictureImageView = (CircularImageView) itemView.findViewById(R.id.contact_iw);
+            mView = itemView;
         }
 
         @Override
         public void onClick(View view) {
-            Intent intent = ContactActivity.newIntent(context, UUID.fromString(contact.getId().toString()));
+            Intent intent = ContactActivity.newIntent(context, (UUID) view.getTag());
             context.startActivity(intent);
         }
     }
