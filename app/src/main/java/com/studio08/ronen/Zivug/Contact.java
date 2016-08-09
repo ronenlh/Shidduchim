@@ -21,6 +21,8 @@ public class Contact {
     private int mResourceId = 0;
     private int fillerResourceId;
 
+    public boolean isImageSet = false; // maybe set a condition on the adapter to show the filler image, but right now there are many and associated with each contact
+
     private static Random r;
 
     public Contact() {
@@ -83,8 +85,9 @@ public class Contact {
         } else if (gender == FEMALE) {
             int randomIndex = r.nextInt(FEMALE_AVATARS.length);
             fillerResourceId = FEMALE_AVATARS[randomIndex];
+        } else {
+            fillerResourceId = -1;
         }
-        fillerResourceId = -1;
     }
 
     public static int getInitialFillerResourceId(int gender) {
