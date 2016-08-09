@@ -37,7 +37,7 @@ public class ContactActivity extends AppCompatActivity {
         // get the specific contact
         UUID contactId = (UUID) getIntent().getSerializableExtra(EXTRA_CONTACT_ID);
 
-        //get the mContact  <---
+        mContact = ContactLab.get(this).getContact(contactId);
 
         // Setup and initialization collapsing toolbar
         collapsingToolbar = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
