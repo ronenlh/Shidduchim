@@ -21,7 +21,6 @@ import java.util.UUID;
 
 public class ContactsRVCursorAdapter extends CursorRecyclerAdapter<ContactsRVCursorAdapter.ContactHolder> {
     private Context context;
-    Contact contact;
 
     public ContactsRVCursorAdapter(Context context, Cursor cursor) {
         super(cursor);
@@ -40,7 +39,7 @@ public class ContactsRVCursorAdapter extends CursorRecyclerAdapter<ContactsRVCur
     public void onBindViewHolderCursor(ContactsRVCursorAdapter.ContactHolder holder, Cursor cursor) {
 
         String uuidString = cursor.getString(cursor.getColumnIndexOrThrow(DatabaseContract.Entry.COLUMN_NAME_ENTRY_UUID));
-        contact = ContactLab.get(context).getContact(UUID.fromString(uuidString));
+        Contact contact = ContactLab.get(context).getContact(UUID.fromString(uuidString));
 
         // bind viewHolder's view to model object
         holder.mNameTextView.setText(contact.getName());
