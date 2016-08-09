@@ -10,7 +10,6 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.mikhaellopez.circularimageview.CircularImageView;
@@ -21,6 +20,8 @@ import java.util.UUID;
 public class AddContactActivity extends AppCompatActivity {
 
     private static String TAG = "AddContactActivity";
+    private static int setLocation_RESULT = 1121;
+    private static int setTags_RESULT = 1122;
 
     private RadioGroup radioGroup;
     private RadioButton maleRadioButton, femaleRadioButton;
@@ -80,9 +81,13 @@ public class AddContactActivity extends AppCompatActivity {
 
     public void setLocation(View view) {
         Intent intent = new Intent(this, MapActivity.class);
-        startActivityForResult(intent, 1121);
+        startActivityForResult(intent, setLocation_RESULT);
     }
 
+    public void setTags(View view) {
+        Intent intent = new Intent(this, AddTagsActivity.class);
+        startActivityForResult(intent, setTags_RESULT);
+    }
 
     public void addContact(View view) {
 
@@ -124,7 +129,7 @@ public class AddContactActivity extends AppCompatActivity {
                 // the name of a column in which the framework can insert NULL in the event that the ContentValues is empty
                 DatabaseContract.Entry.COLUMN_NAME_NULLABLE,
                 values);
-        
+
         if (newRowId < 0) Toast.makeText(this, "error", Toast.LENGTH_SHORT).show();
         Log.d(TAG, "Row Id: "+newRowId );
     }
