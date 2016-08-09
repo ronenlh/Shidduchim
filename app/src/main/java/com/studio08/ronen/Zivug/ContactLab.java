@@ -109,5 +109,17 @@ public class ContactLab {
 
     }
 
+    public void deleteContact(Contact contact) {
+        String uuidString = contact.getId().toString();
+
+        // Define 'where' part of query.
+        String selection = DatabaseContract.Entry.COLUMN_NAME_ENTRY_UUID + " LIKE ?";
+
+        // Specify arguments in placeholder order.
+        String[] selectionArgs = { String.valueOf(uuidString) };
+
+        // Issue SQL statement.
+        mDatabase.delete(DatabaseContract.Entry.TABLE_NAME, selection, selectionArgs);
+    }
 
 }

@@ -129,6 +129,18 @@
         android:layout_alignParentStart="true"
         android:onClick="addContact"/>
 
+    <Button
+        android:text="@string/delete"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/add_contact"
+        android:id="@+id/delete_contact"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:onClick="deleteContact"/>
+
     <!-- need to add credit to <a href="http://www.freepik.com/free-vector/man-and-woman-avatars_766415.htm">Designed by Freepik</a> -->
 
 </RelativeLayout>

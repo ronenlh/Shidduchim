@@ -132,4 +132,10 @@ public class EditContactActivity extends AppCompatActivity {
 
         finish();
     }
+
+    public void deleteContact(View view) {
+        ContactLab.get(this).deleteContact(mContact);
+
+        finish();
+    }
 }
