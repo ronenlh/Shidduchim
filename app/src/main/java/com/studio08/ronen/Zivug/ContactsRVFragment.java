@@ -104,8 +104,22 @@ public class ContactsRVFragment extends Fragment {
         }
         setRecyclerViewLayoutManager(mCurrentLayoutManagerType);
 
-        Cursor c = getCursorQuery(null, null);
-        mCursorAdapter = new ContactsRVCursorAdapter(getContext(), c);
+        Cursor cursor;
+        if (mGenderParam == Contact.MALE) {
+             cursor = ContactLab.get(getContext()).queryContacts(
+                     DatabaseContract.Entry.COLUMN_NAME_GENDER + " = ?",
+                     new String[] { "" + Contact.MALE }
+             );
+        } else if (mGenderParam == Contact.FEMALE) {
+             cursor = ContactLab.get(getContext()).queryContacts(
+                     DatabaseContract.Entry.COLUMN_NAME_GENDER + " = ?",
+                     new String[] { "" + Contact.FEMALE }
+             );
+        } else {
+            cursor = ContactLab.get(getContext()).queryContacts(null, null);
+        }
+
+        mCursorAdapter = new ContactsRVCursorAdapter(getContext(), cursor);
 
 //        if (mGenderParam == Contact.MALE) {
 //            List<Contact> mMaleContacts = ContactLab.get(getContext()).getMaleContacts();
@@ -150,41 +164,6 @@ public class ContactsRVFragment extends Fragment {
         });
 
         return rootView;
-    }
-
-    private Cursor getCursorQuery(String selection, String[] selectionArgs) {
-
-        DatabaseHelper mDbHelper = new DatabaseHelper(getContext());
-        SQLiteDatabase db = mDbHelper.getReadableDatabase();
-
-    // Define a projection that specifies which columns from the database
-    // you will actually use after this query.
-        String[] projection = {
-                DatabaseContract.Entry._ID,
-                DatabaseContract.Entry.COLUMN_NAME_NAME,
-                DatabaseContract.Entry.COLUMN_NAME_GENDER,
-                DatabaseContract.Entry.COLUMN_NAME_AGE,
-                DatabaseContract.Entry.COLUMN_NAME_NOTES,
-                DatabaseContract.Entry.COLUMN_NAME_LOCATION,
-                DatabaseContract.Entry.COLUMN_NAME_TAGS,
-                DatabaseContract.Entry.COLUMN_NAME_PREV_DATES
-        };
-
-    // How you want the results sorted in the resulting Cursor
-        String sortOrder =
-                DatabaseContract.Entry.COLUMN_NAME_NAME + " DESC";
-
-        Cursor c = db.query(
-                DatabaseContract.Entry.TABLE_NAME,  // The table to query
-                projection,                               // The columns to return
-                selection,                                // The columns for the WHERE clause
-                selectionArgs,                            // The values for the WHERE clause
-                null,                                     // don't group the rows
-                null,                                     // don't filter by row groups
-                sortOrder                                 // The sort order
-        );
-
-        return c;
     }
 
     public void onButtonPressed(Uri uri) {
@@ -254,6 +233,7 @@ public class ContactsRVFragment extends Fragment {
         super.onResume();
         mCursorAdapter.notifyDataSetChanged();
     }
+
 
     /**
      * This interface must be implemented by activities that contain this

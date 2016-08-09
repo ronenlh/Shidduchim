@@ -1,59 +1,113 @@
 package com.studio08.ronen.Zivug;
 
+import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
 /**
- * Created by Ronen on 7/8/16.
+ * Created by Ronen on 9/8/16.
  */
 
 public class ContactLab {
-    private static ContactLab sContactLab;
-    private List<Contact> mMaleContacts;
-    private List<Contact> mFemaleContacts;
+    private static ContactLab mContactLab;
+
+    private Context mContext;
+    private SQLiteDatabase mDatabase;
 
     public static ContactLab get(Context context) {
-        if (sContactLab == null) {
-            sContactLab = new ContactLab(context);
+        if (mContactLab == null) {
+            mContactLab = new ContactLab(context);
         }
-        return sContactLab;
+        return  mContactLab;
     }
 
-    private ContactLab(Context context) {
-        mMaleContacts = new ArrayList<>();
-        mFemaleContacts = new ArrayList<>();
-        initSampleDataset();
+    public ContactLab(Context context) {
+        this.mContext = context;
+        this.mDatabase = new DatabaseHelper(mContext).getWritableDatabase();
     }
 
-    private void initSampleDataset() {
-        for (int i = 1; i < 21; i++) {
-            Contact contact = new Contact("Male Contact", "" + i, 12, Contact.MALE);
-            mMaleContacts.add(contact);
+    public void addContact(Contact contact) {
+        ContentValues values = getContentValues(contact);
+        mDatabase.insert(DatabaseContract.Entry.TABLE_NAME,
+                DatabaseContract.Entry.COLUMN_NAME_NULLABLE,
+                values);
+    }
+
+    public void updateContact(Contact contact) {
+        String uuidString = contact.getId().toString();
+        ContentValues values = getContentValues(contact);
+        mDatabase.update(DatabaseContract.Entry.TABLE_NAME,
+                values, DatabaseContract.Entry.COLUMN_NAME_ENTRY_UUID + " = ?", // this is a WHERE clause, we use ? to avoid SQL injection from the literal string
+                new String[] {uuidString});
+    }
+
+    public ContactCursorWraper queryContacts(String whereClause, String[] whereArgs) {
+
+        String sortOrder = DatabaseContract.Entry.COLUMN_NAME_NAME + " DESC";
+
+        Cursor cursor = mDatabase.query(
+                DatabaseContract.Entry.TABLE_NAME,
+                null, // null selects all columns
+                whereClause,
+                whereArgs,
+                null, // groupBy
+                null, // having
+                sortOrder // orderBy
+        );
+
+        return new ContactCursorWraper(cursor);
+    }
+
+    public List<Contact> getContacts() {
+        List<Contact> contacts = new ArrayList<>();
+        ContactCursorWraper cursor = queryContacts(null, null);
+        try {
+            cursor.moveToFirst();
+            while (!cursor.isAfterLast()) {
+                contacts.add(cursor.getContact());
+                cursor.moveToNext();
+            }
+        } finally {
+            cursor.close();
         }
-        for (int i = 1; i < 21; i++) {
-            Contact contact = new Contact("Female Contact", "" + i, 25, Contact.FEMALE);
-            mFemaleContacts.add(contact);
-        }
-    }
-
-    public List<Contact> getMaleContacts() {
-        return mMaleContacts;
-    }
-
-    public List<Contact> getFemaleContacts() {
-        return mFemaleContacts;
+        return new ArrayList<>();
     }
 
     public Contact getContact(UUID id) {
-        for (Contact contact : mMaleContacts)
-            if (contact.getId().equals(id))
-                return contact;
-        for (Contact contact : mFemaleContacts)
-            if (contact.getId().equals(id))
-                return contact;
-        return null;
+        ContactCursorWraper cursor = queryContacts(DatabaseContract.Entry.COLUMN_NAME_ENTRY_UUID + " = ?",
+                new String[] {id.toString()});
+        try {
+            if (cursor.getCount() == 0) {
+                return null;
+            }
+            cursor.moveToFirst();
+            return cursor.getContact();
+        } finally {
+            cursor.close();
+        }
     }
+
+    private static ContentValues getContentValues(Contact contact) {
+        // Create a new map of values, where column names are the keys
+        ContentValues values = new ContentValues();
+        values.put(DatabaseContract.Entry.COLUMN_NAME_ENTRY_UUID, contact.getId().toString());
+        values.put(DatabaseContract.Entry.COLUMN_NAME_NAME, contact.getName());
+        values.put(DatabaseContract.Entry.COLUMN_NAME_GENDER, contact.getGender());
+        values.put(DatabaseContract.Entry.COLUMN_NAME_AGE, contact.getAge());
+        values.put(DatabaseContract.Entry.COLUMN_NAME_IMAGE_RESOURCE, contact.getResourceId());
+        values.put(DatabaseContract.Entry.COLUMN_NAME_NOTES, contact.getNotes());
+//        values.put(DatabaseContract.Entry.COLUMN_NAME_LOCATION, content);
+//        values.put(DatabaseContract.Entry.COLUMN_NAME_TAGS, content);
+//        values.put(DatabaseContract.Entry.COLUMN_NAME_PREV_DATES, content);
+
+        return values;
+
+    }
+
+
 }

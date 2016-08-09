@@ -13,11 +13,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     // methods that create and maintain the database and tables
     private static final String TEXT_TYPE = " TEXT";
     private static final String INTEGER_TYPE = " INTEGER";
-    private static final String COMMA_SEP = ",";
+    private static final String COMMA_SEP = " , ";
     private static final String SQL_CREATE_ENTRIES =
-            "CREATE TABLE " + DatabaseContract.Entry.TABLE_NAME + " (" +
-                    DatabaseContract.Entry._ID + " INTEGER PRIMARY KEY," +
-                    DatabaseContract.Entry.COLUMN_NAME_ENTRY_ID + TEXT_TYPE + COMMA_SEP +
+            "CREATE TABLE " + DatabaseContract.Entry.TABLE_NAME + " ( " +
+                    DatabaseContract.Entry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                    DatabaseContract.Entry.COLUMN_NAME_ENTRY_UUID + TEXT_TYPE + COMMA_SEP +
                     DatabaseContract.Entry.COLUMN_NAME_NAME + TEXT_TYPE + COMMA_SEP +
                     DatabaseContract.Entry.COLUMN_NAME_GENDER + TEXT_TYPE + COMMA_SEP +
                     DatabaseContract.Entry.COLUMN_NAME_AGE + INTEGER_TYPE + COMMA_SEP +
@@ -32,7 +32,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             "DROP TABLE IF EXISTS " + DatabaseContract.Entry.TABLE_NAME;
 
     // If you change the database schema, you must increment the database version.
-    public static final int DATABASE_VERSION = 10;
+    public static final int DATABASE_VERSION = 13;
     public static final String DATABASE_NAME = "Zivug.db";
 
     public DatabaseHelper(Context context) {

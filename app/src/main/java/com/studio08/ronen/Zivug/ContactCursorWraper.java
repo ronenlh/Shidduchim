@@ -1,0 +1,37 @@
+package com.studio08.ronen.Zivug;
+
+import android.database.Cursor;
+import android.database.CursorWrapper;
+
+import java.util.UUID;
+
+/**
+ * Created by Ronen on 9/8/16.
+ */
+
+public class ContactCursorWraper extends CursorWrapper {
+    public ContactCursorWraper(Cursor cursor) {
+        super(cursor);
+    }
+
+    public Contact getContact() {
+        String uuidString = getString(getColumnIndexOrThrow(DatabaseContract.Entry.COLUMN_NAME_ENTRY_UUID));
+        String name = getString(getColumnIndexOrThrow(DatabaseContract.Entry.COLUMN_NAME_NAME));
+        int gender = getInt(getColumnIndexOrThrow(DatabaseContract.Entry.COLUMN_NAME_GENDER));
+        int age = getInt(getColumnIndexOrThrow(DatabaseContract.Entry.COLUMN_NAME_AGE));
+        int resourceId = getInt(getColumnIndexOrThrow(DatabaseContract.Entry.COLUMN_NAME_IMAGE_RESOURCE));
+        String notes = getString(getColumnIndexOrThrow(DatabaseContract.Entry.COLUMN_NAME_NOTES));
+//        String location = getString(getColumnIndexOrThrow(DatabaseContract.Entry.COLUMN_NAME_LOCATION));
+//        String tags = getString(getColumnIndexOrThrow(DatabaseContract.Entry.COLUMN_NAME_TAGS));
+//        String dates = getString(getColumnIndexOrThrow(DatabaseContract.Entry.COLUMN_NAME_PREV_DATES));
+
+        Contact contact = new Contact(UUID.fromString(uuidString));
+        contact.setName(name);
+        contact.setGender(gender);
+        contact.setAge(age);
+        contact.setResourceId(resourceId);
+        contact.setNotes(notes);
+
+        return contact;
+    }
+}

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,7 +20,7 @@ import java.util.UUID;
 
 public class ContactsRVCursorAdapter extends CursorRecyclerAdapter<ContactsRVCursorAdapter.ContactHolder> {
     private Context context;
-    String contactId;
+    Contact contact;
 
     public ContactsRVCursorAdapter(Context context, Cursor cursor) {
         super(cursor);
@@ -36,29 +37,21 @@ public class ContactsRVCursorAdapter extends CursorRecyclerAdapter<ContactsRVCur
 
     @Override
     public void onBindViewHolderCursor(ContactsRVCursorAdapter.ContactHolder holder, Cursor cursor) {
-        cursor.moveToFirst();
-        contactId = cursor.getString(cursor.getColumnIndexOrThrow(DatabaseContract.Entry.COLUMN_NAME_ENTRY_ID));
-        String name = cursor.getString(cursor.getColumnIndexOrThrow(DatabaseContract.Entry.COLUMN_NAME_NAME));
-        String gender = cursor.getString(cursor.getColumnIndexOrThrow(DatabaseContract.Entry.COLUMN_NAME_GENDER));
-        String age = cursor.getString(cursor.getColumnIndexOrThrow(DatabaseContract.Entry.COLUMN_NAME_AGE));
-        long image = cursor.getLong(cursor.getColumnIndexOrThrow(DatabaseContract.Entry.COLUMN_NAME_IMAGE_RESOURCE));
-        String notes = cursor.getString(cursor.getColumnIndexOrThrow(DatabaseContract.Entry.COLUMN_NAME_NOTES));
-        String location = cursor.getString(cursor.getColumnIndexOrThrow(DatabaseContract.Entry.COLUMN_NAME_LOCATION));
-        String tags = cursor.getString(cursor.getColumnIndexOrThrow(DatabaseContract.Entry.COLUMN_NAME_TAGS));
-        String dates = cursor.getString(cursor.getColumnIndexOrThrow(DatabaseContract.Entry.COLUMN_NAME_PREV_DATES));
+
+        String uuidString = cursor.getString(cursor.getColumnIndexOrThrow(DatabaseContract.Entry.COLUMN_NAME_ENTRY_UUID));
+        contact = ContactLab.get(context).getContact(UUID.fromString(uuidString));
 
         // bind viewHolder's view to model object
-        holder.mFirstNameTextView.setText(name);
-//        holder.mLastNameTextView.setText(mContacts.get(position).getLastName());
-        holder.mPictureImageView.setImageResource((int) image);
+        holder.mFirstNameTextView.setText(contact.getName());
+        holder.mPictureImageView.setImageResource(contact.getResourceId());
+
+        Log.i("ContactsRVCursorAdapter", "Cursor(0)" + cursor.getColumnName(0));
     }
 
     class ContactHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         TextView mFirstNameTextView;
         TextView mLastNameTextView;
         CircularImageView mPictureImageView;
-
-        private Contact mContact;
 
         public ContactHolder(View itemView) {
             super(itemView);
@@ -71,7 +64,7 @@ public class ContactsRVCursorAdapter extends CursorRecyclerAdapter<ContactsRVCur
 
         @Override
         public void onClick(View view) {
-            Intent intent = ContactActivity.newIntent(context, UUID.fromString(contactId));
+            Intent intent = ContactActivity.newIntent(context, UUID.fromString(contact.getId().toString()));
             context.startActivity(intent);
         }
     }

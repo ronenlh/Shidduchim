@@ -1,8 +1,8 @@
 package com.studio08.ronen.Zivug;
 
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteOpenHelper;
 import android.provider.BaseColumns;
 
 /**
@@ -18,7 +18,7 @@ public class DatabaseContract {
     /* Inner class that defines the table contents */
     public static abstract class Entry implements BaseColumns {
         public static final String TABLE_NAME = "entry";
-        public static final String COLUMN_NAME_ENTRY_ID = "entryid";
+        public static final String COLUMN_NAME_ENTRY_UUID = "entryid";
         public static final String COLUMN_NAME_NAME = "name";
         public static final String COLUMN_NAME_GENDER = "gender";
         public static final String COLUMN_NAME_AGE = "age";
@@ -29,6 +29,7 @@ public class DatabaseContract {
         public static final String COLUMN_NAME_PREV_DATES = "dates";
         public static final String COLUMN_NAME_NULLABLE = "nullable";
         // remember to change as well in DatabaseHelper in SQL_CREATE_ENTRIES
+        // and the projection in ContactsRVFragment
     }
 
 }

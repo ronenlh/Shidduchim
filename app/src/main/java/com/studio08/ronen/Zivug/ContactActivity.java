@@ -2,6 +2,7 @@ package com.studio08.ronen.Zivug;
 
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -27,6 +28,7 @@ public class ContactActivity extends AppCompatActivity {
         return intent;
     }
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,11 +36,12 @@ public class ContactActivity extends AppCompatActivity {
 
         // get the specific contact
         UUID contactId = (UUID) getIntent().getSerializableExtra(EXTRA_CONTACT_ID);
-        mContact = ContactLab.get(this).getContact(contactId);
+
+        //get the mContact  <---
 
         // Setup and initialization collapsing toolbar
         collapsingToolbar = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
-        collapsingToolbar.setTitle(mContact.getFirstName() + " " + mContact.getLastName());
+        collapsingToolbar.setTitle(mContact.getName());
         collapsingToolbar.setExpandedTitleColor(Color.parseColor("#44ffffff"));
 
         // initialization ImageView
@@ -59,5 +62,11 @@ public class ContactActivity extends AppCompatActivity {
                 collapsingToolbar.setExpandedTitleColor(lightMutedColor);
             }
         });
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        ContactLab.get(this).updateContact(mContact);
     }
 }

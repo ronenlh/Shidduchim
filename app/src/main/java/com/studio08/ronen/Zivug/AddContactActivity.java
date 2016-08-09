@@ -105,37 +105,13 @@ public class AddContactActivity extends AppCompatActivity {
 
         String id = UUID.randomUUID().toString();
         String name = nameEditText.getText().toString();
-        String age = ageEditText.getText().toString();
+        int age = Integer.parseInt(ageEditText.getText().toString());
         int gender = maleRadioButton.isChecked()? Contact.MALE : Contact.FEMALE;
         String notes = notesEditText.getText().toString();
 
+        Contact contact = new Contact(name, gender, age, -1, notes, null, null, null);
 
+        ContactLab.get(this).addContact(contact);
 
-        DatabaseHelper mDbHelper = new DatabaseHelper(this);
-
-        // Gets the data repository in write mode
-        SQLiteDatabase db = mDbHelper.getWritableDatabase();
-
-        // Create a new map of values, where column names are the keys
-        ContentValues values = new ContentValues();
-        values.put(DatabaseContract.Entry.COLUMN_NAME_ENTRY_ID, id);
-        values.put(DatabaseContract.Entry.COLUMN_NAME_NAME, name);
-        values.put(DatabaseContract.Entry.COLUMN_NAME_GENDER, gender);
-        values.put(DatabaseContract.Entry.COLUMN_NAME_AGE, age);
-        values.put(DatabaseContract.Entry.COLUMN_NAME_IMAGE_RESOURCE, imageResourceId);
-        values.put(DatabaseContract.Entry.COLUMN_NAME_NOTES, notes);
-//        values.put(DatabaseContract.Entry.COLUMN_NAME_LOCATION, content);
-//        values.put(DatabaseContract.Entry.COLUMN_NAME_TAGS, content);
-//        values.put(DatabaseContract.Entry.COLUMN_NAME_PREV_DATES, content);
-
-        // Insert the new row, returning the primary key value of the new row
-        long newRowId = db.insert(
-                DatabaseContract.Entry.TABLE_NAME,
-                // the name of a column in which the framework can insert NULL in the event that the ContentValues is empty
-                DatabaseContract.Entry.COLUMN_NAME_NULLABLE,
-                values);
-
-        if (newRowId < 0) Toast.makeText(this, "error", Toast.LENGTH_SHORT).show();
-        Log.d(TAG, "Row Id: "+newRowId );
     }
 }

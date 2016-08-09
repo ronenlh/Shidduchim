@@ -1,5 +1,6 @@
 package com.studio08.ronen.Zivug;
 
+import java.util.Date;
 import java.util.Random;
 import java.util.UUID;
 
@@ -14,23 +15,35 @@ public class Contact {
     public static final int NOT_SET = 2;
 
     private UUID mId;
-    private String firstName, lastName;
-    private int age, gender;
-    private int resourceId = 0;
+    private Date mDate;
+    private String mName, mNotes;
+    private int mAge, mGender;
+    private int mResourceId = 0;
     private int fillerResourceId;
 
     private static Random r;
 
-    public Contact(String firstName, String lastName, int age, int gender) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.age = age;
-        this.gender = gender;
+    public Contact(UUID id) {
+        mId = id;
+        mDate = new Date();
+    }
+
+    public Contact(String name, int gender, int age, int image, String notes, String location, String tags, String dates) {
+        this.mName = name;
+        this.mGender = gender;
+        this.mAge = age;
+        this.mResourceId = getFillerResourceId(gender); // for now
         this.mId = UUID.randomUUID();
+        this.mNotes = notes;
+        this.fillerResourceId = getFillerResourceId(gender);
+    }
 
+    public String getName() {
+        return mName;
+    }
 
-
-        fillerResourceId = getFillerResourceId(gender);
+    public int getGender() {
+        return mGender;
     }
 
     public static int getFillerResourceId(int gender) {
@@ -69,29 +82,12 @@ public class Contact {
         mId = id;
     }
 
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
     public int getAge() {
-        return age;
+        return mAge;
     }
 
     public void setAge(int age) {
-        this.age = age;
+        this.mAge = age;
     }
 
     public int getFillerResourceId() {
@@ -101,13 +97,29 @@ public class Contact {
 
 
     public int getResourceId() {
-        if (resourceId == 0)
+        if (mResourceId == 0)
             return getFillerResourceId();
         else
-            return resourceId;
+            return mResourceId;
+    }
+
+    public String getNotes() {
+        return mNotes;
+    }
+
+    public void setNotes(String notes) {
+        this.mNotes = notes;
+    }
+
+    public void setName(String name) {
+        mName = name;
+    }
+
+    public void setGender(int gender) {
+        mGender = gender;
     }
 
     public void setResourceId(int resourceId) {
-        this.resourceId = resourceId;
+        mResourceId = resourceId;
     }
 }
