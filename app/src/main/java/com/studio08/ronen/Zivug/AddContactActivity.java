@@ -1,11 +1,12 @@
 package com.studio08.ronen.Zivug;
 
-import android.content.ContentValues;
 import android.content.Intent;
-import android.database.sqlite.SQLiteDatabase;
+import android.database.Cursor;
+import android.net.Uri;
+import android.provider.ContactsContract;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.RadioButton;
@@ -14,14 +15,14 @@ import android.widget.Toast;
 
 import com.mikhaellopez.circularimageview.CircularImageView;
 
-import java.util.UUID;
-
 
 public class AddContactActivity extends AppCompatActivity {
 
     private static String TAG = "AddContactActivity";
-    private static int setLocation_RESULT = 1121;
-    private static int setTags_RESULT = 1122;
+    private static final int SET_LOCATION_RESULT = 1121;
+    private static final int SET_TAGS_RESULT = 1122;
+    private static final int REQUEST_CONTACT = 1123;
+
 
     private RadioGroup radioGroup;
     private RadioButton maleRadioButton, femaleRadioButton;
@@ -88,12 +89,12 @@ public class AddContactActivity extends AppCompatActivity {
 
     public void setLocation(View view) {
         Intent intent = new Intent(this, MapActivity.class);
-        startActivityForResult(intent, setLocation_RESULT);
+        startActivityForResult(intent, SET_LOCATION_RESULT);
     }
 
     public void setTags(View view) {
         Intent intent = new Intent(this, AddTagsActivity.class);
-        startActivityForResult(intent, setTags_RESULT);
+        startActivityForResult(intent, SET_TAGS_RESULT);
     }
 
     public void addContact(View view) {
@@ -121,5 +122,42 @@ public class AddContactActivity extends AppCompatActivity {
         ContactLab.get(this).addContact(contact);
 
         finish();
+    }
+
+    public void addFromContacts(View view) {
+        Intent pickContact = new Intent(Intent.ACTION_PICK, ContactsContract.Contacts.CONTENT_URI);
+        startActivityForResult(pickContact, REQUEST_CONTACT);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == SET_LOCATION_RESULT) {
+
+        } else if (requestCode == SET_TAGS_RESULT) {
+
+        } else if (requestCode == REQUEST_CONTACT && data != null) {
+            Uri contactUri = data.getData();
+
+            // specify fields you want to return values for
+            String[] queryFields = new String[] {
+                    ContactsContract.Contacts.DISPLAY_NAME
+            };
+            // perform query, contactUri is like a "where" clause here
+            Cursor c = this.getContentResolver().query(contactUri, queryFields, null, null, null);
+
+            try {
+                // double-check for result
+                if (c.getCount() == 0) return;
+
+                // pull out the first column of the first row of data
+                c.moveToFirst();
+                String contact = c.getString(0);
+                nameEditText.setText(contact);
+            } finally {
+                c.close();
+            }
+        }
     }
 }

@@ -128,10 +128,22 @@
         android:onClick="setTags"/>
 
     <Button
-        android:text="Done"
+        android:text="@string/add_from_contacts"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/add_tags"
+        android:id="@+id/add_from_contacts"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:onClick="addFromContacts"/>
+
+    <Button
+        android:text="Done"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/add_from_contacts"
         android:id="@+id/add_contact"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
