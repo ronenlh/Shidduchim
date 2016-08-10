@@ -16,7 +16,7 @@ public class Contact {
 
     private UUID mId;
     private Date mDate;
-    private String mName, mNotes;
+    private String mName, mNotes, mPhone, mEmail;
     private int mAge, mGender;
     private int mResourceId = 0;
     private int fillerResourceId;
@@ -129,5 +129,21 @@ public class Contact {
 
     public void setResourceId(int resourceId) {
         mResourceId = resourceId;
+    }
+
+    public void setPhone(String phone) {
+        mPhone = phone;
+    }
+
+    public void setEmail(String email) {
+        mEmail = email;
+    }
+
+    public String getPhone() {
+        return mPhone;
+    }
+
+    public String getEmail() {
+        return mEmail;
     }
 }

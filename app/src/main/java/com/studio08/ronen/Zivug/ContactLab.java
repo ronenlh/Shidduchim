@@ -109,6 +109,8 @@ public class ContactLab {
         values.put(DatabaseContract.Entry.COLUMN_NAME_AGE, contact.getAge());
         values.put(DatabaseContract.Entry.COLUMN_NAME_IMAGE_RESOURCE, contact.getResourceId());
         values.put(DatabaseContract.Entry.COLUMN_NAME_NOTES, contact.getNotes());
+        values.put(DatabaseContract.Entry.COLUMN_NAME_PHONE, contact.getPhone());
+        values.put(DatabaseContract.Entry.COLUMN_NAME_EMAIL, contact.getEmail());
 //        values.put(DatabaseContract.Entry.COLUMN_NAME_LOCATION, content);
 //        values.put(DatabaseContract.Entry.COLUMN_NAME_TAGS, content);
 //        values.put(DatabaseContract.Entry.COLUMN_NAME_PREV_DATES, content);

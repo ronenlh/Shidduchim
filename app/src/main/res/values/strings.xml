@@ -13,7 +13,7 @@
     <string name="overview">Overview</string>
     <string name="previous_dates">Previous Dates</string>
     <string name="notes">Notes</string>
-    <string name="add_name">Name</string>
+    <string name="add_name">Name *</string>
     <string name="add_notes">Notes</string>
     <string name="add_profile_picture">Profile Picture</string>
     <string name="select_male">Male</string>
@@ -37,4 +37,5 @@
     <string name="search_menu">Search</string>
     <string name="clear_search">Clear</string>
     <string name="add_from_contacts">Add From Contacts</string>
+    <string name="phone_number">Phone Number</string>
 </resources>

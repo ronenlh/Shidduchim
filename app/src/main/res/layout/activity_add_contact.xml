@@ -74,19 +74,6 @@
     </android.support.design.widget.TextInputLayout>
 
     <android.support.design.widget.TextInputLayout
-        android:id="@+id/til3"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/til2">
-
-        <EditText
-            android:id="@+id/add_notes"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/add_notes" />
-    </android.support.design.widget.TextInputLayout>
-
-    <android.support.design.widget.TextInputLayout
         android:id="@+id/til2"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
@@ -103,12 +90,55 @@
             android:maxLines="1" />
     </android.support.design.widget.TextInputLayout>
 
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/til3"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/til2">
+
+        <EditText
+            android:id="@+id/add_notes"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/add_notes" />
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/til4"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/til3">
+
+        <EditText
+            android:id="@+id/add_phone"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/phone_number"
+            android:inputType="phone"
+            android:maxLines="1" />
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/til5"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/til4">
+
+        <EditText
+            android:id="@+id/add_email"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:hint="E-Mail"
+            android:inputType="textEmailAddress"
+            android:maxLines="1" />
+    </android.support.design.widget.TextInputLayout>
+
     <Button
         android:text="@string/add_location"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/add_location"
-        android:layout_below="@id/til3"
+        android:layout_below="@id/til5"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_alignParentRight="true"

@@ -27,9 +27,12 @@ public class DatabaseContract {
         public static final String COLUMN_NAME_LOCATION = "location";
         public static final String COLUMN_NAME_TAGS = "tags";
         public static final String COLUMN_NAME_PREV_DATES = "dates";
+        public static final String COLUMN_NAME_PHONE = "phone";
+        public static final String COLUMN_NAME_PHONE2 = "phone2";
+        public static final String COLUMN_NAME_EMAIL = "email";
         public static final String COLUMN_NAME_NULLABLE = "nullable";
         // remember to change as well in DatabaseHelper in SQL_CREATE_ENTRIES
-        // and the projection in ContactsRVFragment
+        // and the projection in ContactsRVFragment <-- made it null so it queries all columns
     }
 
 }

@@ -1,13 +1,14 @@
 package com.studio08.ronen.Zivug;
 
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
 import android.provider.ContactsContract;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -27,10 +28,11 @@ public class AddContactActivity extends AppCompatActivity {
     private RadioGroup radioGroup;
     private RadioButton maleRadioButton, femaleRadioButton;
     private CircularImageView mImageView;
+    private Button mContactButton;
     int genderSelection = 2;
     int imageResourceId;
 
-    EditText nameEditText, ageEditText, notesEditText;
+    EditText nameEditText, ageEditText, notesEditText, phoneEditText, emailEditText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +40,22 @@ public class AddContactActivity extends AppCompatActivity {
         setContentView(R.layout.activity_add_contact);
 
         initViews();
+
+        // intent for choosing a contact from contact list
+        final Intent pickContact = new Intent(Intent.ACTION_PICK, ContactsContract.Contacts.CONTENT_URI);
+
+        mContactButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivityForResult(pickContact, REQUEST_CONTACT);
+            }
+        });
+
+        // check if we can import from contacts, if not disable the button
+        PackageManager packageManager = getPackageManager();
+        if (packageManager.resolveActivity(pickContact, PackageManager.MATCH_DEFAULT_ONLY) == null) {
+            mContactButton.setEnabled(false);
+        }
     }
 
     private void initViews() {
@@ -46,10 +64,13 @@ public class AddContactActivity extends AppCompatActivity {
         mImageView = (CircularImageView) findViewById(R.id.add_profile_pic);
         maleRadioButton = (RadioButton) findViewById(R.id.male_selection);
         femaleRadioButton = (RadioButton) findViewById(R.id.female_selection);
+        mContactButton = (Button) findViewById(R.id.add_from_contacts);
 
         nameEditText = (EditText) findViewById(R.id.add_name);
         ageEditText = (EditText) findViewById(R.id.add_age);
         notesEditText = (EditText) findViewById(R.id.add_notes);
+        phoneEditText = (EditText) findViewById(R.id.add_phone);
+        emailEditText = (EditText) findViewById(R.id.add_email);
 
         // default values depending on where was the activity opened
         switch (genderSelection) {
@@ -112,21 +133,20 @@ public class AddContactActivity extends AppCompatActivity {
         int age = Integer.parseInt(ageEditText.getText().toString());
         int gender = maleRadioButton.isChecked()? Contact.MALE : Contact.FEMALE;
         String notes = notesEditText.getText().toString();
+        String phone = phoneEditText.getText().toString();
+        String email = emailEditText.getText().toString();
 
         Contact contact = new Contact();
         contact.setName(name);
         contact.setGender(gender);
         contact.setNotes(notes);
         contact.setAge(age);
+        contact.setPhone(phone);
+        contact.setEmail(email);
 
         ContactLab.get(this).addContact(contact);
 
         finish();
-    }
-
-    public void addFromContacts(View view) {
-        Intent pickContact = new Intent(Intent.ACTION_PICK, ContactsContract.Contacts.CONTENT_URI);
-        startActivityForResult(pickContact, REQUEST_CONTACT);
     }
 
     @Override
