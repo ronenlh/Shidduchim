@@ -33,4 +33,5 @@
     <string name="delete">Delete Contact</string>
     <string name="undo_delete_contact">Undo</string>
     <string name="contact_deleted">Contact has been deleted</string>
+    <string name="are_you_sure">Are you sure you want to delete the contact?</string>
 </resources>

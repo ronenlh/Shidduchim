@@ -1,8 +1,12 @@
 package com.studio08.ronen.Zivug;
 
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.DialogFragment;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.EditText;
@@ -135,11 +139,30 @@ public class EditContactActivity extends AppCompatActivity {
     }
 
     public void deleteContact(View view) {
-        ContactLab.get(this).deleteContact(mContact);
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+        builder.setMessage(R.string.are_you_sure)
+                .setTitle("Delete Contact");
+
+        builder.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                // User clicked OK button
+                ContactLab.get(EditContactActivity.this).deleteContact(mContact);
+                finish();
+            }
+        });
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                // User cancelled the dialog
+            }
+        });
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
+
         // need to write this on the main activity
 //        Snackbar.make(view, R.string.contact_deleted, Snackbar.LENGTH_LONG)
 //                        .setAction(R.string.undo_delete_contact, null).show();
-
-        finish();
     }
 }
