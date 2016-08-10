@@ -7,6 +7,8 @@ import android.net.Uri;
 import android.provider.ContactsContract;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -32,6 +34,8 @@ public class AddContactActivity extends AppCompatActivity {
     int genderSelection = 2;
     int imageResourceId;
 
+    Intent pickContact;
+
     EditText nameEditText, ageEditText, notesEditText, phoneEditText, emailEditText;
 
     @Override
@@ -40,22 +44,6 @@ public class AddContactActivity extends AppCompatActivity {
         setContentView(R.layout.activity_add_contact);
 
         initViews();
-
-        // intent for choosing a contact from contact list
-        final Intent pickContact = new Intent(Intent.ACTION_PICK, ContactsContract.Contacts.CONTENT_URI);
-
-        mContactButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivityForResult(pickContact, REQUEST_CONTACT);
-            }
-        });
-
-        // check if we can import from contacts, if not disable the button
-        PackageManager packageManager = getPackageManager();
-        if (packageManager.resolveActivity(pickContact, PackageManager.MATCH_DEFAULT_ONLY) == null) {
-            mContactButton.setEnabled(false);
-        }
     }
 
     private void initViews() {
@@ -118,8 +106,7 @@ public class AddContactActivity extends AppCompatActivity {
         startActivityForResult(intent, SET_TAGS_RESULT);
     }
 
-    public void addContact(View view) {
-
+    private void addContact() {
         if (nameEditText.getText().toString().trim().equals("")) {
             Toast.makeText(this, R.string.no_name_inserted, Toast.LENGTH_SHORT).show();
             return;
@@ -178,6 +165,49 @@ public class AddContactActivity extends AppCompatActivity {
             } finally {
                 c.close();
             }
+        }
+    }
+
+    // Option Menu
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+
+        // check if we can import from contacts, if not disable the button
+        PackageManager packageManager = getPackageManager();
+        pickContact = new Intent(Intent.ACTION_PICK, ContactsContract.Contacts.CONTENT_URI);
+        if (packageManager.resolveActivity(pickContact, PackageManager.MATCH_DEFAULT_ONLY) == null) {
+            menu.findItem(R.id.action_contacts).setEnabled(false);
+        }
+        return true;
+    }
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        super.onCreateOptionsMenu(menu);
+        getMenuInflater().inflate(R.menu.add_contact_menu, menu);
+
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_settings:
+                return true;
+
+            case R.id.action_done:
+                addContact();
+                return true;
+
+            case R.id.action_contacts:
+                startActivityForResult(pickContact, REQUEST_CONTACT);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+
         }
     }
 }

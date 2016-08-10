@@ -169,17 +169,6 @@
         android:layout_alignParentStart="true"
         android:onClick="addFromContacts"/>
 
-    <Button
-        android:text="Done"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/add_from_contacts"
-        android:id="@+id/add_contact"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:onClick="addContact"/>
 
     <!-- need to add credit to <a href="http://www.freepik.com/free-vector/man-and-woman-avatars_766415.htm">Designed by Freepik</a> -->
 
