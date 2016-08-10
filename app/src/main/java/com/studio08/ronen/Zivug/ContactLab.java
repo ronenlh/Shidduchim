@@ -47,47 +47,20 @@ public class ContactLab {
                 new String[] {uuidString});
     }
 
-    public ContactCursorWraper queryContacts(String whereClause, String[] whereArgs) {
-
-        String sortOrder = DatabaseContract.Entry.COLUMN_NAME_NAME + " DESC";
-
-        Cursor cursor = mDatabase.query(
-                DatabaseContract.Entry.TABLE_NAME,
-                null, // null selects all columns
-                whereClause,
-                whereArgs,
-                null, // groupBy
-                null, // having
-                sortOrder // orderBy
-        );
-
-        return new ContactCursorWraper(cursor);
-    }
-
-//    public ContactCursorWraper searchContacts(String query) {
-//
-//        String rawQuery = "SELECT * FROM " + DatabaseContract.Entry.TABLE_NAME
-//                + " WHERE " + DatabaseContract.Entry.COLUMN_NAME_NAME + " MATCH '" + query + "*'";
-//
-//        Cursor cursor = mDatabase.rawQuery(rawQuery, null);
-//
-//        return new ContactCursorWraper(cursor);
-//    }
-
-    public ContactCursorWraper getWordMatches(String query, String[] columns) {
+    public ContactCursorWraper getWordMatches(String query) {
         String selection = DatabaseContract.Entry.COLUMN_NAME_NAME + " MATCH ?";
         String[] selectionArgs = new String[] {query+"*"};
 
-        return query(selection, selectionArgs, columns);
+        return queryContacts(selection, selectionArgs);
     }
 
-    private ContactCursorWraper query(String selection, String[] selectionArgs, String[] columns) {
+    public ContactCursorWraper queryContacts(String selection, String[] selectionArgs) {
         SQLiteQueryBuilder builder = new SQLiteQueryBuilder();
         builder.setTables(DatabaseContract.Entry.TABLE_NAME);
         DatabaseHelper mDatabaseOpenHelper = new DatabaseHelper(mContext);
 
         Cursor cursor = builder.query(mDatabaseOpenHelper.getReadableDatabase(),
-                columns, selection, selectionArgs, null, null, null);
+                null, selection, selectionArgs, null, null, null);
 
         if (cursor == null) {
             return null;
