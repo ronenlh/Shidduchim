@@ -11,7 +11,6 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RadioButton;
@@ -30,14 +29,14 @@ public class AddContactActivity extends AppCompatActivity {
     private static final int SET_TAGS_RESULT = 1122;
     private static final int REQUEST_CONTACT = 1123;
     private static final int REQUEST_PHOTO = 1124;
+    private static final int REQUEST_GALLERY = 1125;
 
     private Contact mContact;
 
     private RadioGroup radioGroup;
     private RadioButton maleRadioButton, femaleRadioButton;
-    private ImageView mPhotoImage;
+    private ImageView mPhotoImage, mGalleryImage;
     private CircularImageView mImageView;
-    private Button mContactButton;
     private File mPhotoFile;
     int genderSelection = 2;
     int imageResourceId;
@@ -57,22 +56,36 @@ public class AddContactActivity extends AppCompatActivity {
 
         mPhotoFile = ContactLab.get(this).getPhotoFile(mContact);
 
-        final Intent captureImage = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        final Intent captureImageIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        final Intent galleryImageIntent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
 
         // Disable if can't use button
         boolean canTakePhoto = mPhotoFile != null &&
-                captureImage.resolveActivity(getPackageManager()) != null;
+                captureImageIntent.resolveActivity(getPackageManager()) != null;
         mPhotoImage.setEnabled(canTakePhoto);
+        if (!canTakePhoto) mPhotoImage.setAlpha(0.5f);
 
         if (canTakePhoto) {
             Uri uri = Uri.fromFile(mPhotoFile);
-            captureImage.putExtra(MediaStore.EXTRA_OUTPUT, uri);
+            captureImageIntent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
         }
 
         mPhotoImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivityForResult(captureImage, REQUEST_PHOTO);
+                startActivityForResult(captureImageIntent, REQUEST_PHOTO);
+            }
+        });
+
+        // Disable if can't use button
+        boolean canOpenGallery = galleryImageIntent.resolveActivity(getPackageManager()) != null;
+        mGalleryImage.setEnabled(canOpenGallery);
+        if (!canOpenGallery) mGalleryImage.setAlpha(0.5f);
+
+        mGalleryImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivityForResult(galleryImageIntent, REQUEST_GALLERY);
             }
         });
 
@@ -87,6 +100,7 @@ public class AddContactActivity extends AppCompatActivity {
         femaleRadioButton = (RadioButton) findViewById(R.id.female_selection);
 
         mPhotoImage = (ImageView) findViewById(R.id.camera_image);
+        mGalleryImage = (ImageView) findViewById(R.id.gallery_image);
 
         nameEditText = (EditText) findViewById(R.id.add_name);
         ageEditText = (EditText) findViewById(R.id.add_age);
@@ -249,5 +263,6 @@ public class AddContactActivity extends AppCompatActivity {
     }
 
     public void selectPicture(View view) {
+
     }
 }
