@@ -1,13 +1,18 @@
 package com.studio08.ronen.Zivug;
 
+import android.annotation.TargetApi;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.Build;
 import android.provider.ContactsContract;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -30,6 +35,7 @@ public class AddContactActivity extends AppCompatActivity {
     private static final int REQUEST_CONTACT = 1123;
     private static final int REQUEST_PHOTO = 1124;
     private static final int REQUEST_GALLERY = 1125;
+    private static final int MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE = 100;
 
     private Contact mContact;
 
@@ -41,7 +47,7 @@ public class AddContactActivity extends AppCompatActivity {
     int genderSelection = 2;
     int imageResourceId;
 
-    Intent pickContact;
+    Intent pickContact, captureImageIntent, galleryImageIntent;
 
     EditText nameEditText, ageEditText, notesEditText, phoneEditText, emailEditText;
 
@@ -56,8 +62,8 @@ public class AddContactActivity extends AppCompatActivity {
 
         mPhotoFile = ContactLab.get(this).getPhotoFile(mContact);
 
-        final Intent captureImageIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        final Intent galleryImageIntent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        captureImageIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        galleryImageIntent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
 
         // Disable if can't use button
         boolean canTakePhoto = mPhotoFile != null &&
@@ -78,14 +84,17 @@ public class AddContactActivity extends AppCompatActivity {
         });
 
         // Disable if can't use button
-        boolean canOpenGallery = galleryImageIntent.resolveActivity(getPackageManager()) != null;
-        mGalleryImage.setEnabled(canOpenGallery);
-        if (!canOpenGallery) mGalleryImage.setAlpha(0.5f);
+//        boolean canOpenGallery = galleryImageIntent.resolveActivity(getPackageManager()) != null;
+//        mGalleryImage.setEnabled(canOpenGallery);
+//        if (!canOpenGallery) mGalleryImage.setAlpha(0.5f);
 
         mGalleryImage.setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View view) {
-                startActivityForResult(galleryImageIntent, REQUEST_GALLERY);
+                Log.d(TAG, "onClick");
+                // for the new API 23 dangerous permission model
+                requestGalleryPermission();
             }
         });
 
@@ -124,6 +133,54 @@ public class AddContactActivity extends AppCompatActivity {
                 break;
             case Contact.NOT_SET:
                 break;
+        }
+    }
+
+    @TargetApi(Build.VERSION_CODES.M)
+    private void requestGalleryPermission() {
+        // https://developer.android.com/training/permissions/requesting.html
+
+        Log.d(TAG, "requestGalleryPermission");
+
+        if (checkSelfPermission(android.Manifest.permission.READ_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED) {
+
+            // Should we show an explanation?
+            if (shouldShowRequestPermissionRationale(android.Manifest.permission.READ_EXTERNAL_STORAGE)) {
+                // Show an expanation to the user *asynchronously* -- don't block
+                // this thread waiting for the user's response! After the user
+                // sees the explanation, try again to request the permission.\
+            } else {
+                // No explanation needed, we can request the permission.
+
+                ActivityCompat.requestPermissions(this,
+                        new String[]{android.Manifest.permission.READ_EXTERNAL_STORAGE},
+                        MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE);
+            }
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        switch (requestCode) {
+            case MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    Log.d(TAG, "permission was granted");
+                    // permission was granted, yay! Do the
+                    // contacts-related task you need to do.
+                    startActivityForResult(galleryImageIntent, REQUEST_GALLERY);
+
+                } else {
+                    Log.d(TAG, "permission denied");
+                    // permission denied, boo! Disable the
+                    // functionality that depends on this permission.
+                }
+                return;
+            }
+
+            // other 'case' lines to check for other
+            // permissions this app might request
         }
     }
 
@@ -213,6 +270,7 @@ public class AddContactActivity extends AppCompatActivity {
                 cursor.close();
             }
         } else if (requestCode == REQUEST_GALLERY && resultCode == RESULT_OK &&  data != null) {
+
             Uri selectedImage = data.getData();
 
             String[] filePathColumn = { MediaStore.Images.Media.DATA };
@@ -229,6 +287,7 @@ public class AddContactActivity extends AppCompatActivity {
                 cursor.close();
             }
         }
+
     }
 
     // Option Menu
