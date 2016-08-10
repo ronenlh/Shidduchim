@@ -103,42 +103,42 @@
             android:hint="@string/add_notes" />
     </android.support.design.widget.TextInputLayout>
 
-    <android.support.design.widget.TextInputLayout
-        android:id="@+id/til4"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/til3">
+    <!--<android.support.design.widget.TextInputLayout-->
+        <!--android:id="@+id/til4"-->
+        <!--android:layout_width="fill_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_below="@+id/til3">-->
 
-        <EditText
-            android:id="@+id/add_phone"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/phone_number"
-            android:inputType="phone"
-            android:maxLines="1" />
-    </android.support.design.widget.TextInputLayout>
+        <!--<EditText-->
+            <!--android:id="@+id/add_phone"-->
+            <!--android:layout_width="fill_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:hint="@string/phone_number"-->
+            <!--android:inputType="phone"-->
+            <!--android:maxLines="1" />-->
+    <!--</android.support.design.widget.TextInputLayout>-->
 
-    <android.support.design.widget.TextInputLayout
-        android:id="@+id/til5"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/til4">
+    <!--<android.support.design.widget.TextInputLayout-->
+        <!--android:id="@+id/til5"-->
+        <!--android:layout_width="fill_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_below="@+id/til4">-->
 
-        <EditText
-            android:id="@+id/add_email"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:hint="E-Mail"
-            android:inputType="textEmailAddress"
-            android:maxLines="1" />
-    </android.support.design.widget.TextInputLayout>
+        <!--<EditText-->
+            <!--android:id="@+id/add_email"-->
+            <!--android:layout_width="fill_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:hint="E-Mail"-->
+            <!--android:inputType="textEmailAddress"-->
+            <!--android:maxLines="1" />-->
+    <!--</android.support.design.widget.TextInputLayout>-->
 
     <Button
         android:text="@string/add_location"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/add_location"
-        android:layout_below="@id/til5"
+        android:layout_below="@id/til3"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_alignParentRight="true"
@@ -157,17 +157,32 @@
         android:layout_alignParentEnd="true"
         android:onClick="setTags"/>
 
-    <Button
-        android:text="@string/add_from_contacts"
+    <LinearLayout
+        android:orientation="vertical"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/add_tags"
-        android:id="@+id/add_from_contacts"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:onClick="addFromContacts"/>
+        android:background="@color/colorPrimary"
+        android:layout_margin="10dp"
+        android:layout_alignBottom="@+id/add_profile_pic"
+        android:layout_toRightOf="@+id/add_profile_pic"
+        android:layout_toEndOf="@+id/add_profile_pic">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:srcCompat="@drawable/ic_photo_camera_white_24dp"
+            android:id="@+id/camera_image"
+            android:layout_margin="10dp"
+            android:onClick="takePicture"/>
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:srcCompat="@drawable/ic_photo_library_white_24dp"
+            android:id="@+id/library_image"
+            android:layout_margin="10dp"
+            android:onClick="selectPicture"/>
+    </LinearLayout>
 
 
     <!-- need to add credit to <a href="http://www.freepik.com/free-vector/man-and-woman-avatars_766415.htm">Designed by Freepik</a> -->

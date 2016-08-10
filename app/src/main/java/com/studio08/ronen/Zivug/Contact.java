@@ -146,4 +146,8 @@ public class Contact {
     public String getEmail() {
         return mEmail;
     }
+
+    public String getPhotoFilenane() {
+        return "IMG_" + getId().toString() + ".jpg";
+    }
 }

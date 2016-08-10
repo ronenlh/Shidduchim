@@ -14,6 +14,7 @@ import android.support.v7.graphics.Palette;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.io.File;
 import java.util.UUID;
 
 public class ContactActivity extends AppCompatActivity {
@@ -22,6 +23,7 @@ public class ContactActivity extends AppCompatActivity {
     private static final String EXTRA_CONTACT_ID = "com.studio08.ronen.Zivug.contact_id";
 
     private Contact mContact;
+
     TextView contactDetails;
     TextView contactOverview;
     TextView contactDates;
@@ -38,6 +40,7 @@ public class ContactActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_contact);
+
 
         // get the specific contact
         UUID contactId = (UUID) getIntent().getSerializableExtra(EXTRA_CONTACT_ID);

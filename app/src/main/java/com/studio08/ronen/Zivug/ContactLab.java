@@ -5,13 +5,16 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteQueryBuilder;
+import android.os.Environment;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
 /**
  * Created by Ronen on 9/8/16.
+ * Class responsible for everything related to persisting data in the app
  */
 
 public class ContactLab {
@@ -130,6 +133,13 @@ public class ContactLab {
 
         // Issue SQL statement.
         mDatabase.delete(DatabaseContract.Entry.TABLE_NAME, selection, selectionArgs);
+    }
+
+    public File getPhotoFile(Contact contact) {
+        File externalFilesDir = mContext.getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        if (externalFilesDir == null) return null;
+
+        return new File(externalFilesDir, contact.getPhotoFilenane());
     }
 
 }

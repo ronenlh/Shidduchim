@@ -5,6 +5,7 @@ import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
 import android.provider.ContactsContract;
+import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -12,11 +13,14 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import com.mikhaellopez.circularimageview.CircularImageView;
+
+import java.io.File;
 
 
 public class AddContactActivity extends AppCompatActivity {
@@ -25,12 +29,16 @@ public class AddContactActivity extends AppCompatActivity {
     private static final int SET_LOCATION_RESULT = 1121;
     private static final int SET_TAGS_RESULT = 1122;
     private static final int REQUEST_CONTACT = 1123;
+    private static final int REQUEST_PHOTO = 1124;
 
+    private Contact mContact;
 
     private RadioGroup radioGroup;
     private RadioButton maleRadioButton, femaleRadioButton;
+    private ImageView mPhotoImage;
     private CircularImageView mImageView;
     private Button mContactButton;
+    private File mPhotoFile;
     int genderSelection = 2;
     int imageResourceId;
 
@@ -43,7 +51,32 @@ public class AddContactActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_contact);
 
+        mContact = new Contact();
+
         initViews();
+
+        mPhotoFile = ContactLab.get(this).getPhotoFile(mContact);
+
+        final Intent captureImage = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+
+        // Disable if can't use button
+        boolean canTakePhoto = mPhotoFile != null &&
+                captureImage.resolveActivity(getPackageManager()) != null;
+        mPhotoImage.setEnabled(canTakePhoto);
+
+        if (canTakePhoto) {
+            Uri uri = Uri.fromFile(mPhotoFile);
+            captureImage.putExtra(MediaStore.EXTRA_OUTPUT, uri);
+        }
+
+        mPhotoImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivityForResult(captureImage, REQUEST_PHOTO);
+            }
+        });
+
+
     }
 
     private void initViews() {
@@ -52,13 +85,14 @@ public class AddContactActivity extends AppCompatActivity {
         mImageView = (CircularImageView) findViewById(R.id.add_profile_pic);
         maleRadioButton = (RadioButton) findViewById(R.id.male_selection);
         femaleRadioButton = (RadioButton) findViewById(R.id.female_selection);
-        mContactButton = (Button) findViewById(R.id.add_from_contacts);
+
+        mPhotoImage = (ImageView) findViewById(R.id.camera_image);
 
         nameEditText = (EditText) findViewById(R.id.add_name);
         ageEditText = (EditText) findViewById(R.id.add_age);
         notesEditText = (EditText) findViewById(R.id.add_notes);
-        phoneEditText = (EditText) findViewById(R.id.add_phone);
-        emailEditText = (EditText) findViewById(R.id.add_email);
+//        phoneEditText = (EditText) findViewById(R.id.add_phone);
+//        emailEditText = (EditText) findViewById(R.id.add_email);
 
         // default values depending on where was the activity opened
         switch (genderSelection) {
@@ -120,18 +154,17 @@ public class AddContactActivity extends AppCompatActivity {
         int age = Integer.parseInt(ageEditText.getText().toString());
         int gender = maleRadioButton.isChecked()? Contact.MALE : Contact.FEMALE;
         String notes = notesEditText.getText().toString();
-        String phone = phoneEditText.getText().toString();
-        String email = emailEditText.getText().toString();
+//        String phone = phoneEditText.getText().toString();
+//        String email = emailEditText.getText().toString();
 
-        Contact contact = new Contact();
-        contact.setName(name);
-        contact.setGender(gender);
-        contact.setNotes(notes);
-        contact.setAge(age);
-        contact.setPhone(phone);
-        contact.setEmail(email);
+        mContact.setName(name);
+        mContact.setGender(gender);
+        mContact.setNotes(notes);
+        mContact.setAge(age);
+//        mContact.setPhone(phone);
+//        mContact.setEmail(email);
 
-        ContactLab.get(this).addContact(contact);
+        ContactLab.get(this).addContact(mContact);
 
         finish();
     }
@@ -209,5 +242,12 @@ public class AddContactActivity extends AppCompatActivity {
                 return super.onOptionsItemSelected(item);
 
         }
+    }
+
+    public void takePicture(View view) {
+
+    }
+
+    public void selectPicture(View view) {
     }
 }
