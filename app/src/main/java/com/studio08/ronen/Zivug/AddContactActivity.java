@@ -4,12 +4,15 @@ import android.annotation.TargetApi;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
 import android.provider.ContactsContract;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -94,7 +97,13 @@ public class AddContactActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Log.d(TAG, "onClick");
                 // for the new API 23 dangerous permission model
-                requestGalleryPermission();
+                int permissionCheck = ContextCompat.checkSelfPermission(AddContactActivity.this,
+                        android.Manifest.permission.READ_EXTERNAL_STORAGE);
+                if (permissionCheck == PackageManager.PERMISSION_GRANTED) {
+                    startActivityForResult(galleryImageIntent, REQUEST_GALLERY);
+                } else {
+                    requestGalleryPermission();
+                }
             }
         });
 
@@ -283,6 +292,13 @@ public class AddContactActivity extends AppCompatActivity {
                 // String picturePath contains the path of selected Image
                 String picturePath = cursor.getString(columnIndex);
                 mContact.setPicturePath(picturePath);
+
+
+                BitmapFactory.Options bmOptions = new BitmapFactory.Options();
+                Bitmap bitmap = BitmapFactory.decodeFile(picturePath,bmOptions);
+                bitmap = Bitmap.createScaledBitmap(bitmap,500,500,true);
+                mImageView.setImageBitmap(bitmap);
+
             } finally {
                 cursor.close();
             }
