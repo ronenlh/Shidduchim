@@ -199,18 +199,34 @@ public class AddContactActivity extends AppCompatActivity {
                     ContactsContract.Contacts.DISPLAY_NAME
             };
             // perform query, contactUri is like a "where" clause here
-            Cursor c = this.getContentResolver().query(contactUri, queryFields, null, null, null);
+            Cursor cursor = this.getContentResolver().query(contactUri, queryFields, null, null, null);
 
             try {
                 // double-check for result
-                if (c.getCount() == 0) return;
+                if (cursor.getCount() == 0) return;
 
                 // pull out the first column of the first row of data
-                c.moveToFirst();
-                String contact = c.getString(0);
+                cursor.moveToFirst();
+                String contact = cursor.getString(0);
                 nameEditText.setText(contact);
             } finally {
-                c.close();
+                cursor.close();
+            }
+        } else if (requestCode == REQUEST_GALLERY && resultCode == RESULT_OK &&  data != null) {
+            Uri selectedImage = data.getData();
+
+            String[] filePathColumn = { MediaStore.Images.Media.DATA };
+            Cursor cursor = getContentResolver().query(selectedImage, filePathColumn, null, null, null);
+
+            try {
+                cursor.moveToFirst();
+                int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+
+                // String picturePath contains the path of selected Image
+                String picturePath = cursor.getString(columnIndex);
+                mContact.setPicturePath(picturePath);
+            } finally {
+                cursor.close();
             }
         }
     }

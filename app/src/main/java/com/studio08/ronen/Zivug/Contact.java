@@ -16,7 +16,7 @@ public class Contact {
 
     private UUID mId;
     private Date mDate;
-    private String mName, mNotes, mPhone, mEmail;
+    private String mName, mNotes, mPhone, mEmail, mPicturePath;
     private int mAge, mGender;
     private int mResourceId = 0;
     private int fillerResourceId;
@@ -149,5 +149,13 @@ public class Contact {
 
     public String getPhotoFilenane() {
         return "IMG_" + getId().toString() + ".jpg";
+    }
+
+    public void setPicturePath(String picturePath) {
+        mPicturePath = picturePath;
+    }
+
+    public String getPicturePath() {
+        return mPicturePath;
     }
 }
