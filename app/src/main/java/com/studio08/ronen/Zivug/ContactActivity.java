@@ -2,7 +2,6 @@ package com.studio08.ronen.Zivug;
 
 import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -11,23 +10,24 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.graphics.Palette;
 
+import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import java.io.File;
+import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Transformation;
+
 import java.util.UUID;
 
 public class ContactActivity extends AppCompatActivity {
+    private static final String TAG = "ContactActivity";
     CollapsingToolbarLayout collapsingToolbar;
 
     private static final String EXTRA_CONTACT_ID = "com.studio08.ronen.Zivug.contact_id";
 
     private Contact mContact;
 
-    TextView contactDetails;
-    TextView contactOverview;
-    TextView contactDates;
-    TextView contactNotes;
+    TextView contactDetailsTextView, contactOverviewTextView, contactDatesTextView, contactNotesTextView;
 
     public static Intent newIntent(Context packageContext, UUID contactId) {
         Intent intent = new Intent(packageContext, ContactActivity.class);
@@ -51,8 +51,22 @@ public class ContactActivity extends AppCompatActivity {
         collapsingToolbar.setTitle(mContact.getName());
         collapsingToolbar.setExpandedTitleColor(Color.parseColor("#44ffffff"));
 
-        // initialization ImageView
-        ImageView header = (ImageView) findViewById(R.id.iv_header);
+        Log.d(TAG, mContact.toString());
+
+        initViews();
+        initHeader();
+        initInfo();
+    }
+
+    private void initViews() {
+        contactDetailsTextView = (TextView) findViewById(R.id.contact_details);
+        contactOverviewTextView = (TextView) findViewById(R.id.contact_overview);
+        contactDatesTextView = (TextView) findViewById(R.id.contact_dates);
+        contactNotesTextView = (TextView) findViewById(R.id.contact_notes);
+    }
+
+    private void initHeader() {
+        ImageView headerImageView = (ImageView) findViewById(R.id.iv_header);
 
         // take a bitmap image used in image view
         Bitmap bitmap = BitmapFactory.decodeResource(getResources(),
@@ -70,28 +84,42 @@ public class ContactActivity extends AppCompatActivity {
             }
         });
 
-        initViews();
-        initInfo();
-    }
-
-    private void initViews() {
-        contactDetails = (TextView) findViewById(R.id.contact_details);
-        contactOverview = (TextView) findViewById(R.id.contact_overview);
-        contactDates = (TextView) findViewById(R.id.contact_dates);
-        contactNotes = (TextView) findViewById(R.id.contact_notes);
+        Picasso.with(this)
+                .load("file://" + mContact.getPicturePath())
+                .resize(headerImageView.getWidth(), 400)
+                .centerCrop()
+//                .transform(new CropSquareTransformation()) // inner class in this file
+                .into(headerImageView);
     }
 
     private void initInfo() {
         String mDetails = "Age: " + mContact.getAge();
-        contactDetails.setText(mDetails);
+        contactDetailsTextView.setText(mDetails);
 
         String mNotes = mContact.getNotes();
-        contactNotes.setText(mNotes);
+        contactNotesTextView.setText(mNotes);
+
+        contactOverviewTextView.setText(mContact.toString());
     }
 
     @Override
     public void onPause() {
         super.onPause();
         ContactLab.get(this).updateContact(mContact);
+    }
+
+    public class CropSquareTransformation implements Transformation {
+        @Override public Bitmap transform(Bitmap source) {
+            int size = Math.min(source.getWidth(), source.getHeight());
+            int x = (source.getWidth() - size) / 2;
+            int y = (source.getHeight() - size) / 2;
+            Bitmap result = Bitmap.createBitmap(source, x, y, size, size);
+            if (result != source) {
+                source.recycle();
+            }
+            return result;
+        }
+
+        @Override public String key() { return "square()"; }
     }
 }

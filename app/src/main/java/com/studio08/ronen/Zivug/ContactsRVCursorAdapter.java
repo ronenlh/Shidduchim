@@ -11,8 +11,8 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.mikhaellopez.circularimageview.CircularImageView;
+import com.squareup.picasso.Picasso;
 
-import java.util.List;
 import java.util.UUID;
 
 /**
@@ -20,16 +20,16 @@ import java.util.UUID;
  */
 
 public class ContactsRVCursorAdapter extends CursorRecyclerAdapter<ContactsRVCursorAdapter.ContactHolder> {
-    private Context context;
+    private Context mContext;
 
     public ContactsRVCursorAdapter(Context context, Cursor cursor) {
         super(cursor);
-        this.context = context;
+        this.mContext = context;
     }
 
     @Override
     public ContactsRVCursorAdapter.ContactHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        LayoutInflater layoutInflater = LayoutInflater.from(context);
+        LayoutInflater layoutInflater = LayoutInflater.from(mContext);
         View view = layoutInflater.inflate(R.layout.list_item_contact, parent, false);
 
         return new ContactsRVCursorAdapter.ContactHolder(view);
@@ -39,14 +39,26 @@ public class ContactsRVCursorAdapter extends CursorRecyclerAdapter<ContactsRVCur
     public void onBindViewHolderCursor(ContactsRVCursorAdapter.ContactHolder holder, Cursor cursor) {
 
         String uuidString = cursor.getString(cursor.getColumnIndexOrThrow(DatabaseContract.Entry.COLUMN_NAME_ENTRY_UUID));
-        Contact contact = ContactLab.get(context).getContact(UUID.fromString(uuidString));
+        Contact mContact = ContactLab.get(mContext).getContact(UUID.fromString(uuidString));
 
         // bind viewHolder's view to model object
-        holder.mNameTextView.setText(contact.getName());
-        int resourceId = contact.getResourceId();
-        Log.d("onBindViewHolderCursor", ""+resourceId);
-        holder.mPictureImageView.setImageResource(resourceId);
-        holder.mView.setTag(contact.getId());
+        holder.mNameTextView.setText(mContact.getName());
+        int resourceId = mContact.getResourceId();
+
+        String mPicturePath;
+
+        if ((mPicturePath = mContact.getPicturePath()) != null) {
+
+            Picasso.with(mContext)
+                    .load("file://" + mPicturePath)
+                    .resize(100, 100)
+                    .centerCrop()
+                    .into(holder.mPictureImageView);
+
+        } else {
+            holder.mPictureImageView.setImageResource(resourceId);
+        }
+        holder.mView.setTag(mContact.getId());
 
         Log.i("ContactsRVCursorAdapter", "Cursor(0)" + cursor.getColumnName(0));
     }
@@ -68,15 +80,15 @@ public class ContactsRVCursorAdapter extends CursorRecyclerAdapter<ContactsRVCur
 
         @Override
         public void onClick(View view) {
-            Intent intent = ContactActivity.newIntent(context, (UUID) view.getTag());
-            context.startActivity(intent);
+            Intent intent = ContactActivity.newIntent(mContext, (UUID) view.getTag());
+            mContext.startActivity(intent);
         }
 
         @Override
         public boolean onLongClick(View view) {
-            Intent intent = new Intent(context, EditContactActivity.class);
+            Intent intent = new Intent(mContext, EditContactActivity.class);
             intent.putExtra(EditContactActivity.EXTRA_CONTACT_ID, (UUID) view.getTag());
-            context.startActivity(intent);
+            mContext.startActivity(intent);
 
             // true if the callback consumed the long click, false otherwise.
             return true;

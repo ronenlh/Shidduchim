@@ -158,4 +158,17 @@ public class Contact {
     public String getPicturePath() {
         return mPicturePath;
     }
+
+    @Override
+    public String toString() {
+        return "Contact{" +
+                "mId=" + mId +
+                ", mDate=" + mDate +
+                ", mName='" + mName + '\'' +
+                ", mNotes='" + mNotes + '\'' +
+                ", mPicturePath='" + mPicturePath + '\'' +
+                ", mAge=" + mAge +
+                ", mGender=" + mGender +
+                '}';
+    }
 }

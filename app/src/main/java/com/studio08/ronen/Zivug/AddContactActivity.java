@@ -26,6 +26,7 @@ import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import com.mikhaellopez.circularimageview.CircularImageView;
+import com.squareup.picasso.Picasso;
 
 import java.io.File;
 
@@ -51,6 +52,8 @@ public class AddContactActivity extends AppCompatActivity {
     int imageResourceId;
 
     Intent pickContact, captureImageIntent, galleryImageIntent;
+
+    String mPicturePath;
 
     EditText nameEditText, ageEditText, notesEditText, phoneEditText, emailEditText;
 
@@ -241,9 +244,11 @@ public class AddContactActivity extends AppCompatActivity {
         mContact.setGender(gender);
         mContact.setNotes(notes);
         mContact.setAge(age);
+        mContact.setPicturePath(mPicturePath);
 //        mContact.setPhone(phone);
 //        mContact.setEmail(email);
 
+        Log.d(TAG, mContact.toString());
         ContactLab.get(this).addContact(mContact);
 
         finish();
@@ -290,14 +295,20 @@ public class AddContactActivity extends AppCompatActivity {
                 int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
 
                 // String picturePath contains the path of selected Image
-                String picturePath = cursor.getString(columnIndex);
-                mContact.setPicturePath(picturePath);
+                mPicturePath = cursor.getString(columnIndex);
 
+//                BitmapFactory.Options bmOptions = new BitmapFactory.Options();
+//                Bitmap bitmap = BitmapFactory.decodeFile(mPicturePath,bmOptions);
+//                bitmap = Bitmap.createScaledBitmap(bitmap, bitmap.getWidth(), bitmap.getHeight(), true);
+//                mImageView.setImageBitmap(bitmap);
 
-                BitmapFactory.Options bmOptions = new BitmapFactory.Options();
-                Bitmap bitmap = BitmapFactory.decodeFile(picturePath,bmOptions);
-                bitmap = Bitmap.createScaledBitmap(bitmap,500,500,true);
-                mImageView.setImageBitmap(bitmap);
+                Log.d(TAG, mPicturePath);
+
+                Picasso.with(this)
+                        .load("file://" + mPicturePath)
+                        .resize(120, 120)
+                        .centerCrop()
+                        .into(mImageView);
 
             } finally {
                 cursor.close();
