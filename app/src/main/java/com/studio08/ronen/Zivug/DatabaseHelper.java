@@ -15,7 +15,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String INTEGER_TYPE = " INTEGER";
     private static final String COMMA_SEP = " , ";
     private static final String SQL_CREATE_ENTRIES =
-            "CREATE TABLE " + DatabaseContract.Entry.TABLE_NAME + " ( " +
+            "CREATE VIRTUAL TABLE " + DatabaseContract.Entry.TABLE_NAME + " USING fts3 ( " +
                     DatabaseContract.Entry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                     DatabaseContract.Entry.COLUMN_NAME_ENTRY_UUID + TEXT_TYPE + COMMA_SEP +
                     DatabaseContract.Entry.COLUMN_NAME_NAME + TEXT_TYPE + COMMA_SEP +
@@ -32,7 +32,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             "DROP TABLE IF EXISTS " + DatabaseContract.Entry.TABLE_NAME;
 
     // If you change the database schema, you must increment the database version.
-    public static final int DATABASE_VERSION = 15;
+    public static final int DATABASE_VERSION = 16;
     public static final String DATABASE_NAME = "Zivug.db";
 
     public DatabaseHelper(Context context) {

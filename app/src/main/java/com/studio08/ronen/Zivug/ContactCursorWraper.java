@@ -31,7 +31,6 @@ public class ContactCursorWraper extends CursorWrapper {
         contact.setAge(age);
         contact.setResourceId(resourceId);
         contact.setNotes(notes);
-
         return contact;
     }
 }

@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteQueryBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -60,6 +61,40 @@ public class ContactLab {
                 sortOrder // orderBy
         );
 
+        return new ContactCursorWraper(cursor);
+    }
+
+//    public ContactCursorWraper searchContacts(String query) {
+//
+//        String rawQuery = "SELECT * FROM " + DatabaseContract.Entry.TABLE_NAME
+//                + " WHERE " + DatabaseContract.Entry.COLUMN_NAME_NAME + " MATCH '" + query + "*'";
+//
+//        Cursor cursor = mDatabase.rawQuery(rawQuery, null);
+//
+//        return new ContactCursorWraper(cursor);
+//    }
+
+    public ContactCursorWraper getWordMatches(String query, String[] columns) {
+        String selection = DatabaseContract.Entry.COLUMN_NAME_NAME + " MATCH ?";
+        String[] selectionArgs = new String[] {query+"*"};
+
+        return query(selection, selectionArgs, columns);
+    }
+
+    private ContactCursorWraper query(String selection, String[] selectionArgs, String[] columns) {
+        SQLiteQueryBuilder builder = new SQLiteQueryBuilder();
+        builder.setTables(DatabaseContract.Entry.TABLE_NAME);
+        DatabaseHelper mDatabaseOpenHelper = new DatabaseHelper(mContext);
+
+        Cursor cursor = builder.query(mDatabaseOpenHelper.getReadableDatabase(),
+                columns, selection, selectionArgs, null, null, null);
+
+        if (cursor == null) {
+            return null;
+        } else if (!cursor.moveToFirst()) {
+            cursor.close();
+            return null;
+        }
         return new ContactCursorWraper(cursor);
     }
 

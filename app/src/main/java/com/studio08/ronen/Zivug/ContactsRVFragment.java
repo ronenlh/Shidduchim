@@ -162,7 +162,18 @@ public class ContactsRVFragment extends Fragment {
             mRecyclerView.setAdapter(mCursorAdapter);
         } else {
             mCursorAdapter.swapCursor(cursor);
-//            mCursorAdapter.notifyDataSetChanged();
+        }
+    }
+
+    public void searchContacts(String query) {
+
+        Cursor cursor = ContactLab.get(getContext()).getWordMatches(query, null);
+
+        if (mCursorAdapter == null) {
+            mCursorAdapter = new ContactsRVCursorAdapter(getContext(), cursor);
+            mRecyclerView.setAdapter(mCursorAdapter);
+        } else {
+            mCursorAdapter.swapCursor(cursor);
         }
     }
 

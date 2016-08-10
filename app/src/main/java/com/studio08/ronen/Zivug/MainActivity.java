@@ -9,6 +9,8 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v7.widget.SearchView;
+import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -26,10 +28,15 @@ public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, ContactsRVFragment.OnFragmentInteractionListener {
 
     public static final String EXTRA_GENDER = "gender";
+    private static final String TAG = "MainActivity";
 
     // Tabs Vars
     private TabLayout tabLayout;
     private ViewPager viewPager;
+
+    // Fragments
+    ContactsRVFragment menFragment;
+    ContactsRVFragment womenFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,8 +91,37 @@ public class MainActivity extends AppCompatActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
+        super.onCreateOptionsMenu(menu);
         getMenuInflater().inflate(R.menu.main, menu);
+
+        MenuItem searchItem = menu.findItem(R.id.menu_item_search);
+        SearchView searchView = (SearchView) searchItem.getActionView();
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                Log.d(TAG, "QueryTextSubmit: " + query);
+                searchContacts(query);
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                Log.d(TAG, "QueryTextChange: " + newText);
+                searchContacts(newText);
+                return false;
+            }
+        });
+
         return true;
+    }
+
+    private void searchContacts(String query) {
+        // I need to update the cursor where clause with every onQueryTextChange,
+        // not just for the name but for all fields
+
+        menFragment.searchContacts(query);
+
     }
 
     @Override
@@ -141,8 +177,13 @@ public class MainActivity extends AppCompatActivity
 
     private void setupViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
-        adapter.addFragment(ContactsRVFragment.newInstance(Contact.MALE), "MEN");
-        adapter.addFragment(ContactsRVFragment.newInstance(Contact.FEMALE), "WOMEN");
+
+        menFragment = ContactsRVFragment.newInstance(Contact.MALE);
+        adapter.addFragment(menFragment, "MEN");
+
+        womenFragment = ContactsRVFragment.newInstance(Contact.FEMALE);
+        adapter.addFragment(womenFragment, "WOMEN");
+
         viewPager.setAdapter(adapter);
     }
 
