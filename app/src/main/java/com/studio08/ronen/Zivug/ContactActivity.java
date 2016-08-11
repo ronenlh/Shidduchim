@@ -15,6 +15,7 @@ import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Transformation;
 
@@ -56,7 +57,7 @@ public class ContactActivity extends AppCompatActivity {
         Log.d(TAG, mContact.toString());
 
         initViews();
-        initHeader();
+        if (mContact.getPicturePath() != null) initHeader();
         initInfo();
     }
 
@@ -70,17 +71,11 @@ public class ContactActivity extends AppCompatActivity {
     private void initHeader() {
         ImageView headerImageView = (ImageView) findViewById(R.id.iv_header);
 
-        Picasso.with(this)
-                .load("file://" + mContact.getPicturePath())
-                .fit().centerCrop()
-//                .transform(new CropSquareTransformation()) // inner class in this file
-                .into(headerImageView);
-
         // take a bitmap image used in image view
         File imageFile = new File(mContact.getPicturePath());
         if (imageFile.exists()) {
             Bitmap mBitmap = BitmapFactory.decodeFile(imageFile.getAbsolutePath());
-            mBitmap = Bitmap.createScaledBitmap(mBitmap,100,100,true);
+            mBitmap = Bitmap.createScaledBitmap(mBitmap, 100, 100, true);
 
             // extract colors from images used, should check async version
             Palette.from(mBitmap).generate(new Palette.PaletteAsyncListener() {
@@ -88,7 +83,7 @@ public class ContactActivity extends AppCompatActivity {
                 public void onGenerated(Palette palette) {
                     int mutedColor = palette.getMutedColor(R.color.colorPrimary); // param is default color if the swatch isn't available
                     int vibrantDarkColor = palette.getDarkVibrantColor(R.color.colorPrimary); // param is default color if the swatch isn't available
-                    int lightMutedColor = palette.getLightMutedColor(R.color.colorPrimary); // param is default color if the swatch isn't available
+                    int lightMutedColor = palette.getLightMutedColor(Color.WHITE); // param is default color if the swatch isn't available
                     int vibrantLightColor = palette.getLightVibrantColor(Color.WHITE);
                     collapsingToolbar.setContentScrimColor(vibrantDarkColor);
                     collapsingToolbar.setExpandedTitleColor(lightMutedColor);
@@ -97,10 +92,17 @@ public class ContactActivity extends AppCompatActivity {
                 }
             });
         }
+
+        Picasso.with(this)
+                .load("file://" + mContact.getPicturePath())
+                .fit().centerCrop()
+//                .transform(new CropSquareTransformation()) // inner class in this file
+                .into(headerImageView);
     }
 
     private void initInfo() {
-        String mDetails = "Age: " + mContact.getAge();
+        String mDetails = "Name: " + mContact.getName()
+                + "\nAge: " + mContact.getAge();
         contactDetailsTextView.setText(mDetails);
 
         String mNotes = mContact.getNotes();
@@ -115,18 +117,19 @@ public class ContactActivity extends AppCompatActivity {
         ContactLab.get(this).updateContact(mContact);
     }
 
-    public class CropSquareTransformation implements Transformation {
-        @Override public Bitmap transform(Bitmap source) {
-            int size = Math.min(source.getWidth(), source.getHeight());
-            int x = (source.getWidth() - size) / 2;
-            int y = (source.getHeight() - size) / 2;
-            Bitmap result = Bitmap.createBitmap(source, x, y, size, size);
-            if (result != source) {
-                source.recycle();
-            }
-            return result;
-        }
-
-        @Override public String key() { return "square()"; }
-    }
+//    public class CropSquareTransformation implements Transformation {
+//        @Override public Bitmap transform(Bitmap source) {
+//            mBitmap = source;
+//            int size = Math.min(source.getWidth(), source.getHeight());
+//            int x = (source.getWidth() - size) / 2;
+//            int y = (source.getHeight() - size) / 2;
+//            Bitmap result = Bitmap.createBitmap(source, x, y, size, size);
+//            if (result != source) {
+//                source.recycle();
+//            }
+//            return result;
+//        }
+//
+//        @Override public String key() { return "square()"; }
+//    }
 }
