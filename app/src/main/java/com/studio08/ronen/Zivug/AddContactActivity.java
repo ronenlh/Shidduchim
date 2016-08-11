@@ -28,6 +28,8 @@ import com.mikhaellopez.circularimageview.CircularImageView;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 
 public class AddContactActivity extends AppCompatActivity {
@@ -267,6 +269,7 @@ public class AddContactActivity extends AppCompatActivity {
         }
 
         String name = nameEditText.getText().toString();
+
         mContact.setName(name);
 
         int gender = maleRadioButton.isChecked()? Contact.MALE : Contact.FEMALE;
@@ -275,8 +278,29 @@ public class AddContactActivity extends AppCompatActivity {
         if (!ageEditText.getText().toString().isEmpty()  || !ageEditText.getText().toString().trim().equals(""))
             mContact.setAge(Integer.parseInt(ageEditText.getText().toString()));
 
-        if (!notesEditText.getText().toString().isEmpty()  || !notesEditText.getText().toString().trim().equals(""))
-            mContact.setNotes(notesEditText.getText().toString());
+        if (!notesEditText.getText().toString().isEmpty()  || !notesEditText.getText().toString().trim().equals("")) {
+            String notes = notesEditText.getText().toString();
+            mContact.setNotes(notes);
+
+            // try to get the phone number and e-mail if there are
+            Pattern eMailPattern = Pattern.compile("^[A-Za-z][A-Za-z0-9]*([._-]?[A-Za-z0-9]+)@[A-Za-z].[A-Za-z]{0,3}?.[A-Za-z]{0,2}$");
+            Pattern phoneNumberPattern = Pattern.compile("^[+]?[0-9]{10,13}$");
+
+            Matcher eMailMatcher = eMailPattern.matcher(notes);
+            Matcher phoneNumberMatcher = phoneNumberPattern.matcher(notes);
+
+            if (eMailMatcher.find()) {
+                String eMail = eMailMatcher.group(1);
+                Log.d(TAG, eMail);
+                mContact.setEmail(eMail);
+            }
+
+            if (phoneNumberMatcher.find()) {
+                String phoneNumber = phoneNumberMatcher.group(1);
+                Log.d(TAG, phoneNumber);
+                mContact.setPhone(phoneNumber);
+            }
+        }
 
         mContact.setPicturePath(mPicturePath);
 

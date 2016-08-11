@@ -65,7 +65,20 @@ public class Contact {
     }
 
     public void setName(String name) {
-        mName = name;
+
+        // Capitalize
+        StringBuffer res = new StringBuffer();
+
+        String[] strArr = name.split(" ");
+
+        for (String str : strArr) {
+            char[] stringArray = str.trim().toCharArray();
+            stringArray[0] = Character.toUpperCase(stringArray[0]);
+            str = new String(stringArray);
+            res.append(str).append(" ");
+        }
+
+        mName = res.toString().trim();
     }
 
     public void setGender(int gender) {

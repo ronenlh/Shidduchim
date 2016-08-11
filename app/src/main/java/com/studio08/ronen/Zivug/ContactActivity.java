@@ -101,9 +101,12 @@ public class ContactActivity extends AppCompatActivity {
     }
 
     private void initInfo() {
-        String mDetails = "Name: " + mContact.getName()
-                + "\nAge: " + mContact.getAge();
-        contactDetailsTextView.setText(mDetails);
+        StringBuilder mDetails = new StringBuilder("Name: " + mContact.getName());
+        if (mContact.getAge() > 0)              mDetails.append("\nAge: " + mContact.getAge());
+        if (mContact.getEmail() != null)        mDetails.append("\nE-Mail: " + mContact.getEmail());
+        if (mContact.getPhone() != null)        mDetails.append("\nPhone: " + mContact.getPhone());
+
+        contactDetailsTextView.setText(mDetails.toString());
 
         String mNotes = mContact.getNotes();
         contactNotesTextView.setText(mNotes);

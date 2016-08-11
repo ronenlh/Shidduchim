@@ -22,6 +22,8 @@ public class ContactCursorWraper extends CursorWrapper {
 //        int resourceId = getInt(getColumnIndexOrThrow(DatabaseContract.Entry.COLUMN_NAME_IMAGE_RESOURCE));
         String notes = getString(getColumnIndexOrThrow(DatabaseContract.Entry.COLUMN_NAME_NOTES));
         String picturePath = getString(getColumnIndexOrThrow(DatabaseContract.Entry.COLUMN_NAME_IMAGE_RESOURCE));
+        String eMail = getString(getColumnIndexOrThrow(DatabaseContract.Entry.COLUMN_NAME_EMAIL));
+        String phoneNumer = getString(getColumnIndexOrThrow(DatabaseContract.Entry.COLUMN_NAME_PHONE));
 //        String location = getString(getColumnIndexOrThrow(DatabaseContract.Entry.COLUMN_NAME_LOCATION));
 //        String tags = getString(getColumnIndexOrThrow(DatabaseContract.Entry.COLUMN_NAME_TAGS));
 //        String dates = getString(getColumnIndexOrThrow(DatabaseContract.Entry.COLUMN_NAME_PREV_DATES));
@@ -33,6 +35,8 @@ public class ContactCursorWraper extends CursorWrapper {
 //        contact.setResourceId(resourceId);
         contact.setNotes(notes);
         contact.setPicturePath(picturePath);
+        contact.setEmail(eMail);
+        contact.setPhone(phoneNumer);
         return contact;
     }
 }
