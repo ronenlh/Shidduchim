@@ -110,7 +110,7 @@ public class ContactLab {
         values.put(DatabaseContract.Entry.COLUMN_NAME_NAME, contact.getName());
         values.put(DatabaseContract.Entry.COLUMN_NAME_GENDER, contact.getGender());
         values.put(DatabaseContract.Entry.COLUMN_NAME_AGE, contact.getAge());
-        values.put(DatabaseContract.Entry.COLUMN_NAME_IMAGE_RESOURCE, contact.getResourceId());
+        values.put(DatabaseContract.Entry.COLUMN_NAME_IMAGE_RESOURCE, contact.getPicturePath());
         values.put(DatabaseContract.Entry.COLUMN_NAME_NOTES, contact.getNotes());
         values.put(DatabaseContract.Entry.COLUMN_NAME_PHONE, contact.getPhone());
         values.put(DatabaseContract.Entry.COLUMN_NAME_EMAIL, contact.getEmail());

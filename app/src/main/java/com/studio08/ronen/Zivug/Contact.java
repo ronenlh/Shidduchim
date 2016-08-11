@@ -18,10 +18,10 @@ public class Contact {
     private Date mDate;
     private String mName, mNotes, mPhone, mEmail, mPicturePath;
     private int mAge, mGender;
-    private int mResourceId = 0;
-    private int fillerResourceId;
+//    private int mResourceId = 0;
+//    private int fillerResourceId;
 
-    public boolean isImageSet = false; // maybe set a condition on the adapter to show the filler image, but right now there are many and associated with each contact
+//    public boolean isImageSet = false; // maybe set a condition on the adapter to show the filler image, but right now there are many and associated with each contact
 
     private static Random r;
 
@@ -72,23 +72,23 @@ public class Contact {
         this.mAge = age;
     }
 
-    public int getFillerResourceId() {
-        return fillerResourceId;
-    }
-
-    private void setFillerResourceId(int gender) {
-        if (r == null) r = new Random();
-
-        if (gender == MALE) {
-            int randomIndex = r.nextInt(MALE_AVATARS.length);
-            fillerResourceId = MALE_AVATARS[randomIndex];
-        } else if (gender == FEMALE) {
-            int randomIndex = r.nextInt(FEMALE_AVATARS.length);
-            fillerResourceId = FEMALE_AVATARS[randomIndex];
-        } else {
-            fillerResourceId = -1;
-        }
-    }
+//    public int getFillerResourceId() {
+//        return fillerResourceId;
+//    }
+//
+//    private void setFillerResourceId(int gender) {
+//        if (r == null) r = new Random();
+//
+//        if (gender == MALE) {
+//            int randomIndex = r.nextInt(MALE_AVATARS.length);
+//            fillerResourceId = MALE_AVATARS[randomIndex];
+//        } else if (gender == FEMALE) {
+//            int randomIndex = r.nextInt(FEMALE_AVATARS.length);
+//            fillerResourceId = FEMALE_AVATARS[randomIndex];
+//        } else {
+//            fillerResourceId = -1;
+//        }
+//    }
 
     public static int getInitialFillerResourceId(int gender) {
         if (r == null) r = new Random();
@@ -103,12 +103,12 @@ public class Contact {
         return -1;
     }
 
-    public int getResourceId() {
-        if (mResourceId == 0)
-            return getFillerResourceId();
-        else
-            return mResourceId;
-    }
+//    public int getResourceId() {
+//        if (mResourceId == 0)
+//            return getFillerResourceId();
+//        else
+//            return mResourceId;
+//    }
 
     public String getNotes() {
         return mNotes;
@@ -124,12 +124,12 @@ public class Contact {
 
     public void setGender(int gender) {
         mGender = gender;
-        setFillerResourceId(mGender);
+//        setFillerResourceId(mGender);
     }
 
-    public void setResourceId(int resourceId) {
-        mResourceId = resourceId;
-    }
+//    public void setResourceId(int resourceId) {
+//        mResourceId = resourceId;
+//    }
 
     public void setPhone(String phone) {
         mPhone = phone;
@@ -152,7 +152,7 @@ public class Contact {
     }
 
     public void setPicturePath(String picturePath) {
-        mPicturePath = picturePath;
+        this.mPicturePath = picturePath;
     }
 
     public String getPicturePath() {

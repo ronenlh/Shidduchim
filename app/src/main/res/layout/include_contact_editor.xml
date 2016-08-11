@@ -37,16 +37,14 @@
             android:layout_height="wrap_content"
             app:srcCompat="@drawable/ic_photo_camera_white_24dp"
             android:id="@+id/camera_image"
-            android:layout_margin="10dp"
-            android:onClick="takePicture"/>
+            android:layout_margin="10dp" />
 
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:srcCompat="@drawable/ic_photo_library_white_24dp"
             android:id="@+id/gallery_image"
-            android:layout_margin="10dp"
-            android:onClick="selectPicture"/>
+            android:layout_margin="10dp" />
     </LinearLayout>
 
     <RadioGroup

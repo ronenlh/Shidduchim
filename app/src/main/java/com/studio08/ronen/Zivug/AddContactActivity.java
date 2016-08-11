@@ -64,13 +64,14 @@ public class AddContactActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_contact);
 
-        isInPermission = savedInstanceState.getBoolean(STATE_IN_PERMISSION);
+        if (savedInstanceState != null)
+            isInPermission = savedInstanceState.getBoolean(STATE_IN_PERMISSION);
 
-        mContact = new Contact();
+        mContact = new Contact(); // New UUID
+        Log.d(TAG, "New Contact: " + mContact.getId().toString());
+        mPhotoFile = ContactLab.get(this).getPhotoFile(mContact); // New File Name
 
         initViews();
-
-        mPhotoFile = ContactLab.get(this).getPhotoFile(mContact);
 
         captureImageIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         galleryImageIntent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
@@ -255,7 +256,7 @@ public class AddContactActivity extends AppCompatActivity {
         int age = Integer.parseInt(ageEditText.getText().toString());
         int gender = maleRadioButton.isChecked()? Contact.MALE : Contact.FEMALE;
         String notes = notesEditText.getText().toString();
-//        String phone = phoneEditText.getText().toString();
+//        String phone = phoneEditText.getText().toString();¡¡™
 //        String email = emailEditText.getText().toString();
 
         mContact.setName(name);
@@ -263,6 +264,7 @@ public class AddContactActivity extends AppCompatActivity {
         mContact.setNotes(notes);
         mContact.setAge(age);
         mContact.setPicturePath(mPicturePath);
+        Log.d(TAG, "mPicturePath = " + mPicturePath);
 //        mContact.setPhone(phone);
 //        mContact.setEmail(email);
 
@@ -314,18 +316,16 @@ public class AddContactActivity extends AppCompatActivity {
 
                 // String picturePath contains the path of selected Image
                 mPicturePath = cursor.getString(columnIndex);
+                Log.d(TAG, "mPicturePath = " + mPicturePath);
 
 //                BitmapFactory.Options bmOptions = new BitmapFactory.Options();
 //                Bitmap bitmap = BitmapFactory.decodeFile(mPicturePath,bmOptions);
 //                bitmap = Bitmap.createScaledBitmap(bitmap, bitmap.getWidth(), bitmap.getHeight(), true);
 //                mImageView.setImageBitmap(bitmap);
 
-                Log.d(TAG, mPicturePath);
-
                 Picasso.with(this)
                         .load("file://" + mPicturePath)
-                        .resize(120, 120)
-                        .centerCrop()
+                        .fit().centerCrop()
                         .into(mImageView);
 
             } finally {
@@ -376,13 +376,5 @@ public class AddContactActivity extends AppCompatActivity {
                 return super.onOptionsItemSelected(item);
 
         }
-    }
-
-    public void takePicture(View view) {
-
-    }
-
-    public void selectPicture(View view) {
-
     }
 }

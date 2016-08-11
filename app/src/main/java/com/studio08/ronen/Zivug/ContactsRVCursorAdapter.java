@@ -43,11 +43,11 @@ public class ContactsRVCursorAdapter extends CursorRecyclerAdapter<ContactsRVCur
 
         // bind viewHolder's view to model object
         holder.mNameTextView.setText(mContact.getName());
-        int resourceId = mContact.getResourceId();
+//        int resourceId = mContact.getResourceId();
 
-        String mPicturePath;
+        String mPicturePath = mContact.getPicturePath(); // why is picturePath null?? resolved: forgot to update getContentValues method in ContactLav and the ContactCursorWraper
 
-        if ((mPicturePath = mContact.getPicturePath()) != null) {
+        if (mPicturePath != null) {
 
             Picasso.with(mContext)
                     .load("file://" + mPicturePath)
@@ -57,7 +57,7 @@ public class ContactsRVCursorAdapter extends CursorRecyclerAdapter<ContactsRVCur
                     .into(holder.mPictureImageView);
 
         } else {
-            holder.mPictureImageView.setImageResource(resourceId);
+//            holder.mPictureImageView.setImageResource(resourceId);
         }
         holder.mView.setTag(mContact.getId());
 
