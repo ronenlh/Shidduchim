@@ -22,6 +22,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RadioButton;
@@ -69,7 +70,8 @@ public class AddContactActivity extends AppCompatActivity {
 
     String mPicturePath;
 
-    EditText nameEditText, ageEditText, notesEditText, phoneEditText, emailEditText;
+    EditText nameEditText, ageEditText, notesEditText;
+    Button deleteContactButton;
 
     private boolean isInPermission = false;
     /**
@@ -81,18 +83,15 @@ public class AddContactActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_add_edit_contact);
 
         userIsUpdating = getIntent().getBooleanExtra(EXTRA_UPDATING, false);
 
         if (userIsUpdating) {
-            setContentView(R.layout.activity_edit_contact);
-
             // get the specific contact
             UUID contactId = (UUID) getIntent().getSerializableExtra(EXTRA_CONTACT_ID);
             mContact = ContactLab.get(this).getContact(contactId);
-
         } else {
-            setContentView(R.layout.activity_add_contact);
             mContact = new Contact(); // New UUID
             Log.d(TAG, "New Contact: " + mContact.getId().toString());
             mPhotoFile = ContactLab.get(this).getPhotoFile(mContact); // New File Name
@@ -181,8 +180,7 @@ public class AddContactActivity extends AppCompatActivity {
         nameEditText = (EditText) findViewById(R.id.add_name);
         ageEditText = (EditText) findViewById(R.id.add_age);
         notesEditText = (EditText) findViewById(R.id.add_notes);
-//        phoneEditText = (EditText) findViewById(R.id.add_phone);
-//        emailEditText = (EditText) findViewById(R.id.add_email);
+        deleteContactButton = (Button) findViewById(R.id.delete_contact);
 
         // default values depending on where was the activity opened
         setGenderRadioButtons(genderSelection);
@@ -211,6 +209,7 @@ public class AddContactActivity extends AppCompatActivity {
         ageEditText.setText("" + mContact.getAge());
         notesEditText.setText(mContact.getNotes());
         mPicturePath = mContact.getPicturePath();
+        deleteContactButton.setVisibility(View.VISIBLE);
         setGenderRadioButtons(mContact.getGender());
         loadImage(mContact.getGender());
     }

@@ -173,6 +173,18 @@
         android:layout_alignParentEnd="true"
         android:onClick="setTags"/>
 
+    <Button
+        android:text="@string/delete"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/add_tags"
+        android:id="@+id/delete_contact"
+        android:visibility="gone"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:onClick="deleteContact"/>
 
 
 
