@@ -25,8 +25,10 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.google.android.gms.appindexing.Action;
@@ -44,10 +46,11 @@ import java.util.regex.Pattern;
 
 public class AddContactActivity extends AppCompatActivity {
 
-    private static final String STATE_IN_PERMISSION = "gallery";
     public static final String EXTRA_UPDATING = "updating";
     public static final String EXTRA_CONTACT_ID = "UUID";
-    private static String TAG = "AddContactActivity";
+
+    private static final String STATE_IN_PERMISSION = "gallery";
+    private static final String TAG = "AddContactActivity";
     private static final int SET_LOCATION_RESULT = 1121;
     private static final int SET_TAGS_RESULT = 1122;
     private static final int REQUEST_CONTACT = 1123;
@@ -62,16 +65,17 @@ public class AddContactActivity extends AppCompatActivity {
     private ImageView mPhotoImage, mGalleryImage;
     private CircularImageView mImageView;
     private File mPhotoFile;
-    int genderSelection = 2;
+    private int genderSelection = 2;
 
-    boolean userIsUpdating;
+    private boolean userIsUpdating;
 
-    Intent pickContact, captureImageIntent, galleryImageIntent;
+    private Intent pickContact, captureImageIntent, galleryImageIntent;
 
-    String mPicturePath;
+    private String mPicturePath;
 
-    EditText nameEditText, ageEditText, notesEditText;
-    Button deleteContactButton;
+    private EditText nameEditText, ageEditText, notesEditText;
+    private Button deleteContactButton;
+    private RelativeLayout mLinearLayout;
 
     private boolean isInPermission = false;
     /**
@@ -181,6 +185,11 @@ public class AddContactActivity extends AppCompatActivity {
         ageEditText = (EditText) findViewById(R.id.add_age);
         notesEditText = (EditText) findViewById(R.id.add_notes);
         deleteContactButton = (Button) findViewById(R.id.delete_contact);
+
+        // This disable hardware acceleration to fix a bug
+        // https://github.com/hdodenhof/CircleImageView/issues/31
+        mLinearLayout = (RelativeLayout) findViewById(R.id.linear_layout_editor);
+        mLinearLayout.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
 
         // default values depending on where was the activity opened
         setGenderRadioButtons(genderSelection);
