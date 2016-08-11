@@ -12,6 +12,8 @@ import android.os.Bundle;
 import android.support.v7.graphics.Palette;
 
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -24,6 +26,8 @@ import java.util.UUID;
 
 public class ContactActivity extends AppCompatActivity {
     private static final String TAG = "ContactActivity";
+    private static final int EDIT_CONTACT = 1130;
+    UUID contactId;
     CollapsingToolbarLayout collapsingToolbar;
 
     private static final String EXTRA_CONTACT_ID = "com.studio08.ronen.Zivug.contact_id";
@@ -46,13 +50,8 @@ public class ContactActivity extends AppCompatActivity {
 
 
         // get the specific contact
-        UUID contactId = (UUID) getIntent().getSerializableExtra(EXTRA_CONTACT_ID);
+        contactId = (UUID) getIntent().getSerializableExtra(EXTRA_CONTACT_ID);
         mContact = ContactLab.get(this).getContact(contactId);
-
-        // Setup and initialization collapsing toolbar
-        collapsingToolbar = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
-        collapsingToolbar.setTitle(mContact.getName());
-        collapsingToolbar.setExpandedTitleColor(Color.parseColor("#44ffffff"));
 
         Log.d(TAG, mContact.toString());
 
@@ -69,6 +68,12 @@ public class ContactActivity extends AppCompatActivity {
     }
 
     private void initHeader() {
+
+        // Setup and initialization collapsing toolbar
+        collapsingToolbar = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
+        collapsingToolbar.setTitle(mContact.getName());
+        collapsingToolbar.setExpandedTitleColor(Color.parseColor("#44ffffff"));
+
         ImageView headerImageView = (ImageView) findViewById(R.id.iv_header);
 
         // take a bitmap image used in image view
@@ -115,12 +120,53 @@ public class ContactActivity extends AppCompatActivity {
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        super.onCreateOptionsMenu(menu);
+        getMenuInflater().inflate(R.menu.contact_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_settings:
+                return true;
+
+            case R.id.action_edit:
+                editContact();
+                return true;
+
+            default:
+                return super.onOptionsItemSelected(item);
+
+        }
+    }
+
+    private void editContact() {
+        Intent intent = new Intent(this, AddContactActivity.class);
+        intent.putExtra(AddContactActivity.EXTRA_UPDATING, true);
+        intent.putExtra(AddContactActivity.EXTRA_CONTACT_ID, mContact.getId());
+        startActivityForResult(intent, EDIT_CONTACT);
+    }
+
+    @Override
     public void onPause() {
         super.onPause();
         ContactLab.get(this).updateContact(mContact);
     }
 
-//    public class CropSquareTransformation implements Transformation {
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Log.d(TAG, "onResume()");
+
+        mContact = ContactLab.get(this).getContact(contactId);
+
+        initHeader();
+        initInfo();
+    }
+
+    //    public class CropSquareTransformation implements Transformation {
 //        @Override public Bitmap transform(Bitmap source) {
 //            mBitmap = source;
 //            int size = Math.min(source.getWidth(), source.getHeight());
