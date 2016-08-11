@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.os.Environment;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -17,6 +18,7 @@ import android.widget.TextView;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Transformation;
 
+import java.io.File;
 import java.util.UUID;
 
 public class ContactActivity extends AppCompatActivity {
@@ -68,28 +70,33 @@ public class ContactActivity extends AppCompatActivity {
     private void initHeader() {
         ImageView headerImageView = (ImageView) findViewById(R.id.iv_header);
 
-        // take a bitmap image used in image view
-        Bitmap bitmap = BitmapFactory.decodeResource(getResources(),
-                R.drawable.header);
-
-        // extract colors from images used, should check async version
-        Palette.from(bitmap).generate(new Palette.PaletteAsyncListener() {
-            @Override
-            public void onGenerated(Palette palette) {
-                int mutedColor = palette.getMutedColor(R.color.colorPrimary); // param is default color if the swatch isn't available
-                int vibrantDarkColor = palette.getDarkVibrantColor(R.color.colorPrimary); // param is default color if the swatch isn't available
-                int lightMutedColor = palette.getLightMutedColor(R.color.colorPrimary); // param is default color if the swatch isn't available
-                collapsingToolbar.setContentScrimColor(vibrantDarkColor);
-                collapsingToolbar.setExpandedTitleColor(lightMutedColor);
-            }
-        });
-
         Picasso.with(this)
                 .load("file://" + mContact.getPicturePath())
-                .resize(headerImageView.getWidth(), 400)
-                .centerCrop()
+                .fit().centerCrop()
 //                .transform(new CropSquareTransformation()) // inner class in this file
                 .into(headerImageView);
+
+        // take a bitmap image used in image view
+        File imageFile = new File(mContact.getPicturePath());
+        if (imageFile.exists()) {
+            Bitmap mBitmap = BitmapFactory.decodeFile(imageFile.getAbsolutePath());
+            mBitmap = Bitmap.createScaledBitmap(mBitmap,100,100,true);
+
+            // extract colors from images used, should check async version
+            Palette.from(mBitmap).generate(new Palette.PaletteAsyncListener() {
+                @Override
+                public void onGenerated(Palette palette) {
+                    int mutedColor = palette.getMutedColor(R.color.colorPrimary); // param is default color if the swatch isn't available
+                    int vibrantDarkColor = palette.getDarkVibrantColor(R.color.colorPrimary); // param is default color if the swatch isn't available
+                    int lightMutedColor = palette.getLightMutedColor(R.color.colorPrimary); // param is default color if the swatch isn't available
+                    int vibrantLightColor = palette.getLightVibrantColor(Color.WHITE);
+                    collapsingToolbar.setContentScrimColor(vibrantDarkColor);
+                    collapsingToolbar.setExpandedTitleColor(lightMutedColor);
+                    collapsingToolbar.setCollapsedTitleTextColor(vibrantLightColor);
+                    collapsingToolbar.setStatusBarScrimColor(mutedColor);
+                }
+            });
+        }
     }
 
     private void initInfo() {
