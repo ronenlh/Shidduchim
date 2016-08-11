@@ -64,6 +64,8 @@ public class AddContactActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_contact);
 
+        isInPermission = savedInstanceState.getBoolean(STATE_IN_PERMISSION);
+
         mContact = new Contact();
 
         initViews();
