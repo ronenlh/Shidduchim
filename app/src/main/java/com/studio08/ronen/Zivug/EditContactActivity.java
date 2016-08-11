@@ -15,6 +15,7 @@ import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import com.mikhaellopez.circularimageview.CircularImageView;
+import com.squareup.picasso.Picasso;
 
 import java.util.UUID;
 
@@ -83,6 +84,23 @@ public class EditContactActivity extends AppCompatActivity {
         nameEditText.setText(mContact.getName());
         ageEditText.setText(""+mContact.getAge());
         notesEditText.setText(mContact.getNotes());
+        loadImage(mContact.getGender());
+    }
+
+    private void loadImage(int gender) {
+        String mPicturePath = mContact.getPicturePath();
+        if (gender == Contact.MALE)
+            Picasso.with(this)
+                    .load("file://" + mPicturePath)
+                    .fit().centerCrop()
+                    .placeholder(R.drawable.male_avatar)
+                    .into(mImageView);
+        else if (gender == Contact.FEMALE)
+            Picasso.with(this)
+                    .load("file://" + mPicturePath)
+                    .fit().centerCrop()
+                    .placeholder(R.drawable.female_avatar)
+                    .into(mImageView);
     }
 
     public void onRadioButtonClicked(View view) {
