@@ -89,8 +89,9 @@ public class ContactsRVCursorAdapter extends CursorRecyclerAdapter<ContactsRVCur
 
         @Override
         public boolean onLongClick(View view) {
-            Intent intent = new Intent(mContext, EditContactActivity.class);
-            intent.putExtra(EditContactActivity.EXTRA_CONTACT_ID, (UUID) view.getTag());
+            Intent intent = new Intent(mContext, AddContactActivity.class);
+            intent.putExtra(AddContactActivity.EXTRA_UPDATING, true);
+            intent.putExtra(AddContactActivity.EXTRA_CONTACT_ID, (UUID) view.getTag());
             mContext.startActivity(intent);
 
             // true if the callback consumed the long click, false otherwise.

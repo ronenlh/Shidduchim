@@ -1,6 +1,9 @@
 package com.studio08.ronen.Zivug;
 
+import android.*;
+import android.Manifest;
 import android.annotation.TargetApi;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
@@ -12,6 +15,7 @@ import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -24,10 +28,15 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
+import com.google.android.gms.appindexing.Action;
+import com.google.android.gms.appindexing.AppIndex;
+import com.google.android.gms.appindexing.Thing;
+import com.google.android.gms.common.api.GoogleApiClient;
 import com.mikhaellopez.circularimageview.CircularImageView;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
+import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -35,6 +44,8 @@ import java.util.regex.Pattern;
 public class AddContactActivity extends AppCompatActivity {
 
     private static final String STATE_IN_PERMISSION = "gallery";
+    public static final String EXTRA_UPDATING = "updating";
+    public static final String EXTRA_CONTACT_ID = "UUID";
     private static String TAG = "AddContactActivity";
     private static final int SET_LOCATION_RESULT = 1121;
     private static final int SET_TAGS_RESULT = 1122;
@@ -51,7 +62,8 @@ public class AddContactActivity extends AppCompatActivity {
     private CircularImageView mImageView;
     private File mPhotoFile;
     int genderSelection = 2;
-    int imageResourceId;
+
+    boolean userIsUpdating;
 
     Intent pickContact, captureImageIntent, galleryImageIntent;
 
@@ -60,23 +72,41 @@ public class AddContactActivity extends AppCompatActivity {
     EditText nameEditText, ageEditText, notesEditText, phoneEditText, emailEditText;
 
     private boolean isInPermission = false;
+    /**
+     * ATTENTION: This was auto-generated to implement the App Indexing API.
+     * See https://g.co/AppIndexing/AndroidStudio for more information.
+     */
+    private GoogleApiClient mClient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_add_contact);
+
+        userIsUpdating = getIntent().getBooleanExtra(EXTRA_UPDATING, false);
+
+        if (userIsUpdating) {
+            setContentView(R.layout.activity_edit_contact);
+
+            // get the specific contact
+            UUID contactId = (UUID) getIntent().getSerializableExtra(EXTRA_CONTACT_ID);
+            mContact = ContactLab.get(this).getContact(contactId);
+
+        } else {
+            setContentView(R.layout.activity_add_contact);
+            mContact = new Contact(); // New UUID
+            Log.d(TAG, "New Contact: " + mContact.getId().toString());
+            mPhotoFile = ContactLab.get(this).getPhotoFile(mContact); // New File Name
+        }
 
         if (savedInstanceState != null)
             isInPermission = savedInstanceState.getBoolean(STATE_IN_PERMISSION);
 
-        mContact = new Contact(); // New UUID
-        Log.d(TAG, "New Contact: " + mContact.getId().toString());
-        mPhotoFile = ContactLab.get(this).getPhotoFile(mContact); // New File Name
 
         initViews();
+        if (userIsUpdating) fillViews();
 
         captureImageIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        galleryImageIntent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        galleryImageIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
 
         // Disable if can't use button
         boolean canTakePhoto = mPhotoFile != null &&
@@ -105,25 +135,37 @@ public class AddContactActivity extends AppCompatActivity {
 
             @Override
             public void onClick(View view) {
-                Log.d(TAG, "onClick");
-                // for the new API 23 dangerous permission model
-                if (hasFilesPermission()) {
-                    startActivityForResult(galleryImageIntent, REQUEST_GALLERY);
-                } else if (!isInPermission){
-                    // we keep track of whether or no we are in the process of requesting permissions
-                    isInPermission = true;
+                openGalleryOrRequestPermission();
+            }
+        });
 
-                    requestGalleryPermission();
-                }
+        mImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                openGalleryOrRequestPermission();
             }
         });
 
 
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        mClient = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
+    }
+
+    private void openGalleryOrRequestPermission() {
+        // for the new API 23 dangerous permission model
+        if (hasFilesPermission()) {
+            startActivityForResult(galleryImageIntent, REQUEST_GALLERY);
+        } else if (!isInPermission) {
+            // we keep track of whether or no we are in the process of requesting permissions
+            isInPermission = true;
+            requestGalleryPermission();
+        }
     }
 
     private boolean hasFilesPermission() {
         return ContextCompat.checkSelfPermission(this,
-                android.Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED;
+                Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED;
     }
 
     private void initViews() {
@@ -143,7 +185,11 @@ public class AddContactActivity extends AppCompatActivity {
 //        emailEditText = (EditText) findViewById(R.id.add_email);
 
         // default values depending on where was the activity opened
-        switch (genderSelection) {
+        setGenderRadioButtons(genderSelection);
+    }
+
+    private void setGenderRadioButtons(int gender) {
+        switch (gender) {
             case Contact.MALE:
                 maleRadioButton.setChecked(true);
                 femaleRadioButton.setChecked(false);
@@ -159,17 +205,27 @@ public class AddContactActivity extends AppCompatActivity {
         }
     }
 
+    private void fillViews() {
+        // in case user is updating contact
+        nameEditText.setText(mContact.getName());
+        ageEditText.setText("" + mContact.getAge());
+        notesEditText.setText(mContact.getNotes());
+        mPicturePath = mContact.getPicturePath();
+        setGenderRadioButtons(mContact.getGender());
+        loadImage(mContact.getGender());
+    }
+
     @TargetApi(Build.VERSION_CODES.M)
     private void requestGalleryPermission() {
         // https://developer.android.com/training/permissions/requesting.html
 
         Log.d(TAG, "requestGalleryPermission");
 
-        if (checkSelfPermission(android.Manifest.permission.READ_EXTERNAL_STORAGE)
+        if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
                 != PackageManager.PERMISSION_GRANTED) {
 
             // Should we show an explanation?
-            if (shouldShowRequestPermissionRationale(android.Manifest.permission.READ_EXTERNAL_STORAGE)) {
+            if (shouldShowRequestPermissionRationale(Manifest.permission.READ_EXTERNAL_STORAGE)) {
                 // Show an expanation to the user *asynchronously* -- don't block
                 // this thread waiting for the user's response! After the user
                 // sees the explanation, try again to request the permission.\
@@ -177,7 +233,7 @@ public class AddContactActivity extends AppCompatActivity {
                 // No explanation needed, we can request the permission.
 
                 ActivityCompat.requestPermissions(this,
-                        new String[]{android.Manifest.permission.READ_EXTERNAL_STORAGE},
+                        new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
                         REQUEST_READ_EXTERNAL_STORAGE);
             }
         }
@@ -199,7 +255,7 @@ public class AddContactActivity extends AppCompatActivity {
                     Log.d(TAG, "permission was granted");
                     // permission was granted, yay! Do the
                     // contacts-related task you need to do.
-                    if(hasFilesPermission())
+                    if (hasFilesPermission())
                         startActivityForResult(galleryImageIntent, REQUEST_GALLERY);
 
                 } else {
@@ -220,7 +276,7 @@ public class AddContactActivity extends AppCompatActivity {
         boolean checked = ((RadioButton) view).isChecked();
 
         // Check which radio button was clicked
-        switch(view.getId()) {
+        switch (view.getId()) {
             case R.id.male_selection:
                 if (checked)
                     loadImage(Contact.MALE);
@@ -263,7 +319,7 @@ public class AddContactActivity extends AppCompatActivity {
             Toast.makeText(this, R.string.no_name_inserted, Toast.LENGTH_SHORT).show();
             return;
         }
-        if(radioGroup.getCheckedRadioButtonId() == -1) {
+        if (radioGroup.getCheckedRadioButtonId() == -1) {
             Toast.makeText(this, R.string.no_gender_selected, Toast.LENGTH_SHORT).show();
             return;
         }
@@ -272,13 +328,13 @@ public class AddContactActivity extends AppCompatActivity {
 
         mContact.setName(name);
 
-        int gender = maleRadioButton.isChecked()? Contact.MALE : Contact.FEMALE;
+        int gender = maleRadioButton.isChecked() ? Contact.MALE : Contact.FEMALE;
         mContact.setGender(gender);
 
-        if (!ageEditText.getText().toString().isEmpty()  || !ageEditText.getText().toString().trim().equals(""))
+        if (!ageEditText.getText().toString().isEmpty() || !ageEditText.getText().toString().trim().equals(""))
             mContact.setAge(Integer.parseInt(ageEditText.getText().toString()));
 
-        if (!notesEditText.getText().toString().isEmpty()  || !notesEditText.getText().toString().trim().equals("")) {
+        if (!notesEditText.getText().toString().isEmpty() || !notesEditText.getText().toString().trim().equals("")) {
             String notes = notesEditText.getText().toString();
             mContact.setNotes(notes);
 
@@ -304,7 +360,11 @@ public class AddContactActivity extends AppCompatActivity {
 
         mContact.setPicturePath(mPicturePath);
 
-        ContactLab.get(this).addContact(mContact);
+        if (userIsUpdating)
+            ContactLab.get(this).updateContact(mContact);
+        else
+            ContactLab.get(this).addContact(mContact);
+
 
         finish();
     }
@@ -321,7 +381,7 @@ public class AddContactActivity extends AppCompatActivity {
             Uri contactUri = data.getData();
 
             // specify fields you want to return values for
-            String[] queryFields = new String[] {
+            String[] queryFields = new String[]{
                     ContactsContract.Contacts.DISPLAY_NAME
             };
             // perform query, contactUri is like a "where" clause here
@@ -338,11 +398,11 @@ public class AddContactActivity extends AppCompatActivity {
             } finally {
                 cursor.close();
             }
-        } else if (requestCode == REQUEST_GALLERY && resultCode == RESULT_OK &&  data != null) {
+        } else if (requestCode == REQUEST_GALLERY && resultCode == RESULT_OK && data != null) {
 
             Uri selectedImage = data.getData();
 
-            String[] filePathColumn = { MediaStore.Images.Media.DATA };
+            String[] filePathColumn = {MediaStore.Images.Media.DATA};
             Cursor cursor = getContentResolver().query(selectedImage, filePathColumn, null, null, null);
 
             try {
@@ -406,5 +466,66 @@ public class AddContactActivity extends AppCompatActivity {
                 return super.onOptionsItemSelected(item);
 
         }
+    }
+
+    public void deleteContact(View view) {
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+        builder.setMessage(R.string.are_you_sure)
+                .setTitle("Delete Contact");
+
+        builder.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                // User clicked OK button
+                ContactLab.get(AddContactActivity.this).deleteContact(mContact);
+                finish();
+            }
+        });
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                // User cancelled the dialog
+            }
+        });
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
+
+    }
+
+    /**
+     * ATTENTION: This was auto-generated to implement the App Indexing API.
+     * See https://g.co/AppIndexing/AndroidStudio for more information.
+     */
+    public Action getIndexApiAction() {
+        Thing object = new Thing.Builder()
+                .setName("AddContact Page") // TODO: Define a title for the content shown.
+                // TODO: Make sure this auto-generated URL is correct.
+                .setUrl(Uri.parse("http://[ENTER-YOUR-URL-HERE]"))
+                .build();
+        return new Action.Builder(Action.TYPE_VIEW)
+                .setObject(object)
+                .setActionStatus(Action.STATUS_TYPE_COMPLETED)
+                .build();
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        mClient.connect();
+        AppIndex.AppIndexApi.start(mClient, getIndexApiAction());
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        AppIndex.AppIndexApi.end(mClient, getIndexApiAction());
+        mClient.disconnect();
     }
 }

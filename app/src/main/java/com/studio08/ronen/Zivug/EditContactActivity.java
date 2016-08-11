@@ -179,8 +179,5 @@ public class EditContactActivity extends AppCompatActivity {
         AlertDialog dialog = builder.create();
         dialog.show();
 
-        // need to write this on the main activity
-//        Snackbar.make(view, R.string.contact_deleted, Snackbar.LENGTH_LONG)
-//                        .setAction(R.string.undo_delete_contact, null).show();
     }
 }
