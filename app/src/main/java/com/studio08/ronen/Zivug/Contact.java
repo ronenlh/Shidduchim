@@ -43,15 +43,15 @@ public class Contact {
         return mGender;
     }
 
-    // avatars
-    public static final int[] MALE_AVATARS = {R.drawable.avatar_01, R.drawable.avatar_02,
-            R.drawable.avatar_03, R.drawable.avatar_04,
-            R.drawable.avatar_11, R.drawable.avatar_12,
-            R.drawable.avatar_13, R.drawable.avatar_14};
-    public static final int[] FEMALE_AVATARS = {R.drawable.avatar_16, R.drawable.avatar_17,
-            R.drawable.avatar_18, R.drawable.avatar_19,
-            R.drawable.avatar_21, R.drawable.avatar_22,
-            R.drawable.avatar_24};
+//    // avatars
+//    public static final int[] MALE_AVATARS = {R.drawable.avatar_01, R.drawable.avatar_02,
+//            R.drawable.avatar_03, R.drawable.avatar_04,
+//            R.drawable.avatar_11, R.drawable.avatar_12,
+//            R.drawable.avatar_13, R.drawable.avatar_14};
+//    public static final int[] FEMALE_AVATARS = {R.drawable.avatar_16, R.drawable.avatar_17,
+//            R.drawable.avatar_18, R.drawable.avatar_19,
+//            R.drawable.avatar_21, R.drawable.avatar_22,
+//            R.drawable.avatar_24};
 
 
 
@@ -90,18 +90,18 @@ public class Contact {
 //        }
 //    }
 
-    public static int getInitialFillerResourceId(int gender) {
-        if (r == null) r = new Random();
-
-        if (gender == MALE) {
-            int randomIndex = r.nextInt(MALE_AVATARS.length);
-            return MALE_AVATARS[randomIndex];
-        } else if (gender == FEMALE) {
-            int randomIndex = r.nextInt(FEMALE_AVATARS.length);
-            return FEMALE_AVATARS[randomIndex];
-        }
-        return -1;
-    }
+//    public static int getInitialFillerResourceId(int gender) {
+//        if (r == null) r = new Random();
+//
+//        if (gender == MALE) {
+//            int randomIndex = r.nextInt(MALE_AVATARS.length);
+//            return MALE_AVATARS[randomIndex];
+//        } else if (gender == FEMALE) {
+//            int randomIndex = r.nextInt(FEMALE_AVATARS.length);
+//            return FEMALE_AVATARS[randomIndex];
+//        }
+//        return -1;
+//    }
 
 //    public int getResourceId() {
 //        if (mResourceId == 0)

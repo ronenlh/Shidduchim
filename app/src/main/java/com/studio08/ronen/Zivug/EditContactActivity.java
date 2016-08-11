@@ -65,13 +65,13 @@ public class EditContactActivity extends AppCompatActivity {
             case Contact.MALE:
                 maleRadioButton.setChecked(true);
                 femaleRadioButton.setChecked(false);
-                imageResourceId = Contact.getInitialFillerResourceId(Contact.MALE);
+//                imageResourceId = Contact.getInitialFillerResourceId(Contact.MALE);
                 mImageView.setImageResource(imageResourceId);
                 break;
             case Contact.FEMALE:
                 maleRadioButton.setChecked(false);
                 femaleRadioButton.setChecked(true);
-                imageResourceId = Contact.getInitialFillerResourceId(Contact.MALE);
+//                imageResourceId = Contact.getInitialFillerResourceId(Contact.MALE);
                 mImageView.setImageResource(imageResourceId);
                 break;
             case Contact.NOT_SET:
@@ -93,11 +93,11 @@ public class EditContactActivity extends AppCompatActivity {
         switch(view.getId()) {
             case R.id.male_selection:
                 if (checked)
-                    mImageView.setImageResource(R.drawable.avatar_01);
+//                    mImageView.setImageResource(R.drawable.avatar_01);
                     break;
             case R.id.female_selection:
                 if (checked)
-                    mImageView.setImageResource(R.drawable.avatar_21);
+//                    mImageView.setImageResource(R.drawable.avatar_21);
                     break;
         }
     }

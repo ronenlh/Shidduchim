@@ -145,14 +145,12 @@ public class AddContactActivity extends AppCompatActivity {
             case Contact.MALE:
                 maleRadioButton.setChecked(true);
                 femaleRadioButton.setChecked(false);
-                imageResourceId = Contact.getInitialFillerResourceId(Contact.MALE);
-                mImageView.setImageResource(imageResourceId);
+                loadImage(Contact.MALE);
                 break;
             case Contact.FEMALE:
                 maleRadioButton.setChecked(false);
                 femaleRadioButton.setChecked(true);
-                imageResourceId = Contact.getInitialFillerResourceId(Contact.MALE);
-                mImageView.setImageResource(imageResourceId);
+                loadImage(Contact.FEMALE);
                 break;
             case Contact.NOT_SET:
                 break;
@@ -223,14 +221,30 @@ public class AddContactActivity extends AppCompatActivity {
         switch(view.getId()) {
             case R.id.male_selection:
                 if (checked)
-                    mImageView.setImageResource(R.drawable.avatar_01);
-                    break;
+                    loadImage(Contact.MALE);
+                break;
             case R.id.female_selection:
                 if (checked)
-                    mImageView.setImageResource(R.drawable.avatar_21);
-                    break;
+                    loadImage(Contact.FEMALE);
+                break;
         }
     }
+
+    private void loadImage(int gender) {
+        if (gender == Contact.MALE)
+            Picasso.with(this)
+                    .load("file://" + mPicturePath)
+                    .fit().centerCrop()
+                    .placeholder(R.drawable.male_avatar)
+                    .into(mImageView);
+        else if (gender == Contact.FEMALE)
+            Picasso.with(this)
+                    .load("file://" + mPicturePath)
+                    .fit().centerCrop()
+                    .placeholder(R.drawable.female_avatar)
+                    .into(mImageView);
+    }
+
 
     public void setLocation(View view) {
         Intent intent = new Intent(this, MapActivity.class);
@@ -318,15 +332,10 @@ public class AddContactActivity extends AppCompatActivity {
                 mPicturePath = cursor.getString(columnIndex);
                 Log.d(TAG, "mPicturePath = " + mPicturePath);
 
-//                BitmapFactory.Options bmOptions = new BitmapFactory.Options();
-//                Bitmap bitmap = BitmapFactory.decodeFile(mPicturePath,bmOptions);
-//                bitmap = Bitmap.createScaledBitmap(bitmap, bitmap.getWidth(), bitmap.getHeight(), true);
-//                mImageView.setImageBitmap(bitmap);
-
-                Picasso.with(this)
-                        .load("file://" + mPicturePath)
-                        .fit().centerCrop()
-                        .into(mImageView);
+                if (radioGroup.getCheckedRadioButtonId() == 0)
+                    loadImage(Contact.MALE);
+                else
+                    loadImage(Contact.FEMALE);
 
             } finally {
                 cursor.close();

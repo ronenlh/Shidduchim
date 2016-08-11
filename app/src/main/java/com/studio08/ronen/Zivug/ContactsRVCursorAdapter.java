@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Color;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -45,29 +46,22 @@ public class ContactsRVCursorAdapter extends CursorRecyclerAdapter<ContactsRVCur
 
         // bind viewHolder's view to model object
         holder.mNameTextView.setText(mContact.getName());
-//        int resourceId = mContact.getResourceId();
 
         String mPicturePath = mContact.getPicturePath(); // why is picturePath null?? resolved: forgot to update getContentValues method in ContactLav and the ContactCursorWraper
 
-        if (mPicturePath != null) {
+        int mPlaceholder = (mContact.getGender() == Contact.MALE)? R.drawable.male_avatar : R.drawable.female_avatar;
 
             Picasso.with(mContext)
-                    .load("file://" + mPicturePath)
-//                    .resize(100, 100)
+                    .load("file://" + mPicturePath)  // if empty mPicturePath is null then placeholder is shown.
                     .fit().centerCrop()
-                    .placeholder(R.drawable.cast_album_art_placeholder)
+                    .placeholder(mPlaceholder)
                     .into(holder.mPictureImageView);
 
-            // This disable hardware acceleration.
-            // https://github.com/hdodenhof/CircleImageView/issues/31
-            holder.mItemLinearLayout.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
+        // This disable hardware acceleration to fix a bug
+        // https://github.com/hdodenhof/CircleImageView/issues/31
+        holder.mItemLinearLayout.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
 
-        } else {
-//            holder.mPictureImageView.setImageResource(resourceId);
-        }
         holder.mView.setTag(mContact.getId());
-
-        Log.i("ContactsRVCursorAdapter", "Cursor(0)" + cursor.getColumnName(0));
     }
 
     class ContactHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
