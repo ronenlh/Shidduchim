@@ -16,7 +16,9 @@ public class ContactCursorWraper extends CursorWrapper {
 
     public Contact getContact() {
         String uuidString = getString(getColumnIndexOrThrow(DatabaseContract.Entry.COLUMN_NAME_ENTRY_UUID));
-        String name = getString(getColumnIndexOrThrow(DatabaseContract.Entry.COLUMN_NAME_NAME));
+        String name = getString(getColumnIndexOrThrow(DatabaseContract.Entry.COLUMN_NAME_FULL_NAME));
+        String firstName = getString(getColumnIndexOrThrow(DatabaseContract.Entry.COLUMN_NAME_FIRST_NAME));
+        String lastName = getString(getColumnIndexOrThrow(DatabaseContract.Entry.COLUMN_NAME_LAST_NAME));
         int gender = getInt(getColumnIndexOrThrow(DatabaseContract.Entry.COLUMN_NAME_GENDER));
         int age = getInt(getColumnIndexOrThrow(DatabaseContract.Entry.COLUMN_NAME_AGE));
 //        int resourceId = getInt(getColumnIndexOrThrow(DatabaseContract.Entry.COLUMN_NAME_IMAGE_RESOURCE));
@@ -30,6 +32,8 @@ public class ContactCursorWraper extends CursorWrapper {
 
         Contact contact = new Contact(UUID.fromString(uuidString));
         contact.setName(name);
+        contact.setFirstName(firstName);
+        contact.setLastName(lastName);
         contact.setGender(gender);
         contact.setAge(age);
 //        contact.setResourceId(resourceId);

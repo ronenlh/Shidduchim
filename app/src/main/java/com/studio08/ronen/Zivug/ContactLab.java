@@ -51,7 +51,7 @@ public class ContactLab {
     }
 
     public ContactCursorWraper getWordMatches(String query) {
-        String selection = DatabaseContract.Entry.COLUMN_NAME_NAME + " MATCH ?";
+        String selection = DatabaseContract.Entry.COLUMN_NAME_FULL_NAME + " MATCH ?";
         String[] selectionArgs = new String[] {query+"*"};
 
         return queryContacts(selection, selectionArgs);
@@ -107,7 +107,9 @@ public class ContactLab {
         // Create a new map of values, where column names are the keys
         ContentValues values = new ContentValues();
         values.put(DatabaseContract.Entry.COLUMN_NAME_ENTRY_UUID, contact.getId().toString());
-        values.put(DatabaseContract.Entry.COLUMN_NAME_NAME, contact.getName());
+        values.put(DatabaseContract.Entry.COLUMN_NAME_FULL_NAME, contact.getName());
+        values.put(DatabaseContract.Entry.COLUMN_NAME_FIRST_NAME, contact.getFirstName());
+        values.put(DatabaseContract.Entry.COLUMN_NAME_LAST_NAME, contact.getLastName());
         values.put(DatabaseContract.Entry.COLUMN_NAME_GENDER, contact.getGender());
         values.put(DatabaseContract.Entry.COLUMN_NAME_AGE, contact.getAge());
         values.put(DatabaseContract.Entry.COLUMN_NAME_IMAGE_RESOURCE, contact.getPicturePath());

@@ -16,7 +16,7 @@ public class Contact {
 
     private UUID mId;
     private Date mDate;
-    private String mName, mNotes, mPhone, mEmail, mPicturePath;
+    private String mName, mFirstName, mLastName, mNotes, mPhone, mEmail, mPicturePath;
     private int mAge, mGender;
 
     private static Random r;
@@ -71,14 +71,29 @@ public class Contact {
 
         String[] strArr = name.split(" ");
 
-        for (String str : strArr) {
-            char[] stringArray = str.trim().toCharArray();
+//        for (String str : strArr) {
+//            char[] stringArray = str.trim().toCharArray();
+//            stringArray[0] = Character.toUpperCase(stringArray[0]);
+//            str = new String(stringArray);
+//            res.append(str).append(" ");
+//        }
+
+        for (int i = 0; i < strArr.length; i++) {
+            char[] stringArray = strArr[i].trim().toCharArray();
             stringArray[0] = Character.toUpperCase(stringArray[0]);
-            str = new String(stringArray);
-            res.append(str).append(" ");
+            strArr[i] = new String(stringArray);
+            if (i == 0) {
+                setFirstName(strArr[0]);
+            } else {
+                res.append(strArr[i]).append(" ");
+            }
         }
 
-        mName = res.toString().trim();
+        setLastName(res.toString().trim());
+
+        mName = mFirstName + " " + mLastName;
+
+
     }
 
     public void setGender(int gender) {
@@ -119,10 +134,30 @@ public class Contact {
                 "mId=" + mId +
                 ", mDate=" + mDate +
                 ", mName='" + mName + '\'' +
+                ", mFirstName='" + mFirstName + '\'' +
+                ", mLastName='" + mLastName + '\'' +
+                ", mEmail='" + mEmail + '\'' +
+                ", mPhone='" + mPhone + '\'' +
                 ", mNotes='" + mNotes + '\'' +
                 ", mPicturePath='" + mPicturePath + '\'' +
                 ", mAge=" + mAge +
                 ", mGender=" + mGender +
                 '}';
+    }
+
+    public void setFirstName(String firstName) {
+        mFirstName = firstName;
+    }
+
+    public void setLastName(String lastName) {
+        mLastName = lastName;
+    }
+
+    public String getFirstName() {
+        return mFirstName;
+    }
+
+    public String getLastName() {
+        return mLastName;
     }
 }
