@@ -257,7 +257,7 @@ public class AddContactActivity extends AppCompatActivity {
     }
 
     private void addContact() {
-        if (nameEditText.getText().toString().trim().equals("")) {
+        if (nameEditText.getText().toString().isEmpty() || nameEditText.getText().toString().trim().equals("")) {
             Toast.makeText(this, R.string.no_name_inserted, Toast.LENGTH_SHORT).show();
             return;
         }
@@ -267,22 +267,19 @@ public class AddContactActivity extends AppCompatActivity {
         }
 
         String name = nameEditText.getText().toString();
-        int age = Integer.parseInt(ageEditText.getText().toString());
-        int gender = maleRadioButton.isChecked()? Contact.MALE : Contact.FEMALE;
-        String notes = notesEditText.getText().toString();
-//        String phone = phoneEditText.getText().toString();¡¡™
-//        String email = emailEditText.getText().toString();
-
         mContact.setName(name);
-        mContact.setGender(gender);
-        mContact.setNotes(notes);
-        mContact.setAge(age);
-        mContact.setPicturePath(mPicturePath);
-        Log.d(TAG, "mPicturePath = " + mPicturePath);
-//        mContact.setPhone(phone);
-//        mContact.setEmail(email);
 
-        Log.d(TAG, mContact.toString());
+        int gender = maleRadioButton.isChecked()? Contact.MALE : Contact.FEMALE;
+        mContact.setGender(gender);
+
+        if (!ageEditText.getText().toString().isEmpty()  || !ageEditText.getText().toString().trim().equals(""))
+            mContact.setAge(Integer.parseInt(ageEditText.getText().toString()));
+
+        if (!notesEditText.getText().toString().isEmpty()  || !notesEditText.getText().toString().trim().equals(""))
+            mContact.setNotes(notesEditText.getText().toString());
+
+        mContact.setPicturePath(mPicturePath);
+
         ContactLab.get(this).addContact(mContact);
 
         finish();
