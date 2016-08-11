@@ -4,10 +4,9 @@ import android.annotation.TargetApi;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
+import android.os.PersistableBundle;
 import android.provider.ContactsContract;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
@@ -33,13 +32,14 @@ import java.io.File;
 
 public class AddContactActivity extends AppCompatActivity {
 
+    private static final String STATE_IN_PERMISSION = "gallery";
     private static String TAG = "AddContactActivity";
     private static final int SET_LOCATION_RESULT = 1121;
     private static final int SET_TAGS_RESULT = 1122;
     private static final int REQUEST_CONTACT = 1123;
     private static final int REQUEST_PHOTO = 1124;
     private static final int REQUEST_GALLERY = 1125;
-    private static final int MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE = 100;
+    private static final int REQUEST_READ_EXTERNAL_STORAGE = 100;
 
     private Contact mContact;
 
@@ -56,6 +56,8 @@ public class AddContactActivity extends AppCompatActivity {
     String mPicturePath;
 
     EditText nameEditText, ageEditText, notesEditText, phoneEditText, emailEditText;
+
+    private boolean isInPermission = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,17 +102,23 @@ public class AddContactActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Log.d(TAG, "onClick");
                 // for the new API 23 dangerous permission model
-                int permissionCheck = ContextCompat.checkSelfPermission(AddContactActivity.this,
-                        android.Manifest.permission.READ_EXTERNAL_STORAGE);
-                if (permissionCheck == PackageManager.PERMISSION_GRANTED) {
+                if (hasFilesPermission()) {
                     startActivityForResult(galleryImageIntent, REQUEST_GALLERY);
-                } else {
+                } else if (!isInPermission){
+                    // we keep track of whether or no we are in the process of requesting permissions
+                    isInPermission = true;
+
                     requestGalleryPermission();
                 }
             }
         });
 
 
+    }
+
+    private boolean hasFilesPermission() {
+        return ContextCompat.checkSelfPermission(this,
+                android.Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED;
     }
 
     private void initViews() {
@@ -167,21 +175,29 @@ public class AddContactActivity extends AppCompatActivity {
 
                 ActivityCompat.requestPermissions(this,
                         new String[]{android.Manifest.permission.READ_EXTERNAL_STORAGE},
-                        MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE);
+                        REQUEST_READ_EXTERNAL_STORAGE);
             }
         }
     }
 
     @Override
+    public void onSaveInstanceState(Bundle outState, PersistableBundle outPersistentState) {
+        super.onSaveInstanceState(outState, outPersistentState);
+        outState.putBoolean(STATE_IN_PERMISSION, isInPermission);
+    }
+
+    @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         switch (requestCode) {
-            case MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE: {
+            case REQUEST_READ_EXTERNAL_STORAGE: {
+                isInPermission = false;
                 // If request is cancelled, the result arrays are empty.
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     Log.d(TAG, "permission was granted");
                     // permission was granted, yay! Do the
                     // contacts-related task you need to do.
-                    startActivityForResult(galleryImageIntent, REQUEST_GALLERY);
+                    if(hasFilesPermission())
+                        startActivityForResult(galleryImageIntent, REQUEST_GALLERY);
 
                 } else {
                     Log.d(TAG, "permission denied");

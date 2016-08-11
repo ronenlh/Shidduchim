@@ -51,8 +51,9 @@ public class ContactsRVCursorAdapter extends CursorRecyclerAdapter<ContactsRVCur
 
             Picasso.with(mContext)
                     .load("file://" + mPicturePath)
-                    .resize(100, 100)
-                    .centerCrop()
+//                    .resize(100, 100)
+                    .fit().centerCrop()
+                    .placeholder(R.drawable.cast_album_art_placeholder)
                     .into(holder.mPictureImageView);
 
         } else {
