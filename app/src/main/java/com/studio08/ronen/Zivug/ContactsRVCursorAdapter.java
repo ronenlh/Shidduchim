@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.mikhaellopez.circularimageview.CircularImageView;
@@ -57,6 +58,10 @@ public class ContactsRVCursorAdapter extends CursorRecyclerAdapter<ContactsRVCur
                     .placeholder(R.drawable.cast_album_art_placeholder)
                     .into(holder.mPictureImageView);
 
+            // This disable hardware acceleration.
+            // https://github.com/hdodenhof/CircleImageView/issues/31
+            holder.mItemLinearLayout.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
+
         } else {
 //            holder.mPictureImageView.setImageResource(resourceId);
         }
@@ -69,6 +74,7 @@ public class ContactsRVCursorAdapter extends CursorRecyclerAdapter<ContactsRVCur
         TextView mNameTextView;
         CircularImageView mPictureImageView;
         View mView;
+        LinearLayout mItemLinearLayout;
 
         public ContactHolder(View itemView) {
             super(itemView);
@@ -78,6 +84,7 @@ public class ContactsRVCursorAdapter extends CursorRecyclerAdapter<ContactsRVCur
             mNameTextView = (TextView) itemView.findViewById(R.id.name_tv);
             mPictureImageView = (CircularImageView) itemView.findViewById(R.id.contact_iw);
             mView = itemView;
+            mItemLinearLayout = (LinearLayout) itemView.findViewById(R.id.item_linear_layout);
         }
 
         @Override
