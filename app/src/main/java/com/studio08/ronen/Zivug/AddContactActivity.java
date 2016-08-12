@@ -301,13 +301,15 @@ public class AddContactActivity extends AppCompatActivity {
             Picasso.with(this)
                     .load("file://" + mPicturePath)
                     .fit().centerCrop()
-                    .placeholder(R.drawable.male_avatar)
+//                    .placeholder(R.drawable.male_avatar)
+                    .error(R.drawable.male_avatar)
                     .into(mImageView);
         else if (gender == Contact.FEMALE)
             Picasso.with(this)
                     .load("file://" + mPicturePath)
                     .fit().centerCrop()
-                    .placeholder(R.drawable.female_avatar)
+//                    .placeholder(R.drawable.female_avatar)
+                    .error(R.drawable.female_avatar)
                     .into(mImageView);
     }
 

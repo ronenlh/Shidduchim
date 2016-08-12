@@ -54,7 +54,8 @@ public class ContactsRVCursorAdapter extends CursorRecyclerAdapter<ContactsRVCur
             Picasso.with(mContext)
                     .load("file://" + mPicturePath)  // if empty mPicturePath is null then placeholder is shown.
                     .fit().centerCrop()
-                    .placeholder(mPlaceholder)
+//                    .placeholder(mPlaceholder)
+                    .error(mPlaceholder)
                     .into(holder.mPictureImageView);
 
         // This disable hardware acceleration to fix a bug
