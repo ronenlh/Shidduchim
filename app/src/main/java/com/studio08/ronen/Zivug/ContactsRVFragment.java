@@ -143,19 +143,17 @@ public class ContactsRVFragment extends Fragment {
         ContactLab contactLab = ContactLab.get(getContext());
         Cursor cursor;
 
-        if (mGenderParam == Contact.MALE) {
+        if (mGenderParam == Contact.MALE)
             cursor = contactLab.queryContacts(
                     DatabaseContract.Entry.COLUMN_NAME_GENDER + " MATCH ?",
                     new String[] { "" + Contact.MALE }
             );
-        } else if (mGenderParam == Contact.FEMALE) {
+        else if (mGenderParam == Contact.FEMALE)
             cursor = contactLab.queryContacts(
                     DatabaseContract.Entry.COLUMN_NAME_GENDER + " MATCH ?",
                     new String[] { "" + Contact.FEMALE }
             );
-        } else {
-            cursor = ContactLab.get(getContext()).queryContacts(null, null);
-        }
+        else cursor = ContactLab.get(getContext()).queryContacts(null, null);
 
         if (mCursorAdapter == null) {
             mCursorAdapter = new ContactsRVCursorAdapter(getContext(), cursor);
@@ -169,12 +167,13 @@ public class ContactsRVFragment extends Fragment {
 
         Cursor cursor = ContactLab.get(getContext()).getWordMatches(query);
 
-        if (mCursorAdapter == null) {
+        if (mCursorAdapter == null)
             mCursorAdapter = new ContactsRVCursorAdapter(getContext(), cursor);
-            mRecyclerView.setAdapter(mCursorAdapter);
-        } else {
+        else
             mCursorAdapter.swapCursor(cursor);
-        }
+
+        if (mRecyclerView != null)
+            mRecyclerView.setAdapter(mCursorAdapter);
     }
 
     public void onButtonPressed(Uri uri) {
@@ -186,12 +185,11 @@ public class ContactsRVFragment extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof OnFragmentInteractionListener) {
+        if (context instanceof OnFragmentInteractionListener)
             mListener = (OnFragmentInteractionListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
+        else throw new RuntimeException(context.toString()
                     + " must implement OnFragmentInteractionListener");
-        }
+
     }
 
     @Override

@@ -119,7 +119,6 @@ public class MainActivity extends AppCompatActivity
     private void searchContacts(String query) {
         // I need to update the cursor where clause with every onQueryTextChange,
         // not just for the name but for all fields
-
         menFragment.searchContacts(query);
 
     }
