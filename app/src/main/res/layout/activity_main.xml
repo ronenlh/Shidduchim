@@ -32,7 +32,7 @@
         android:layout_gravity="start"
         android:background="@color/colorPrimary" >
 
-        <ListView
+        <ExpandableListView
             android:id="@+id/tag_drawer_list"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -41,7 +41,7 @@
             android:divider="@android:color/transparent"
             android:dividerHeight="0dp" />
 
-        <ListView
+        <ExpandableListView
             android:id="@+id/location_drawer_list"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

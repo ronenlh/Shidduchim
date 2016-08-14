@@ -22,10 +22,14 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ExpandableListView;
 import android.widget.ListView;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, ContactsRVFragment.OnFragmentInteractionListener {
@@ -79,20 +83,41 @@ public class MainActivity extends AppCompatActivity
 
         String[] mSampleTitles = {"Mars", "Jupiter", "Uranus"};
         String[] mSampleTitles2 = {"Earth", "Mercury", "Saturn"};
+        List<String> mSampleTitlesList = new ArrayList<>(Arrays.asList(mSampleTitles));
+        List<String> mSampleTitles2List = new ArrayList<>(Arrays.asList(mSampleTitles2));
+
+
+        Map<String, List<String>> groups = new HashMap<String, List<String>>();
+        groups.put("one", mSampleTitlesList);
+        groups.put("two", mSampleTitles2List);
+
+        List<String> groupNames = new ArrayList<>();
+
+        groupNames.add("one");
+        groupNames.add("two");
+
+
+
+        ExpandableListView expListView = (ExpandableListView) findViewById(R.id.tag_drawer_list);
+        ExpandableListAdapter expListAdapter = new ExpandableListAdapter(
+                this, groupNames, groups);
+
         ListView mDrawerList = (ListView) findViewById(R.id.tag_drawer_list);
         ListView mDrawerList2 = (ListView) findViewById(R.id.location_drawer_list);
 
-        // Set the adapter for the list view
-        mDrawerList.setAdapter(new ArrayAdapter<String>(this,
-                R.layout.drawer_list_item, R.id.text_list_item, mSampleTitles));
-        // Set the list's click listener
-        mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
+        expListView.setAdapter(expListAdapter);
 
-        // Set the adapter for the list view
-        mDrawerList2.setAdapter(new ArrayAdapter<String>(this,
-                R.layout.drawer_list_item, R.id.text_list_item, mSampleTitles2));
-        // Set the list's click listener
-        mDrawerList2.setOnItemClickListener(new DrawerItemClickListener());
+//        // Set the adapter for the list view
+//        mDrawerList.setAdapter(new ArrayAdapter<String>(this,
+//                R.layout.drawer_list_item, R.id.text_list_item, mSampleTitles));
+//        // Set the list's click listener
+//        mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
+//
+//        // Set the adapter for the list view
+//        mDrawerList2.setAdapter(new ArrayAdapter<String>(this,
+//                R.layout.drawer_list_item, R.id.text_list_item, mSampleTitles2));
+//        // Set the list's click listener
+//        mDrawerList2.setOnItemClickListener(new DrawerItemClickListener());
 
 
         // Tabs setup
