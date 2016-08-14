@@ -20,6 +20,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,6 +40,8 @@ public class MainActivity extends AppCompatActivity
     // Fragments
     ContactsRVFragment menFragment;
     ContactsRVFragment womenFragment;
+
+    DrawerLayout mDrawerList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,14 +66,34 @@ public class MainActivity extends AppCompatActivity
         });
 
         // Drawer
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        mDrawerList = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.setDrawerListener(toggle);
+                this, mDrawerList, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        mDrawerList.setDrawerListener(toggle);
         toggle.syncState();
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
+//        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+//        navigationView.setNavigationItemSelectedListener(this);
+
+        // Drawer Sample List
+
+        String[] mSampleTitles = {"Mars", "Jupiter", "Uranus"};
+        String[] mSampleTitles2 = {"Earth", "Mercury", "Saturn"};
+        ListView mDrawerList = (ListView) findViewById(R.id.tag_drawer_list);
+        ListView mDrawerList2 = (ListView) findViewById(R.id.location_drawer_list);
+
+        // Set the adapter for the list view
+        mDrawerList.setAdapter(new ArrayAdapter<String>(this,
+                R.layout.drawer_list_item, R.id.text_list_item, mSampleTitles));
+        // Set the list's click listener
+        mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
+
+        // Set the adapter for the list view
+        mDrawerList2.setAdapter(new ArrayAdapter<String>(this,
+                R.layout.drawer_list_item, R.id.text_list_item, mSampleTitles2));
+        // Set the list's click listener
+        mDrawerList2.setOnItemClickListener(new DrawerItemClickListener());
+
 
         // Tabs setup
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -219,4 +244,18 @@ public class MainActivity extends AppCompatActivity
             return mFragmentTitleList.get(position);
         }
     }
+
+    /* The click listner for ListView in the navigation drawer */
+    private class DrawerItemClickListener implements ListView.OnItemClickListener {
+        @Override
+        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            selectItem(position);
+        }
+    }
+
+    private void selectItem(int position) {
+        // update the contacts list by updating the cursor paramenter
+
+    }
+
 }
