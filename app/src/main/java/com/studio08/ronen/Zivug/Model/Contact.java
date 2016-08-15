@@ -1,4 +1,4 @@
-package com.studio08.ronen.Zivug;
+package com.studio08.ronen.Zivug.Model;
 
 import java.util.Date;
 import java.util.Random;

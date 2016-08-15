@@ -1,12 +1,9 @@
-package com.studio08.ronen.Zivug;
+package com.studio08.ronen.Zivug.Model;
 
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
-import android.graphics.Color;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +12,10 @@ import android.widget.TextView;
 
 import com.mikhaellopez.circularimageview.CircularImageView;
 import com.squareup.picasso.Picasso;
+import com.studio08.ronen.Zivug.AddContactActivity;
+import com.studio08.ronen.Zivug.ContactActivity;
+import com.studio08.ronen.Zivug.CursorRecyclerAdapter;
+import com.studio08.ronen.Zivug.R;
 
 import java.util.UUID;
 

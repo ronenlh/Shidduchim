@@ -14,6 +14,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.studio08.ronen.Zivug.Model.Contact;
+import com.studio08.ronen.Zivug.Model.ContactLab;
+import com.studio08.ronen.Zivug.Model.ContactsRVCursorAdapter;
+import com.studio08.ronen.Zivug.Model.DatabaseContract;
+
 //import de.hdodenhof.circleimageview.CircleImageView;
 
 /**

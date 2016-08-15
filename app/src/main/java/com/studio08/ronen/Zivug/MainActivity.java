@@ -21,9 +21,11 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ExpandableListView;
 import android.widget.ListView;
+
+import com.studio08.ronen.Zivug.Drawer.ExpandableListAdapter;
+import com.studio08.ronen.Zivug.Model.Contact;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -35,7 +37,7 @@ public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, ContactsRVFragment.OnFragmentInteractionListener {
 
     public static final String EXTRA_GENDER = "gender";
-    private static final String TAG = "MainActivity";
+    private static final String TAG = MainActivity.class.getSimpleName();
 
     // Tabs Vars
     private TabLayout tabLayout;
@@ -80,7 +82,6 @@ public class MainActivity extends AppCompatActivity
 //        navigationView.setNavigationItemSelectedListener(this);
 
         // Drawer Sample List
-
         String[] mSampleTitles = {"Mars", "Jupiter", "Uranus"};
         String[] mSampleTitles2 = {"Earth", "Mercury", "Saturn"};
         List<String> mSampleTitlesList = new ArrayList<>(Arrays.asList(mSampleTitles));
@@ -98,18 +99,33 @@ public class MainActivity extends AppCompatActivity
 
 
 
-        ExpandableListView expListView = (ExpandableListView) findViewById(R.id.tag_drawer_list);
-        ExpandableListAdapter expListAdapter = new ExpandableListAdapter(
+        ExpandableListView expandableListView = (ExpandableListView) findViewById(R.id.tag_drawer_list);
+        final ExpandableListAdapter adapter = new ExpandableListAdapter(
                 this, groupNames, groups);
 
         ListView mDrawerList = (ListView) findViewById(R.id.tag_drawer_list);
         ListView mDrawerList2 = (ListView) findViewById(R.id.location_drawer_list);
 
-        expListView.setAdapter(expListAdapter);
+        expandableListView.setAdapter(adapter);
+
+        // The choice mode has been moved from list view to adapter in order
+        // to not extend the class ExpansibleListView
+        adapter.setChoiceMode(ExpandableListAdapter.CHOICE_MODE_MULTIPLE);
+
+        // Handle the click when the user clicks an any child
+        expandableListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
+
+            @Override
+            public boolean onChildClick(ExpandableListView parent, View v,
+                                        int groupPosition, int childPosition, long id) {
+                adapter.setClicked(groupPosition, childPosition);
+                return false;
+            }
+        });
 
         // expand them by default
-        expListView.expandGroup(0);
-        expListView.expandGroup(1);
+        expandableListView.expandGroup(0);
+        expandableListView.expandGroup(1);
 
 //        // Set the adapter for the list view
 //        mDrawerList.setAdapter(new ArrayAdapter<String>(this,

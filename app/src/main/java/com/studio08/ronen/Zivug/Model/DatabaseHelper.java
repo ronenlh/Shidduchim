@@ -1,4 +1,4 @@
-package com.studio08.ronen.Zivug;
+package com.studio08.ronen.Zivug.Model;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;

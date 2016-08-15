@@ -1,6 +1,5 @@
 package com.studio08.ronen.Zivug;
 
-import android.*;
 import android.Manifest;
 import android.annotation.TargetApi;
 import android.content.DialogInterface;
@@ -25,7 +24,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
@@ -37,6 +35,8 @@ import com.google.android.gms.appindexing.Thing;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.mikhaellopez.circularimageview.CircularImageView;
 import com.squareup.picasso.Picasso;
+import com.studio08.ronen.Zivug.Model.Contact;
+import com.studio08.ronen.Zivug.Model.ContactLab;
 
 import java.io.File;
 import java.util.UUID;
