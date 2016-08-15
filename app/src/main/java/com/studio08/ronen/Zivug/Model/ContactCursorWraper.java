@@ -43,4 +43,14 @@ public class ContactCursorWraper extends CursorWrapper {
         contact.setPhone(phoneNumer);
         return contact;
     }
+
+    public ContactLab.Tag getTag() {
+        String uuidString = getString(getColumnIndexOrThrow(DatabaseContract.TagEntry.COLUMN_NAME_ENTRY_UUID));
+        String name = getString(getColumnIndexOrThrow(DatabaseContract.TagEntry.COLUMN_NAME_NAME));
+
+        ContactLab.Tag tag = new ContactLab.Tag(UUID.fromString(uuidString));
+        tag.setName(name);
+
+        return tag;
+    }
 }

@@ -31,14 +31,24 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     DatabaseContract.Entry.COLUMN_NAME_PHONE + TEXT_TYPE + COMMA_SEP +
                     DatabaseContract.Entry.COLUMN_NAME_PHONE2 + TEXT_TYPE + COMMA_SEP +
                     DatabaseContract.Entry.COLUMN_NAME_EMAIL + TEXT_TYPE + COMMA_SEP +
-                    DatabaseContract.Entry.COLUMN_NAME_NULLABLE + TEXT_TYPE +
+                    DatabaseContract.Entry.COLUMN_NAME_NULLABLE + TEXT_TYPE + COMMA_SEP +
+                    "FOREIGN KEY( " + DatabaseContract.Entry.COLUMN_NAME_TAGS + " ) REFERENCES "+DatabaseContract.TagEntry.TABLE_NAME+"( "+DatabaseContract.TagEntry._ID+" ) " +
                     " )";
+
+    private static final String TAGS_TABLE = "CREATE TABLE " + DatabaseContract.TagEntry.TABLE_NAME + " (" +
+            DatabaseContract.TagEntry._ID + " INTEGER AUTO_INCREMENT PRIMARY KEY, \n" +
+            DatabaseContract.TagEntry.COLUMN_NAME_ENTRY_UUID + TEXT_TYPE + COMMA_SEP +
+            DatabaseContract.TagEntry.COLUMN_NAME_NAME + TEXT_TYPE +
+            ")";
 
     private static final String SQL_DELETE_ENTRIES =
             "DROP TABLE IF EXISTS " + DatabaseContract.Entry.TABLE_NAME;
 
+    private static final String SQL_TABLE_DELETE_ENTRIES =
+            "DROP TABLE IF EXISTS " + DatabaseContract.TagEntry.TABLE_NAME;
+
     // If you change the database schema, you must increment the database version.
-    public static final int DATABASE_VERSION = 2;
+    public static final int DATABASE_VERSION = 3;
     public static final String DATABASE_NAME = "Zivug.db";
 
     public DatabaseHelper(Context context) {
@@ -48,6 +58,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(SQL_CREATE_ENTRIES);
+        db.execSQL(TAGS_TABLE);
     }
 
     @Override
@@ -55,6 +66,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         // This database is only a cache for online data, so its upgrade policy is
         // to simply to discard the data and start over
         db.execSQL(SQL_DELETE_ENTRIES);
+        db.execSQL(SQL_TABLE_DELETE_ENTRIES);
         onCreate(db);
     }
 

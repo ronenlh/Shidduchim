@@ -171,6 +171,7 @@ public class Contact {
     }
 
     public String[] getTagsIdArray() {
+        if (mTags == null) return new String[0];
         List<ContactLab.Tag> tagList = new ArrayList<>(mTags.size());
         tagList.addAll(mTags);
 
@@ -196,7 +197,8 @@ public class Contact {
     }
 
     public String[] getLocationsIdArray() {
-        List<ContactLab.Location> locationList = new ArrayList<>(mTags.size());
+        if (mLocations == null) return new String[0];
+        List<ContactLab.Location> locationList = new ArrayList<>(mLocations.size());
         locationList.addAll(mLocations);
 
         String[] idArray = new String[locationList.size()];

@@ -103,6 +103,20 @@ public class ContactLab {
         }
     }
 
+    public Tag getTag(UUID id) {
+        ContactCursorWraper cursor = queryContacts(DatabaseContract.Entry.COLUMN_NAME_TAGS + " = ?",
+                new String[] {id.toString()});
+        try {
+            if (cursor.getCount() == 0) {
+                return null;
+            }
+            cursor.moveToFirst();
+            return cursor.getTag();
+        } finally {
+            cursor.close();
+        }
+    }
+
     private static ContentValues getContentValues(Contact contact) {
         // Create a new map of values, where column names are the keys
         ContentValues values = new ContentValues();
@@ -171,6 +185,10 @@ public class ContactLab {
         UUID mUUID;
         String name;
 
+        public Filter(UUID UUID) {
+            mUUID = UUID;
+        }
+
         public Filter(String name) {
             this();
             this.name = name;
@@ -194,6 +212,10 @@ public class ContactLab {
     }
 
     public static class Tag extends Filter {
+        public Tag(UUID UUID) {
+            super(UUID);
+        }
+
         public Tag(String name) {
             super(name);
         }

@@ -35,4 +35,10 @@ public class DatabaseContract {
         // and the projection in ContactsRVFragment <-- made it null so it queries all columns
     }
 
+    public static abstract class TagEntry implements BaseColumns {
+        public static final String TABLE_NAME = "tag";
+        public static final String COLUMN_NAME_ENTRY_UUID = "entryid";
+        public static final String COLUMN_NAME_NAME = "name";
+    }
+
 }
