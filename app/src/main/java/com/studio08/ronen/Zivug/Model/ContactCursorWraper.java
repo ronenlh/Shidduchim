@@ -27,7 +27,7 @@ public class ContactCursorWraper extends CursorWrapper {
         String eMail = getString(getColumnIndexOrThrow(DatabaseContract.Entry.COLUMN_NAME_EMAIL));
         String phoneNumer = getString(getColumnIndexOrThrow(DatabaseContract.Entry.COLUMN_NAME_PHONE));
 //        String location = getString(getColumnIndexOrThrow(DatabaseContract.Entry.COLUMN_NAME_LOCATION));
-//        String tags = getString(getColumnIndexOrThrow(DatabaseContract.Entry.COLUMN_NAME_TAGS));
+//        String mTags = getString(getColumnIndexOrThrow(DatabaseContract.Entry.COLUMN_NAME_TAGS));
 //        String dates = getString(getColumnIndexOrThrow(DatabaseContract.Entry.COLUMN_NAME_PREV_DATES));
 
         Contact contact = new Contact(UUID.fromString(uuidString));

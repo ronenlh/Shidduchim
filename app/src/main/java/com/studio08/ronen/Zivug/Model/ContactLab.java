@@ -116,9 +116,9 @@ public class ContactLab {
         values.put(DatabaseContract.Entry.COLUMN_NAME_NOTES, contact.getNotes());
         values.put(DatabaseContract.Entry.COLUMN_NAME_PHONE, contact.getPhone());
         values.put(DatabaseContract.Entry.COLUMN_NAME_EMAIL, contact.getEmail());
-        values.put(DatabaseContract.Entry.COLUMN_NAME_LOCATION, convertArrayToString(contact.getLocationsArray()));
-        values.put(DatabaseContract.Entry.COLUMN_NAME_TAGS, convertArrayToString(contact.getTagsArray()));
-//        values.put(DatabaseContract.Entry.COLUMN_NAME_PREV_DATES, content); // same as location and tags but with UUIDs
+        values.put(DatabaseContract.Entry.COLUMN_NAME_LOCATION, convertArrayToString(contact.getLocationsIdArray()));
+        values.put(DatabaseContract.Entry.COLUMN_NAME_TAGS, convertArrayToString(contact.getTagsIdArray()));
+//        values.put(DatabaseContract.Entry.COLUMN_NAME_PREV_DATES, content); // same as location and mTags but with UUIDs
 
         return values;
 
@@ -164,6 +164,51 @@ public class ContactLab {
     private static String[] convertStringToArray(String str){
         String[] arr = str.split(separator);
         return arr;
+    }
+
+    public static class Filter {
+
+        UUID mUUID;
+        String name;
+
+        public Filter(String name) {
+            this();
+            this.name = name;
+        }
+
+        public Filter() {
+            this.mUUID = UUID.randomUUID();
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public UUID getUUID() {
+            return mUUID;
+        }
+    }
+
+    public static class Tag extends Filter {
+        public Tag(String name) {
+            super(name);
+        }
+
+        public Tag() {
+        }
+    }
+
+    public static class Location extends Filter {
+        public Location(String name) {
+            super(name);
+        }
+
+        public Location() {
+        }
     }
 
 }

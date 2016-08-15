@@ -14,6 +14,7 @@ import android.widget.AbsListView;
 import android.widget.CheckedTextView;
 import android.widget.TextView;
 
+import com.studio08.ronen.Zivug.Model.ContactLab;
 import com.studio08.ronen.Zivug.R;
 
 import java.util.List;
@@ -53,7 +54,7 @@ public class ExpandableListAdapter extends android.widget.BaseExpandableListAdap
 
     private static final String TAG = ExpandableListAdapter.class.getSimpleName();
     private Activity context;
-    private Map<String, List<String>> collections;
+    private Map<String, List<ContactLab.Tag>> collections;
     private List<String> data;
     private LayoutInflater inflater;
     private SparseArray<SparseBooleanArray> checkedPositions;
@@ -61,17 +62,17 @@ public class ExpandableListAdapter extends android.widget.BaseExpandableListAdap
     // The default choice is the multiple one
     private int choiceMode = CHOICE_MODE_MULTIPLE;;
 
-    public ExpandableListAdapter(Activity context, List<String> data,
-                                 Map<String, List<String>> collections) {
+    public ExpandableListAdapter(Activity context, List<String> names,
+                                 Map<String, List<ContactLab.Tag>> collections) {
         this.context = context;
         this.collections = collections;
-        this.data = data;
+        this.data = names;
         inflater = LayoutInflater.from(context);
         checkedPositions = new SparseArray<SparseBooleanArray>();
     }
 
     public ExpandableListAdapter(Activity context, List<String> data,
-                                 Map<String, List<String>> collections, int choiceMode) {
+                                 Map<String, List<ContactLab.Tag>> collections, int choiceMode) {
         this(context, data, collections);
         // For now the choice mode CHOICE_MODE_MULTIPLE_MODAL
         // is not implemented
@@ -111,7 +112,7 @@ public class ExpandableListAdapter extends android.widget.BaseExpandableListAdap
             convertView = inflater.inflate(R.layout.drawer_list_item, null);
         }
 
-        ((CheckedTextView)convertView).setText(getChild(groupPosition, childPosition).toString());
+        ((CheckedTextView)convertView).setText(((ContactLab.Tag)getChild(groupPosition, childPosition)).getName());
 
         if (checkedPositions.get(groupPosition) != null) {
             Log.v(TAG, "\t \t The child checked position has been saved");

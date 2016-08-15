@@ -27,6 +27,7 @@ import android.widget.ListView;
 import com.studio08.ronen.Zivug.ContactsRVFragment;
 import com.studio08.ronen.Zivug.Drawer.ExpandableListAdapter;
 import com.studio08.ronen.Zivug.Model.Contact;
+import com.studio08.ronen.Zivug.Model.ContactLab;
 import com.studio08.ronen.Zivug.R;
 
 import java.util.ArrayList;
@@ -84,27 +85,34 @@ public class MainActivity extends AppCompatActivity
 //        navigationView.setNavigationItemSelectedListener(this);
 
         // Drawer Sample List
-        String[] mSampleTitles = {"Mars", "Jupiter", "Uranus"};
-        String[] mSampleTitles2 = {"Earth", "Mercury", "Saturn"};
-        List<String> mSampleTitlesList = new ArrayList<>(Arrays.asList(mSampleTitles));
-        List<String> mSampleTitles2List = new ArrayList<>(Arrays.asList(mSampleTitles2));
+//        String[] mSampleTitles = {"Mars", "Jupiter", "Uranus"};
+//        String[] mSampleTitles2 = {"Earth", "Mercury", "Saturn"};
+//        List<String> mSampleTitlesList = new ArrayList<>(Arrays.asList(mSampleTitles));
+//        List<String> mSampleTitles2List = new ArrayList<>(Arrays.asList(mSampleTitles2));
 
+        // Drawer Sample List
+        List<ContactLab.Tag> mTagList = new ArrayList<>();
+        mTagList.add(new ContactLab.Tag("Test1"));
+        mTagList.add(new ContactLab.Tag("Test2"));
+        mTagList.add(new ContactLab.Tag("Test3"));
+        mTagList.add(new ContactLab.Tag("Test4"));
 
-        Map<String, List<String>> groups = new HashMap<String, List<String>>();
-        groups.put("Tags", mSampleTitlesList);
-        groups.put("Locations", mSampleTitles2List);
+//        List<ContactLab.Tag> mTagList2 = new ArrayList<>();
+//        mTagList.add(new ContactLab.Tag("Test5"));
+//        mTagList.add(new ContactLab.Tag("Test6"));
+//        mTagList.add(new ContactLab.Tag("Test7"));
+//        mTagList.add(new ContactLab.Tag("Test8"));
+
+        Map<String, List<ContactLab.Tag>> groups = new HashMap<>();
+        groups.put("Tags", mTagList);
+//        groups.put("Locations", mTagList2);
 
         List<String> groupNames = new ArrayList<>();
-
         groupNames.add("Tags");
-        groupNames.add("Locations");
+//        groupNames.add("Locations");
 
         ExpandableListView expandableListView = (ExpandableListView) findViewById(R.id.drawer_exp_list);
-        final ExpandableListAdapter adapter = new ExpandableListAdapter(
-                this, groupNames, groups);
-
-//        ListView mDrawerList = (ListView) findViewById(R.id.tag_drawer_list);
-//        ListView mDrawerList2 = (ListView) findViewById(R.id.location_drawer_list);
+        final ExpandableListAdapter adapter = new ExpandableListAdapter(this, groupNames, groups);
 
         expandableListView.setAdapter(adapter);
 
@@ -125,7 +133,7 @@ public class MainActivity extends AppCompatActivity
 
         // expand them by default
         expandableListView.expandGroup(0);
-        expandableListView.expandGroup(1);
+//        expandableListView.expandGroup(1);
 
 //        // Set the adapter for the list view
 //        mDrawerList.setAdapter(new ArrayAdapter<String>(this,

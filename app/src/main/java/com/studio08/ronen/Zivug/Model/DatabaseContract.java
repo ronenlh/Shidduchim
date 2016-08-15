@@ -24,7 +24,7 @@ public class DatabaseContract {
         public static final String COLUMN_NAME_IMAGE_RESOURCE = "image";
         public static final String COLUMN_NAME_NOTES = "notes";
         public static final String COLUMN_NAME_LOCATION = "location";
-        public static final String COLUMN_NAME_TAGS = "tags";
+        public static final String COLUMN_NAME_TAGS = "mTags";
         public static final String COLUMN_NAME_PREV_DATES = "dates";
         public static final String COLUMN_NAME_PHONE = "phone";
         public static final String COLUMN_NAME_PHONE2 = "phone2";
