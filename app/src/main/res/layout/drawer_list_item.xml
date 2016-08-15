@@ -2,7 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:orientation="horizontal"
               android:layout_width="match_parent"
-              android:layout_height="wrap_content" >
+              android:layout_height="wrap_content"
+    android:background="@color/windowBackground">
 <!--<ImageView android:layout_width="wrap_content"-->
            <!--android:layout_height="match_parent"-->
            <!--android:padding="16dp"-->
@@ -14,7 +15,7 @@
     android:gravity="center_vertical"
     android:paddingLeft="16dp"
     android:paddingRight="16dp"
-    android:textColor="#fff"
+    android:textColor="#000"
     android:background="?android:attr/activatedBackgroundIndicator"
     android:minHeight="?android:attr/listPreferredItemHeightSmall"
     android:layout_width="match_parent"

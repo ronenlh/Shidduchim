@@ -75,7 +75,7 @@ public class ExpandableListAdapter extends android.widget.BaseExpandableListAdap
         if (convertView == null) {
             LayoutInflater inflater = (LayoutInflater) context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = inflater.inflate(R.layout.group_item,
+            convertView = inflater.inflate(R.layout.drawer_group_item,
                     null);
         }
         TextView item = (TextView) convertView.findViewById(R.id.group_drawer_text);

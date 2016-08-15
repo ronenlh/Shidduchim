@@ -88,13 +88,13 @@ public class MainActivity extends AppCompatActivity
 
 
         Map<String, List<String>> groups = new HashMap<String, List<String>>();
-        groups.put("one", mSampleTitlesList);
-        groups.put("two", mSampleTitles2List);
+        groups.put("Tags", mSampleTitlesList);
+        groups.put("Locations", mSampleTitles2List);
 
         List<String> groupNames = new ArrayList<>();
 
-        groupNames.add("one");
-        groupNames.add("two");
+        groupNames.add("Tags");
+        groupNames.add("Locations");
 
 
 
@@ -106,6 +106,10 @@ public class MainActivity extends AppCompatActivity
         ListView mDrawerList2 = (ListView) findViewById(R.id.location_drawer_list);
 
         expListView.setAdapter(expListAdapter);
+
+        // expand them by default
+        expListView.expandGroup(0);
+        expListView.expandGroup(1);
 
 //        // Set the adapter for the list view
 //        mDrawerList.setAdapter(new ArrayAdapter<String>(this,
