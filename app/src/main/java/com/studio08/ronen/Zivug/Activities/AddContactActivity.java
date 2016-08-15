@@ -316,7 +316,7 @@ public class AddContactActivity extends AppCompatActivity {
 
 
     public void setLocation(View view) {
-        Intent intent = new Intent(this, MapActivity.class);
+        Intent intent = new Intent(this, AddLocationActivity.class);
         startActivityForResult(intent, SET_LOCATION_RESULT);
     }
 

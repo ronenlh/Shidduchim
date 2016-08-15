@@ -116,9 +116,9 @@ public class ContactLab {
         values.put(DatabaseContract.Entry.COLUMN_NAME_NOTES, contact.getNotes());
         values.put(DatabaseContract.Entry.COLUMN_NAME_PHONE, contact.getPhone());
         values.put(DatabaseContract.Entry.COLUMN_NAME_EMAIL, contact.getEmail());
-//        values.put(DatabaseContract.Entry.COLUMN_NAME_LOCATION, content);
-//        values.put(DatabaseContract.Entry.COLUMN_NAME_TAGS, content);
-//        values.put(DatabaseContract.Entry.COLUMN_NAME_PREV_DATES, content);
+        values.put(DatabaseContract.Entry.COLUMN_NAME_LOCATION, convertArrayToString(contact.getLocationsArray()));
+        values.put(DatabaseContract.Entry.COLUMN_NAME_TAGS, convertArrayToString(contact.getTagsArray()));
+//        values.put(DatabaseContract.Entry.COLUMN_NAME_PREV_DATES, content); // same as location and tags but with UUIDs
 
         return values;
 
@@ -142,6 +142,28 @@ public class ContactLab {
         if (externalFilesDir == null) return null;
 
         return new File(externalFilesDir, contact.getPhotoFilenane());
+    }
+
+    private static String separator = "__,__";
+
+    public static String convertArrayToString(String[] array){
+
+        String string = "";
+
+        for (int i = 0; i < array.length; i++) {
+            string = string + array[i];
+
+            // Do not append separator at the end of last element
+            if (i < array.length - 1)
+                string = string + separator;
+        }
+
+        return string;
+    }
+
+    private static String[] convertStringToArray(String str){
+        String[] arr = str.split(separator);
+        return arr;
     }
 
 }

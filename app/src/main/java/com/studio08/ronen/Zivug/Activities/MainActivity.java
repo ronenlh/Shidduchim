@@ -99,14 +99,12 @@ public class MainActivity extends AppCompatActivity
         groupNames.add("Tags");
         groupNames.add("Locations");
 
-
-
-        ExpandableListView expandableListView = (ExpandableListView) findViewById(R.id.tag_drawer_list);
+        ExpandableListView expandableListView = (ExpandableListView) findViewById(R.id.drawer_exp_list);
         final ExpandableListAdapter adapter = new ExpandableListAdapter(
                 this, groupNames, groups);
 
-        ListView mDrawerList = (ListView) findViewById(R.id.tag_drawer_list);
-        ListView mDrawerList2 = (ListView) findViewById(R.id.location_drawer_list);
+//        ListView mDrawerList = (ListView) findViewById(R.id.tag_drawer_list);
+//        ListView mDrawerList2 = (ListView) findViewById(R.id.location_drawer_list);
 
         expandableListView.setAdapter(adapter);
 

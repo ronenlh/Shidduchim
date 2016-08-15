@@ -5,7 +5,7 @@ import android.os.Bundle;
 
 import com.studio08.ronen.Zivug.R;
 
-public class MapActivity extends AppCompatActivity {
+public class AddLocationActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

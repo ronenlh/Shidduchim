@@ -35,7 +35,7 @@
         android:dividerHeight="1dp" >
 
         <ExpandableListView
-            android:id="@+id/tag_drawer_list"
+            android:id="@+id/drawer_exp_list"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="start"
@@ -44,15 +44,15 @@
             android:divider="@android:color/transparent"
             android:dividerHeight="1dp"/>
 
-        <ExpandableListView
-            android:id="@+id/location_drawer_list"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="start"
-            android:groupIndicator="@drawable/group_indicator"
-            android:choiceMode="multipleChoice"
-            android:divider="@android:color/transparent"
-            android:dividerHeight="1dp" />
+        <!--<ExpandableListView-->
+            <!--android:id="@+id/location_drawer_list"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_gravity="start"-->
+            <!--android:groupIndicator="@drawable/group_indicator"-->
+            <!--android:choiceMode="multipleChoice"-->
+            <!--android:divider="@android:color/transparent"-->
+            <!--android:dividerHeight="1dp" />-->
 
     </LinearLayout>
 

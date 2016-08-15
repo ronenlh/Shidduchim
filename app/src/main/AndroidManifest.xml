@@ -42,7 +42,7 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyAc1cf8RjdJFzyaFoW3J7Zpi45rU73yrPQ"/>
 
-        <activity android:name=".Activities.MapActivity">
+        <activity android:name=".Activities.AddLocationActivity">
         </activity>
         <activity android:name=".Activities.AddTagsActivity">
         </activity><!-- ATTENTION: This was auto-generated to add Google Play services to your project for

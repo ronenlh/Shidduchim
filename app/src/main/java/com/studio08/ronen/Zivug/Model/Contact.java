@@ -2,6 +2,7 @@ package com.studio08.ronen.Zivug.Model;
 
 import java.util.Date;
 import java.util.Random;
+import java.util.Set;
 import java.util.UUID;
 
 /**
@@ -20,6 +21,9 @@ public class Contact {
     private int mAge, mGender;
 
     private static Random r;
+
+    public Set<String> tags;
+    public Set<String> locations;
 
     public Contact() {
         mId = UUID.randomUUID();
@@ -159,5 +163,50 @@ public class Contact {
 
     public String getLastName() {
         return mLastName;
+    }
+
+
+    // Tags and Location operations
+    public Set<String> getTags() {
+        return tags;
+    }
+
+    public String[] getTagsArray() {
+        return tags.toArray(new String[tags.size()]);
+    }
+
+    public void setTags(Set<String> tags) {
+        this.tags = tags;
+    }
+
+    public Set<String> getLocations() {
+        return locations;
+    }
+
+    public void setLocations(Set<String> locations) {
+        this.locations = locations;
+    }
+
+    public String[] getLocationsArray() {
+        return locations.toArray(new String[locations.size()]);
+    }
+
+
+    public void addTag(String tag) {
+        this.tags.add(tag);
+    }
+
+
+    public void addLocation(String location) {
+        this.locations.add(location);
+    }
+
+    public void removeTag(String tag) {
+        this.tags.remove(tag);
+    }
+
+
+    public void removeLocation(String location) {
+        this.locations.remove(location);
     }
 }
