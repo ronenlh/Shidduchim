@@ -12,8 +12,8 @@ import android.widget.TextView;
 
 import com.mikhaellopez.circularimageview.CircularImageView;
 import com.squareup.picasso.Picasso;
-import com.studio08.ronen.Zivug.AddContactActivity;
-import com.studio08.ronen.Zivug.ContactActivity;
+import com.studio08.ronen.Zivug.Activities.AddContactActivity;
+import com.studio08.ronen.Zivug.Activities.ContactActivity;
 import com.studio08.ronen.Zivug.CursorRecyclerAdapter;
 import com.studio08.ronen.Zivug.R;
 

@@ -1,4 +1,4 @@
-package com.studio08.ronen.Zivug;
+package com.studio08.ronen.Zivug.Activities;
 
 import android.content.Context;
 import android.content.Intent;
@@ -19,6 +19,7 @@ import android.widget.TextView;
 import com.squareup.picasso.Picasso;
 import com.studio08.ronen.Zivug.Model.Contact;
 import com.studio08.ronen.Zivug.Model.ContactLab;
+import com.studio08.ronen.Zivug.R;
 
 import java.io.File;
 import java.util.UUID;

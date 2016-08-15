@@ -6,7 +6,7 @@
     android:id="@+id/activity_map"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.studio08.ronen.Zivug.MapActivity">
+    tools:context="com.studio08.ronen.Zivug.Activities.MapActivity">
 
     <fragment
         android:layout_width="match_parent"

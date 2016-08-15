@@ -21,6 +21,7 @@ import java.util.Map;
 
 /**
  * Created by Ronen on 14/8/16.
+ * Multiple choices from https://github.com/jiahaoliuliu/ExpandableListViewWithChoice
  */
 
 public class ExpandableListAdapter extends android.widget.BaseExpandableListAdapter {
@@ -107,6 +108,7 @@ public class ExpandableListAdapter extends android.widget.BaseExpandableListAdap
         if (convertView == null) {
             Log.v(TAG, "\t The convert view was null");
             convertView = inflater.inflate(android.R.layout.simple_list_item_multiple_choice, parent, false);
+            convertView = inflater.inflate(R.layout.drawer_list_item, null);
         }
 
         ((CheckedTextView)convertView).setText(getChild(groupPosition, childPosition).toString());
@@ -177,9 +179,11 @@ public class ExpandableListAdapter extends android.widget.BaseExpandableListAdap
                     // By default, the status of a child is not checked
                     // So a click will enable it
                     checkedChildPositionsMultiple.put(childPosition, true);
+                    // Adds a mapping from the specified key to the specified value, replacing the previous mapping from the specified key if there was one.
                     checkedPositions.put(groupPosition, checkedChildPositionsMultiple);
                 } else {
                     boolean oldState = checkedChildPositionsMultiple.get(childPosition);
+                    // Adds a mapping from the specified key to the specified value, replacing the previous mapping from the specified key if there was one.
                     checkedChildPositionsMultiple.put(childPosition, !oldState);
                 }
                 break;
@@ -215,12 +219,12 @@ public class ExpandableListAdapter extends android.widget.BaseExpandableListAdap
                 checkedChildPositionsSingleAbsolute.put(childPosition, true);
                 checkedPositions.put(groupPosition, checkedChildPositionsSingleAbsolute);
                 break;
-        }
+        } // end Switch
 
         // Notify that some data has been changed
-        notifyDataSetChanged();
+        notifyDataSetChanged(); // need to swap cursor
         Log.v(TAG, "List position updated");
-        Log.v(TAG, PrintSparseArrays.sparseArrayToString(checkedPositions));
+        Log.v(TAG, "SparseBooleanArray: " + PrintSparseArrays.sparseArrayToString(checkedPositions));
     }
 
     public int getChoiceMode() {

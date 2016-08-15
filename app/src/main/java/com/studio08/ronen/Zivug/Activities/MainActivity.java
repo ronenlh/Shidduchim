@@ -1,4 +1,4 @@
-package com.studio08.ronen.Zivug;
+package com.studio08.ronen.Zivug.Activities;
 
 import android.content.Intent;
 import android.net.Uri;
@@ -24,8 +24,10 @@ import android.widget.AdapterView;
 import android.widget.ExpandableListView;
 import android.widget.ListView;
 
+import com.studio08.ronen.Zivug.ContactsRVFragment;
 import com.studio08.ronen.Zivug.Drawer.ExpandableListAdapter;
 import com.studio08.ronen.Zivug.Model.Contact;
+import com.studio08.ronen.Zivug.R;
 
 import java.util.ArrayList;
 import java.util.Arrays;
