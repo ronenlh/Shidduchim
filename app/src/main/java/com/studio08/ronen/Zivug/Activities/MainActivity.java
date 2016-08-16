@@ -12,6 +12,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.SearchView;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -123,6 +124,7 @@ public class MainActivity extends AppCompatActivity
                 return false;
             }
         });
+
 
         // expand them by default
         expandableListView.expandGroup(0);

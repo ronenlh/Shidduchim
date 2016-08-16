@@ -22,6 +22,8 @@ import com.studio08.ronen.Zivug.Model.ContactLab;
 import com.studio08.ronen.Zivug.R;
 
 import java.io.File;
+import java.util.Arrays;
+import java.util.Set;
 import java.util.UUID;
 
 public class ContactActivity extends AppCompatActivity {
@@ -110,6 +112,19 @@ public class ContactActivity extends AppCompatActivity {
         if (mContact.getAge() > 0)              mDetails.append("\nAge: " + mContact.getAge());
         if (mContact.getEmail() != null)        mDetails.append("\nE-Mail: " + mContact.getEmail());
         if (mContact.getPhone() != null)        mDetails.append("\nPhone: " + mContact.getPhone());
+        if (mContact.getTags() != null
+                && !mContact.getTags().isEmpty()) {
+            // represent Tags into string:
+            mDetails.append("\nTags: ");
+            Set<ContactLab.Tag> tagsSet = mContact.getTags();
+            ContactLab.Tag[] tagArray = new ContactLab.Tag[tagsSet.size()];
+            tagArray = tagsSet.toArray(tagArray);
+            mDetails.append(Arrays.toString(tagArray));
+//            for (int i = 0; i < tagArray.length; i++) {
+//                mDetails.append(tagArray[i].getName());
+//                if (i < tagArray.length - 1) mDetails.append(", ");
+//            }
+        }
 
         contactDetailsTextView.setText(mDetails.toString());
 

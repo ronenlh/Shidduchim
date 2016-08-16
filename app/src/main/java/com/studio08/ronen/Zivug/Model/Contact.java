@@ -2,6 +2,7 @@ package com.studio08.ronen.Zivug.Model;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
 import java.util.Set;
@@ -139,12 +140,14 @@ public class Contact {
                 ", mName='" + mName + '\'' +
                 ", mFirstName='" + mFirstName + '\'' +
                 ", mLastName='" + mLastName + '\'' +
-                ", mEmail='" + mEmail + '\'' +
-                ", mPhone='" + mPhone + '\'' +
                 ", mNotes='" + mNotes + '\'' +
+                ", mPhone='" + mPhone + '\'' +
+                ", mEmail='" + mEmail + '\'' +
                 ", mPicturePath='" + mPicturePath + '\'' +
                 ", mAge=" + mAge +
                 ", mGender=" + mGender +
+                ", mTags=" + mTags +
+                ", mLocations=" + mLocations +
                 '}';
     }
 
@@ -212,6 +215,7 @@ public class Contact {
 
 
     public void addTag(ContactLab.Tag tag) {
+        if (mTags == null) mTags = new HashSet<>();
         this.mTags.add(tag);
     }
 

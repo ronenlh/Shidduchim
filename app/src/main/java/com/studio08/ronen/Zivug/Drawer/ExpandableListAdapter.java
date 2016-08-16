@@ -3,7 +3,9 @@ package com.studio08.ronen.Zivug.Drawer;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Color;
 import android.graphics.Typeface;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.util.SparseArray;
 import android.util.SparseBooleanArray;
@@ -53,7 +55,7 @@ public class ExpandableListAdapter extends android.widget.BaseExpandableListAdap
     public static final int CHOICE_MODE_SINGLE_ABSOLUTE = 10001;
 
     private static final String TAG = ExpandableListAdapter.class.getSimpleName();
-    private Activity context;
+    private Activity mContext;
     private Map<String, List<ContactLab.Tag>> collections;
     private List<String> data;
     private LayoutInflater inflater;
@@ -64,7 +66,7 @@ public class ExpandableListAdapter extends android.widget.BaseExpandableListAdap
 
     public ExpandableListAdapter(Activity context, List<String> names,
                                  Map<String, List<ContactLab.Tag>> collections) {
-        this.context = context;
+        this.mContext = context;
         this.collections = collections;
         this.data = names;
         inflater = LayoutInflater.from(context);
@@ -95,34 +97,29 @@ public class ExpandableListAdapter extends android.widget.BaseExpandableListAdap
     public View getChildView(final int groupPosition, final int childPosition,
                              boolean isLastChild, View convertView, ViewGroup parent) {
 
-//        final String expandableItem = (String) getChild(groupPosition, childPosition);
-//        LayoutInflater inflater = context.getLayoutInflater();
-//        if (convertView == null) {
-//            convertView = inflater.inflate(R.layout.drawer_list_item, null);
-//        }
-//        TextView item = (TextView) convertView.findViewById(R.id.text_list_item);
-//        item.setText(expandableItem);
-//        return convertView;
-
-        Log.v(TAG, "Getting the child view for child " + childPosition + " in the group " + groupPosition);
-
         if (convertView == null) {
-            Log.v(TAG, "\t The convert view was null");
-            convertView = inflater.inflate(android.R.layout.simple_list_item_multiple_choice, parent, false);
+//            convertView = inflater.inflate(android.R.layout.simple_list_item_multiple_choice, parent, false);
             convertView = inflater.inflate(R.layout.drawer_list_item, null);
         }
 
-        ((CheckedTextView)convertView).setText(((ContactLab.Tag)getChild(groupPosition, childPosition)).getName());
+        ContactLab.Tag tag = (ContactLab.Tag) getChild(groupPosition, childPosition);
+        CheckedTextView checkedTextView = (CheckedTextView) convertView;
+        checkedTextView.setText(tag.getName());
 
         if (checkedPositions.get(groupPosition) != null) {
-            Log.v(TAG, "\t \t The child checked position has been saved");
+
             boolean isChecked = checkedPositions.get(groupPosition).get(childPosition);
-            Log.v(TAG, "\t \t \t Is child checked: " + isChecked);
-            ((CheckedTextView)convertView).setChecked(isChecked);
-            // If it does not exist, mark the checkBox as false
+            checkedTextView.setChecked(isChecked);
+
+            if (isChecked) convertView.setBackgroundColor(ContextCompat.getColor(mContext, R.color.colorPrimaryLight));
+            else convertView.setBackgroundColor(Color.WHITE);
+
         } else {
-            ((CheckedTextView)convertView).setChecked(false);
+            // If it does not exist, mark the checkBox as false
+            checkedTextView.setChecked(false);
+            convertView.setBackgroundColor(Color.WHITE);
         }
+
         return convertView;
     }
 
@@ -146,7 +143,7 @@ public class ExpandableListAdapter extends android.widget.BaseExpandableListAdap
                              View convertView, ViewGroup parent) {
         String laptopName = (String) getGroup(groupPosition);
         if (convertView == null) {
-            LayoutInflater inflater = (LayoutInflater) context
+            LayoutInflater inflater = (LayoutInflater) mContext
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = inflater.inflate(R.layout.drawer_group_item,
                     null);
@@ -223,7 +220,7 @@ public class ExpandableListAdapter extends android.widget.BaseExpandableListAdap
         } // end Switch
 
         // Notify that some data has been changed
-        notifyDataSetChanged(); // need to swap cursor
+        notifyDataSetChanged();
         Log.v(TAG, "List position updated");
         Log.v(TAG, "SparseBooleanArray: " + PrintSparseArrays.sparseArrayToString(checkedPositions));
     }

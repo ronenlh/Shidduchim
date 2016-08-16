@@ -400,6 +400,8 @@ public class AddContactActivity extends AppCompatActivity {
 
             mTagsTextView.setText(string.toString());
 
+            mContact.addTag(mTag);
+
         } else if (requestCode == REQUEST_CONTACT && data != null) {
             Uri contactUri = data.getData();
 
