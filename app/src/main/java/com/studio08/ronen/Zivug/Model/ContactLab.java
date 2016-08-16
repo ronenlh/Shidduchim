@@ -91,7 +91,7 @@ public class ContactLab {
 
         if (cursor == null) {
             return null;
-        } else if (!cursor.moveToFirst()) {
+        } else if (!cursor.moveToFirst()) { // cursor.moveToFirst() return false if cursor is empty
             cursor.close();
             return null;
         }
@@ -100,7 +100,8 @@ public class ContactLab {
 
     public List<Contact> getContacts() {
         List<Contact> contacts = new ArrayList<>();
-        ContactCursorWraper cursor = queryContacts(null, null);
+        ContactCursorWraper cursor = queryContacts(null, null); // this might return null
+        if (cursor == null) return contacts;
         try {
             cursor.moveToFirst();
             while (!cursor.isAfterLast()) {
@@ -110,12 +111,13 @@ public class ContactLab {
         } finally {
             cursor.close();
         }
-        return new ArrayList<>();
+        return contacts;
     }
 
     public List<Tag> getTags() {
         List<Tag> tags = new ArrayList<>();
         ContactCursorWraper cursor = queryTags(null, null);
+        if (cursor == null) return tags;
         try {
             cursor.moveToFirst();
             while (!cursor.isAfterLast()) {
@@ -125,7 +127,7 @@ public class ContactLab {
         } finally {
             cursor.close();
         }
-        return new ArrayList<>();
+        return tags;
     }
 
     public Contact getContact(UUID id) {
