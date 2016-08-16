@@ -1,8 +1,10 @@
 package com.studio08.ronen.Zivug.Activities;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.ListView;
@@ -13,12 +15,14 @@ import com.studio08.ronen.Zivug.R;
 
 import java.util.List;
 
-public class AddTagsActivity extends AppCompatActivity {
+public class AddTagsActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
 
+    public static final String TAG_RESULT = "tag";
     private AutoCompleteTextView mTextView;
     private ListView mListView;
     private ContactLab.Tag mTag;
-    private String[] mTags;
+    private String[] mStringTags;
+    private List<ContactLab.Tag> mTags;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,19 +39,21 @@ public class AddTagsActivity extends AppCompatActivity {
 
 
     private void loadData() {
-        List<ContactLab.Tag> mTags = ContactLab.get(this).getTags();
-        this.mTags = new String[mTags.size()];
-        for (int i = 0; i < this.mTags.length; i++) {
-            this.mTags[i] = mTags.get(i).getName();
+        mTags = ContactLab.get(this).getTags();
+        this.mStringTags = new String[mTags.size()];
+        for (int i = 0; i < this.mStringTags.length; i++) {
+            this.mStringTags[i] = mTags.get(i).getName();
         }
     }
 
     private void setData() {
         mTextView.setAdapter(new ArrayAdapter<>(this,
-                android.R.layout.simple_dropdown_item_1line, this.mTags));
+                android.R.layout.simple_dropdown_item_1line, this.mStringTags));
 
         mListView.setAdapter(new ArrayAdapter<>(this,
-                android.R.layout.simple_list_item_1, this.mTags));
+                android.R.layout.simple_list_item_1, this.mStringTags));
+
+        mListView.setOnItemClickListener(this);
     }
 
 
@@ -61,5 +67,13 @@ public class AddTagsActivity extends AppCompatActivity {
 
         loadData();
         setData();
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+        Intent returnIntent = new Intent();
+        returnIntent.putExtra(TAG_RESULT, mTags.get(i));
+        setResult(RESULT_OK, returnIntent);
+        finish();
     }
 }

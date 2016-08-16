@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteQueryBuilder;
 import android.os.Environment;
 
 import java.io.File;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -233,7 +234,7 @@ public class ContactLab {
 
 
 
-    public static class Filter {
+    public static class Filter implements Serializable {
 
         UUID mUUID;
         String name;

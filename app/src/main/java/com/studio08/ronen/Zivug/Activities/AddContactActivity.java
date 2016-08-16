@@ -27,6 +27,7 @@ import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.appindexing.Action;
@@ -53,7 +54,7 @@ public class AddContactActivity extends AppCompatActivity {
     private static final String STATE_IN_PERMISSION = "gallery";
     private static final String TAG = "AddContactActivity";
     private static final int SET_LOCATION_RESULT = 1121;
-    private static final int SET_TAGS_RESULT = 1122;
+    static final int SET_TAGS_RESULT = 1122;
     private static final int REQUEST_CONTACT = 1123;
     private static final int REQUEST_PHOTO = 1124;
     private static final int REQUEST_GALLERY = 1125;
@@ -65,6 +66,7 @@ public class AddContactActivity extends AppCompatActivity {
     private RadioButton maleRadioButton, femaleRadioButton;
     private ImageView mPhotoImage, mGalleryImage;
     private CircularImageView mImageView;
+    private TextView mTagsTextView;
     private File mPhotoFile;
     private int genderSelection = 2;
 
@@ -178,6 +180,7 @@ public class AddContactActivity extends AppCompatActivity {
         mImageView = (CircularImageView) findViewById(R.id.add_profile_pic);
         maleRadioButton = (RadioButton) findViewById(R.id.male_selection);
         femaleRadioButton = (RadioButton) findViewById(R.id.female_selection);
+        mTagsTextView = (TextView) findViewById(R.id.tags_textview);
 
         mPhotoImage = (ImageView) findViewById(R.id.camera_image);
         mGalleryImage = (ImageView) findViewById(R.id.gallery_image);
@@ -387,6 +390,15 @@ public class AddContactActivity extends AppCompatActivity {
         if (requestCode == SET_LOCATION_RESULT) {
 
         } else if (requestCode == SET_TAGS_RESULT) {
+            ContactLab.Tag mTag = (ContactLab.Tag) data.getSerializableExtra(AddTagsActivity.TAG_RESULT);
+            StringBuilder string = new StringBuilder();
+            if (!mTagsTextView.getText().toString().isEmpty()) {
+                string.append(mTagsTextView.getText().toString());
+                string.append(", ");
+            }
+            string.append(mTag.getName());
+
+            mTagsTextView.setText(string.toString());
 
         } else if (requestCode == REQUEST_CONTACT && data != null) {
             Uri contactUri = data.getData();

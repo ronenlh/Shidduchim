@@ -180,6 +180,17 @@
         android:layout_alignParentEnd="true"
         android:onClick="setTags"/>
 
+    <TextView
+        android:text=""
+        tools:text="Tags, Tags, Tags"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/add_tags"
+        android:id="@+id/tags_textview"
+        android:layout_marginBottom="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginLeft="5dp"/>
+
     <Button
         android:text="@string/delete"
         android:layout_marginBottom="5dp"
@@ -187,7 +198,7 @@
         android:layout_marginLeft="5dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/add_tags"
+        android:layout_below="@+id/tags_textview"
         android:id="@+id/delete_contact"
         android:background="@color/colorAccent"
         android:visibility="gone"
@@ -196,6 +207,7 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:onClick="deleteContact"/>
+
 
 
 
