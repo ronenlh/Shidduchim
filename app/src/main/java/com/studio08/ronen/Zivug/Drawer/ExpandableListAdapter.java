@@ -16,6 +16,7 @@ import android.widget.AbsListView;
 import android.widget.CheckedTextView;
 import android.widget.TextView;
 
+import com.studio08.ronen.Zivug.ContactsRVFragment;
 import com.studio08.ronen.Zivug.Model.ContactLab;
 import com.studio08.ronen.Zivug.R;
 
@@ -28,6 +29,10 @@ import java.util.Map;
  */
 
 public class ExpandableListAdapter extends android.widget.BaseExpandableListAdapter {
+
+    public interface OnChildItemClickListener {
+        void onChildItemClickCallback(SparseArray<SparseBooleanArray> checkedChildPositionsMultiple);
+    }
 
     /**
      * Multiple choice for all the groups
@@ -60,6 +65,7 @@ public class ExpandableListAdapter extends android.widget.BaseExpandableListAdap
     private List<String> data;
     private LayoutInflater inflater;
     private SparseArray<SparseBooleanArray> checkedPositions;
+    private OnChildItemClickListener mListener;
 
     // The default choice is the multiple one
     private int choiceMode = CHOICE_MODE_MULTIPLE;;
@@ -71,6 +77,11 @@ public class ExpandableListAdapter extends android.widget.BaseExpandableListAdap
         this.data = names;
         inflater = LayoutInflater.from(context);
         checkedPositions = new SparseArray<SparseBooleanArray>();
+
+        if (context instanceof OnChildItemClickListener)
+            mListener = (OnChildItemClickListener) context;
+        else throw new RuntimeException(context.toString()
+                + " must implement OnChildItemClickListener");
     }
 
     public ExpandableListAdapter(Activity context, List<String> data,
@@ -184,6 +195,8 @@ public class ExpandableListAdapter extends android.widget.BaseExpandableListAdap
                     // Adds a mapping from the specified key to the specified value, replacing the previous mapping from the specified key if there was one.
                     checkedChildPositionsMultiple.put(childPosition, !oldState);
                 }
+
+                mListener.onChildItemClickCallback(checkedPositions);
                 break;
             // TODO: Implement it
             case CHOICE_MODE_MULTIPLE_MODAL:

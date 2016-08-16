@@ -62,6 +62,8 @@ public class ContactLab {
         String selection = DatabaseContract.Entry.TABLE_NAME + " MATCH ?";
         String[] selectionArgs = new String[] {query+"*"};
 
+//        if (query.isEmpty()) return queryContacts(null, null);
+
         return queryContacts(selection, selectionArgs);
     }
 

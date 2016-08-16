@@ -1,7 +1,6 @@
 package com.studio08.ronen.Zivug.Activities;
 
 import android.content.Intent;
-import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -12,7 +11,8 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.SearchView;
 import android.util.Log;
-import android.view.MotionEvent;
+import android.util.SparseArray;
+import android.util.SparseBooleanArray;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -30,17 +30,15 @@ import com.studio08.ronen.Zivug.ContactsRVFragment;
 import com.studio08.ronen.Zivug.Drawer.ExpandableListAdapter;
 import com.studio08.ronen.Zivug.Model.Contact;
 import com.studio08.ronen.Zivug.Model.ContactLab;
-import com.studio08.ronen.Zivug.Model.DatabaseContract;
 import com.studio08.ronen.Zivug.R;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, ContactsRVFragment.OnFragmentInteractionListener {
+        implements NavigationView.OnNavigationItemSelectedListener, ContactsRVFragment.OnFragmentInteractionListener, ExpandableListAdapter.OnChildItemClickListener {
 
     public static final String EXTRA_GENDER = "gender";
     private static final String TAG = MainActivity.class.getSimpleName();
@@ -52,6 +50,8 @@ public class MainActivity extends AppCompatActivity
     // Fragments
     ContactsRVFragment menFragment;
     ContactsRVFragment womenFragment;
+
+    Map<String, List<ContactLab.Tag>> groups;
 
     DrawerLayout mDrawerList;
 
@@ -96,7 +96,7 @@ public class MainActivity extends AppCompatActivity
         // Drawer Sample List
         List<ContactLab.Tag> mTagList = ContactLab.get(this).getTags();
 
-        Map<String, List<ContactLab.Tag>> groups = new HashMap<>();
+        groups = new HashMap<>();
         groups.put("Tags", mTagList);
 //        groups.put("Locations", mTagList2);
 
@@ -193,7 +193,6 @@ public class MainActivity extends AppCompatActivity
         // I need to update the cursor where clause with every onQueryTextChange,
         // not just for the name but for all fields
         menFragment.searchContacts(query);
-
     }
 
     private void searchbyTags(ContactLab.Tag... tags) {
@@ -268,6 +267,15 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onContactsRVFragmentInteraction(Uri uri) {
+
+    }
+
+    @Override
+    public void onChildItemClickCallback(SparseArray<SparseBooleanArray> checkedPositions) {
+        Log.d(TAG, checkedPositions.toString());
+        Log.d(TAG, "\t"+ groups.toString());
+
+        // need to correlate checkedPositions with groups and then query the true Tag
 
     }
 
