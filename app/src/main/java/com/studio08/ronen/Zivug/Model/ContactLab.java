@@ -59,8 +59,19 @@ public class ContactLab {
     }
 
     public ContactCursorWraper getWordMatches(String query) {
-        String selection = DatabaseContract.Entry.COLUMN_NAME_FULL_NAME + " MATCH ?";
+        String selection = DatabaseContract.Entry.TABLE_NAME + " MATCH ?";
         String[] selectionArgs = new String[] {query+"*"};
+
+        return queryContacts(selection, selectionArgs);
+    }
+
+    public Cursor getTagMatches(Tag[] tags) {
+        String selection = DatabaseContract.Entry.COLUMN_NAME_TAGS + " MATCH ?";
+        String[] selectionArgs = new String[tags.length];
+
+        for (int i = 0; i < selectionArgs.length; i++) {
+            selectionArgs[i] = tags[i].getId().toString();
+        }
 
         return queryContacts(selection, selectionArgs);
     }
@@ -231,7 +242,6 @@ public class ContactLab {
         String[] arr = str.split(separator);
         return arr;
     }
-
 
 
     public static class Filter implements Serializable {

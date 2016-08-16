@@ -181,6 +181,18 @@ public class ContactsRVFragment extends Fragment {
             mRecyclerView.setAdapter(mCursorAdapter);
     }
 
+    public void searchbyTags(ContactLab.Tag[] tags) {
+        Cursor cursor = ContactLab.get(getContext()).getTagMatches(tags);
+
+        if (mCursorAdapter == null)
+            mCursorAdapter = new ContactsRVCursorAdapter(getContext(), cursor);
+        else
+            mCursorAdapter.swapCursor(cursor);
+
+        if (mRecyclerView != null)
+            mRecyclerView.setAdapter(mCursorAdapter);
+    }
+
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
             mListener.onContactsRVFragmentInteraction(uri);

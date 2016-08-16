@@ -196,6 +196,13 @@ public class MainActivity extends AppCompatActivity
 
     }
 
+    private void searchbyTags(ContactLab.Tag... tags) {
+        // I need to update the cursor where clause with every onQueryTextChange,
+        // not just for the name but for all fields
+        menFragment.searchbyTags(tags);
+
+    }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
