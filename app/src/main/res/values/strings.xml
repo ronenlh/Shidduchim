@@ -39,4 +39,5 @@
     <string name="add_from_contacts">Add From Contacts</string>
     <string name="phone_number">Phone Number</string>
     <string name="edit">Edit</string>
+    <string name="add">Add</string>
 </resources>

@@ -42,6 +42,13 @@ public class ContactLab {
                 values);
     }
 
+    public void addTag(Tag tag) {
+        ContentValues values = getContentValues(tag);
+        mDatabase.insert(DatabaseContract.TagEntry.TABLE_NAME,
+                DatabaseContract.Entry.COLUMN_NAME_NULLABLE,
+                values);
+    }
+
     public void updateContact(Contact contact) {
         String uuidString = contact.getId().toString();
         ContentValues values = getContentValues(contact);
@@ -74,6 +81,23 @@ public class ContactLab {
         return new ContactCursorWraper(cursor);
     }
 
+    public ContactCursorWraper queryTags(String selection, String[] selectionArgs) {
+        SQLiteQueryBuilder builder = new SQLiteQueryBuilder();
+        builder.setTables(DatabaseContract.TagEntry.TABLE_NAME);
+        DatabaseHelper mDatabaseOpenHelper = new DatabaseHelper(mContext);
+
+        Cursor cursor = builder.query(mDatabaseOpenHelper.getReadableDatabase(),
+                null, selection, selectionArgs, null, null, null);
+
+        if (cursor == null) {
+            return null;
+        } else if (!cursor.moveToFirst()) {
+            cursor.close();
+            return null;
+        }
+        return new ContactCursorWraper(cursor);
+    }
+
     public List<Contact> getContacts() {
         List<Contact> contacts = new ArrayList<>();
         ContactCursorWraper cursor = queryContacts(null, null);
@@ -81,6 +105,21 @@ public class ContactLab {
             cursor.moveToFirst();
             while (!cursor.isAfterLast()) {
                 contacts.add(cursor.getContact());
+                cursor.moveToNext();
+            }
+        } finally {
+            cursor.close();
+        }
+        return new ArrayList<>();
+    }
+
+    public List<Tag> getTags() {
+        List<Tag> tags = new ArrayList<>();
+        ContactCursorWraper cursor = queryTags(null, null);
+        try {
+            cursor.moveToFirst();
+            while (!cursor.isAfterLast()) {
+                tags.add(cursor.getTag());
                 cursor.moveToNext();
             }
         } finally {
@@ -104,7 +143,7 @@ public class ContactLab {
     }
 
     public Tag getTag(UUID id) {
-        ContactCursorWraper cursor = queryContacts(DatabaseContract.Entry.COLUMN_NAME_TAGS + " = ?",
+        ContactCursorWraper cursor = queryTags(DatabaseContract.TagEntry.COLUMN_NAME_ENTRY_UUID + " = ?",
                 new String[] {id.toString()});
         try {
             if (cursor.getCount() == 0) {
@@ -133,6 +172,16 @@ public class ContactLab {
         values.put(DatabaseContract.Entry.COLUMN_NAME_LOCATION, convertArrayToString(contact.getLocationsIdArray()));
         values.put(DatabaseContract.Entry.COLUMN_NAME_TAGS, convertArrayToString(contact.getTagsIdArray()));
 //        values.put(DatabaseContract.Entry.COLUMN_NAME_PREV_DATES, content); // same as location and mTags but with UUIDs
+
+        return values;
+
+    }
+
+    private static ContentValues getContentValues(Tag tag) {
+        // Create a new map of values, where column names are the keys
+        ContentValues values = new ContentValues();
+        values.put(DatabaseContract.TagEntry.COLUMN_NAME_ENTRY_UUID, tag.getId().toString());
+        values.put(DatabaseContract.TagEntry.COLUMN_NAME_NAME, tag.getName());
 
         return values;
 
@@ -180,6 +229,8 @@ public class ContactLab {
         return arr;
     }
 
+
+
     public static class Filter {
 
         UUID mUUID;
@@ -206,7 +257,7 @@ public class ContactLab {
             return name;
         }
 
-        public UUID getUUID() {
+        public UUID getId() {
             return mUUID;
         }
     }
@@ -222,6 +273,7 @@ public class ContactLab {
 
         public Tag() {
         }
+
     }
 
     public static class Location extends Filter {

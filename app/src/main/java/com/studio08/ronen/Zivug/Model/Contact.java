@@ -178,7 +178,7 @@ public class Contact {
         String[] idArray = new String[tagList.size()];
 
         for (int i = 0; i < tagList.size(); i++) {
-            idArray[i] = tagList.get(i).getUUID().toString();
+            idArray[i] = tagList.get(i).getId().toString();
         }
 
         return idArray;
@@ -204,7 +204,7 @@ public class Contact {
         String[] idArray = new String[locationList.size()];
 
         for (int i = 0; i < locationList.size(); i++) {
-            idArray[i] = locationList.get(i).getUUID().toString();
+            idArray[i] = locationList.get(i).getId().toString();
         }
 
         return idArray;

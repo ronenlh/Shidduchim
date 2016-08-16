@@ -1,6 +1,7 @@
 package com.studio08.ronen.Zivug.Activities;
 
 import android.content.Intent;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -28,6 +29,7 @@ import com.studio08.ronen.Zivug.ContactsRVFragment;
 import com.studio08.ronen.Zivug.Drawer.ExpandableListAdapter;
 import com.studio08.ronen.Zivug.Model.Contact;
 import com.studio08.ronen.Zivug.Model.ContactLab;
+import com.studio08.ronen.Zivug.Model.DatabaseContract;
 import com.studio08.ronen.Zivug.R;
 
 import java.util.ArrayList;
@@ -91,17 +93,7 @@ public class MainActivity extends AppCompatActivity
 //        List<String> mSampleTitles2List = new ArrayList<>(Arrays.asList(mSampleTitles2));
 
         // Drawer Sample List
-        List<ContactLab.Tag> mTagList = new ArrayList<>();
-        mTagList.add(new ContactLab.Tag("Test1"));
-        mTagList.add(new ContactLab.Tag("Test2"));
-        mTagList.add(new ContactLab.Tag("Test3"));
-        mTagList.add(new ContactLab.Tag("Test4"));
-
-//        List<ContactLab.Tag> mTagList2 = new ArrayList<>();
-//        mTagList.add(new ContactLab.Tag("Test5"));
-//        mTagList.add(new ContactLab.Tag("Test6"));
-//        mTagList.add(new ContactLab.Tag("Test7"));
-//        mTagList.add(new ContactLab.Tag("Test8"));
+        List<ContactLab.Tag> mTagList = ContactLab.get(this).getTags();
 
         Map<String, List<ContactLab.Tag>> groups = new HashMap<>();
         groups.put("Tags", mTagList);
@@ -113,6 +105,7 @@ public class MainActivity extends AppCompatActivity
 
         ExpandableListView expandableListView = (ExpandableListView) findViewById(R.id.drawer_exp_list);
         final ExpandableListAdapter adapter = new ExpandableListAdapter(this, groupNames, groups);
+
 
         expandableListView.setAdapter(adapter);
 
