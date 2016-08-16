@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
+import android.widget.ListView;
 import android.widget.Toast;
 
 import com.studio08.ronen.Zivug.Model.ContactLab;
@@ -14,8 +15,10 @@ import java.util.List;
 
 public class AddTagsActivity extends AppCompatActivity {
 
-    AutoCompleteTextView mTextView;
-    ContactLab.Tag mTag;
+    private AutoCompleteTextView mTextView;
+    private ListView mListView;
+    private ContactLab.Tag mTag;
+    private String[] mTags;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,17 +26,28 @@ public class AddTagsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_add_tags);
 
         mTextView = (AutoCompleteTextView) findViewById(R.id.autocomplete_tags);
+        mListView = (ListView) findViewById(R.id.add_tags_listview);
 
-        // Autocomplete tags
+        loadData();
+        setData();
+    }
+
+
+
+    private void loadData() {
         List<ContactLab.Tag> mTags = ContactLab.get(this).getTags();
-        String[] tags = new String[mTags.size()];
-        for (int i = 0; i < tags.length; i++) {
-            tags[i] = mTags.get(i).getName();
+        this.mTags = new String[mTags.size()];
+        for (int i = 0; i < this.mTags.length; i++) {
+            this.mTags[i] = mTags.get(i).getName();
         }
+    }
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
-                android.R.layout.simple_dropdown_item_1line, tags);
-        mTextView.setAdapter(adapter);
+    private void setData() {
+        mTextView.setAdapter(new ArrayAdapter<>(this,
+                android.R.layout.simple_dropdown_item_1line, this.mTags));
+
+        mListView.setAdapter(new ArrayAdapter<>(this,
+                android.R.layout.simple_list_item_1, this.mTags));
     }
 
 
@@ -44,5 +58,8 @@ public class AddTagsActivity extends AppCompatActivity {
         ContactLab.get(this).addTag(mTag);
 
         Toast.makeText(this, "Tag " + mTag.getName() + " Added", Toast.LENGTH_SHORT).show();
+
+        loadData();
+        setData();
     }
 }
