@@ -275,6 +275,18 @@ public class MainActivity extends AppCompatActivity
         Log.d(TAG, checkedPositions.toString());
         Log.d(TAG, "\t"+ groups.toString());
 
+        SparseBooleanArray tagGroupBooleanArray = checkedPositions.get(0);
+        List<ContactLab.Tag> tagList = groups.get("Tags");
+
+        ContactLab.Tag[] tags = new ContactLab.Tag[tagGroupBooleanArray.size()];
+
+        for (int i = 0; i < tagGroupBooleanArray.size(); i++) {
+            if (tagGroupBooleanArray.get(i, false))
+                tags[i] = tagList.get(i);
+        }
+        searchbyTags(tags);
+
+
         // need to correlate checkedPositions with groups and then query the true Tag
 
     }
