@@ -51,7 +51,7 @@ public class MainActivity extends AppCompatActivity
     ContactsRVFragment menFragment;
     ContactsRVFragment womenFragment;
 
-    Map<String, List<ContactLab.Tag>> groups;
+    Map<String, List<ContactLab.Tag>> mNameAndListMap;
 
     DrawerLayout mDrawerList;
 
@@ -96,16 +96,16 @@ public class MainActivity extends AppCompatActivity
         // Drawer Sample List
         List<ContactLab.Tag> mTagList = ContactLab.get(this).getTags();
 
-        groups = new HashMap<>();
-        groups.put("Tags", mTagList);
-//        groups.put("Locations", mTagList2);
+        mNameAndListMap = new HashMap<>();
+        mNameAndListMap.put("Tags", mTagList);
+//        mNameAndListMap.put("Locations", mTagList2);
 
         List<String> groupNames = new ArrayList<>();
         groupNames.add("Tags");
 //        groupNames.add("Locations");
 
         ExpandableListView expandableListView = (ExpandableListView) findViewById(R.id.drawer_exp_list);
-        final ExpandableListAdapter adapter = new ExpandableListAdapter(this, groupNames, groups);
+        final ExpandableListAdapter adapter = new ExpandableListAdapter(this, groupNames, mNameAndListMap);
 
 
         expandableListView.setAdapter(adapter);
@@ -195,7 +195,7 @@ public class MainActivity extends AppCompatActivity
         menFragment.searchContacts(query);
     }
 
-    private void searchbyTags(ContactLab.Tag... tags) {
+    private void searchbyTags(ContactLab.Tag[] tags) {
         // I need to update the cursor where clause with every onQueryTextChange,
         // not just for the name but for all fields
         menFragment.searchbyTags(tags);
@@ -273,21 +273,23 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onChildItemClickCallback(SparseArray<SparseBooleanArray> checkedPositions) {
         Log.d(TAG, checkedPositions.toString());
-        Log.d(TAG, "\t"+ groups.toString());
+        Log.d(TAG, "\t"+ mNameAndListMap.toString());
 
         SparseBooleanArray tagGroupBooleanArray = checkedPositions.get(0);
-        List<ContactLab.Tag> tagList = groups.get("Tags");
+        List<ContactLab.Tag> tagList = mNameAndListMap.get("Tags");
 
-        ContactLab.Tag[] tags = new ContactLab.Tag[tagGroupBooleanArray.size()];
 
-        for (int i = 0; i < tagGroupBooleanArray.size(); i++) {
+        List<ContactLab.Tag> tmpTagList = new ArrayList<>(tagGroupBooleanArray.size());
+
+        for (int i = 0; i < tagList.size(); i++)
             if (tagGroupBooleanArray.get(i, false))
-                tags[i] = tagList.get(i);
-        }
+                tmpTagList.add(tagList.get(i));
+
+        ContactLab.Tag[] tags = tmpTagList.toArray(new ContactLab.Tag[tmpTagList.size()]);
+
         searchbyTags(tags);
 
-
-        // need to correlate checkedPositions with groups and then query the true Tag
+        // need to correlate checkedPositions with mNameAndListMap and then query the true Tag
 
     }
 

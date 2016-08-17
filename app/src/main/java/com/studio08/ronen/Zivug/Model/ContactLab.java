@@ -6,12 +6,15 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteQueryBuilder;
 import android.os.Environment;
+import android.util.Log;
 
 import java.io.File;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+
+import static com.google.android.gms.wearable.DataMap.TAG;
 
 /**
  * Created by Ronen on 9/8/16.
@@ -20,6 +23,7 @@ import java.util.UUID;
 
 public class ContactLab {
     private static ContactLab mContactLab;
+    private final String TAG = "ContactLab";
 
     private Context mContext;
     private SQLiteDatabase mDatabase;
@@ -68,14 +72,17 @@ public class ContactLab {
     }
 
     public Cursor getTagMatches(Tag[] tags) {
-        String selection = DatabaseContract.Entry.COLUMN_NAME_TAGS + " MATCH ?";
+        StringBuilder selection = new StringBuilder();
+        selection.append(DatabaseContract.Entry.COLUMN_NAME_TAGS + " MATCH ?");
         String[] selectionArgs = new String[tags.length];
 
         for (int i = 0; i < selectionArgs.length; i++) {
+            if (i > 0) selection.append(" AND ?");
             selectionArgs[i] = tags[i].getId().toString();
+            Log.v(TAG, selectionArgs[i]);
         }
 
-        return queryContacts(selection, selectionArgs);
+        return queryContacts(selection.toString(), selectionArgs);
     }
 
     public ContactCursorWraper queryContacts(String selection, String[] selectionArgs) {
