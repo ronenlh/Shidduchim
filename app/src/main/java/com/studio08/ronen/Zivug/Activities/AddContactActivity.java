@@ -391,14 +391,14 @@ public class AddContactActivity extends AppCompatActivity {
 
         } else if (requestCode == SET_TAGS_RESULT) {
             ContactLab.Tag mTag = (ContactLab.Tag) data.getSerializableExtra(AddTagsActivity.TAG_RESULT);
-            StringBuilder string = new StringBuilder();
+            StringBuilder stringBuilder = new StringBuilder();
             if (!mTagsTextView.getText().toString().isEmpty()) {
-                string.append(mTagsTextView.getText().toString());
-                string.append(", ");
+                stringBuilder.append(mTagsTextView.getText().toString());
+                stringBuilder.append(", ");
             }
-            string.append(mTag.getName());
+            stringBuilder.append(mTag.getName());
 
-            mTagsTextView.setText(string.toString());
+            mTagsTextView.setText(stringBuilder.toString());
 
             mContact.addTag(mTag);
 

@@ -78,7 +78,7 @@ public class ContactLab {
 
         for (int i = 0; i < selectionArgs.length; i++) {
             // here I construct the query arguments based on the arguments
-            if (i > 0) selection.append(" AND ?");
+            if (i > 0) selection.append(" AND " + DatabaseContract.Entry.COLUMN_NAME_TAGS + " MATCH ?");
             selectionArgs[i] = tags[i].getId().toString();
             Log.v(TAG, selectionArgs[i]);
         }
@@ -92,7 +92,7 @@ public class ContactLab {
         DatabaseHelper mDatabaseOpenHelper = new DatabaseHelper(mContext);
 
         Cursor cursor = builder.query(mDatabaseOpenHelper.getReadableDatabase(),
-                null, selection, selectionArgs, null, null, null);
+                null, selection, selectionArgs, null, null, DatabaseContract.Entry.COLUMN_NAME_FULL_NAME);
 
         if (cursor == null) {
             return null;
@@ -236,17 +236,17 @@ public class ContactLab {
 
     public static String convertArrayToString(String[] array){
 
-        String string = "";
+        StringBuilder stringBuilder = new StringBuilder();
 
         for (int i = 0; i < array.length; i++) {
-            string = string + array[i];
+            stringBuilder.append(array[i]);
 
             // Do not append separator at the end of last element
             if (i < array.length - 1)
-                string = string + separator;
+                stringBuilder.append(separator);
         }
 
-        return string;
+        return stringBuilder.toString();
     }
 
     private static String[] convertStringToArray(String str){

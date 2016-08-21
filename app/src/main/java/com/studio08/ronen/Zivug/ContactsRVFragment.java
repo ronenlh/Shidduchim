@@ -13,6 +13,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.studio08.ronen.Zivug.Model.Contact;
 import com.studio08.ronen.Zivug.Model.ContactLab;
@@ -30,7 +31,6 @@ import com.studio08.ronen.Zivug.Model.DatabaseContract;
  * create an instance of this fragment.
  */
 public class ContactsRVFragment extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_GENDER = "gender";
 
@@ -82,7 +82,6 @@ public class ContactsRVFragment extends Fragment {
         if (getArguments() != null) {
             mGenderParam = getArguments().getInt(ARG_GENDER);
         }
-
     }
 
     @Override
@@ -166,6 +165,7 @@ public class ContactsRVFragment extends Fragment {
         } else {
             mCursorAdapter.swapCursor(cursor);
         }
+
     }
 
     public void searchContacts(String query) {
