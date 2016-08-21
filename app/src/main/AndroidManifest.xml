@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="com.studio08.ronen.Zivug">
+          package="com.studio08.ronen.Zivug" >
 
     <!--For the maps-->
     <!--<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>-->
@@ -32,8 +32,6 @@
             </intent-filter>
         </activity>
         <activity android:name=".Activities.AddContactActivity">
-        </activity>
-        <activity android:name=".EditContactActivity">
         </activity>
         <activity android:name=".Activities.ContactActivity">
         </activity>
