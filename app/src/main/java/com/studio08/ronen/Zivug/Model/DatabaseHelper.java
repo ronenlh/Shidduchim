@@ -31,7 +31,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     DatabaseContract.Entry.COLUMN_NAME_PHONE + TEXT_TYPE + COMMA_SEP +
                     DatabaseContract.Entry.COLUMN_NAME_PHONE2 + TEXT_TYPE + COMMA_SEP +
                     DatabaseContract.Entry.COLUMN_NAME_EMAIL + TEXT_TYPE + COMMA_SEP +
-                    DatabaseContract.Entry.COLUMN_NAME_NULLABLE + TEXT_TYPE + COMMA_SEP +
+                    DatabaseContract.Entry.COLUMN_NAME_NULLABLE + TEXT_TYPE +
                     "FOREIGN KEY( " + DatabaseContract.Entry.COLUMN_NAME_TAGS + " ) REFERENCES "+DatabaseContract.TagEntry.TABLE_NAME+"( "+DatabaseContract.TagEntry._ID+" ) " +
                     " )";
 
@@ -48,7 +48,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             "DROP TABLE IF EXISTS " + DatabaseContract.TagEntry.TABLE_NAME;
 
     // If you change the database schema, you must increment the database version.
-    public static final int DATABASE_VERSION = 4;
+    public static final int DATABASE_VERSION = 6;
     public static final String DATABASE_NAME = "Zivug.db";
 
     public DatabaseHelper(Context context) {

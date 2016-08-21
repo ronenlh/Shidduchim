@@ -129,6 +129,7 @@ public class Contact {
     }
 
     public String getPicturePath() {
+        if (mPicturePath == null) return "";
         return mPicturePath;
     }
 

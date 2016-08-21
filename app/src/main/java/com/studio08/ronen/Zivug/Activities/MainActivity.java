@@ -275,15 +275,15 @@ public class MainActivity extends AppCompatActivity
         Log.d(TAG, checkedPositions.toString());
         Log.d(TAG, "\t"+ mNameAndListMap.toString());
 
-        SparseBooleanArray tagGroupBooleanArray = checkedPositions.get(0);
+        SparseBooleanArray tagGroupBooleanArray = checkedPositions.get(0); // 0 is the tags array
         List<ContactLab.Tag> tagList = mNameAndListMap.get("Tags");
 
 
         List<ContactLab.Tag> tmpTagList = new ArrayList<>(tagGroupBooleanArray.size());
 
         for (int i = 0; i < tagList.size(); i++)
-            if (tagGroupBooleanArray.get(i, false))
-                tmpTagList.add(tagList.get(i));
+            if (tagGroupBooleanArray.get(i, false)) // false is a default value
+                tmpTagList.add(tagList.get(i)); // if true I add it to the list to send only the selected true values to the query
 
         ContactLab.Tag[] tags = tmpTagList.toArray(new ContactLab.Tag[tmpTagList.size()]);
 

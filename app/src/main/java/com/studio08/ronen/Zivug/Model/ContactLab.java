@@ -77,6 +77,7 @@ public class ContactLab {
         String[] selectionArgs = new String[tags.length];
 
         for (int i = 0; i < selectionArgs.length; i++) {
+            // here I construct the query arguments based on the arguments
             if (i > 0) selection.append(" AND ?");
             selectionArgs[i] = tags[i].getId().toString();
             Log.v(TAG, selectionArgs[i]);
@@ -96,6 +97,7 @@ public class ContactLab {
         if (cursor == null) {
             return null;
         } else if (!cursor.moveToFirst()) {
+            // cursor is empty
             cursor.close();
             return null;
         }
@@ -230,7 +232,7 @@ public class ContactLab {
         return new File(externalFilesDir, contact.getPhotoFilenane());
     }
 
-    private static String separator = "__,__";
+    private static String separator = " , ";
 
     public static String convertArrayToString(String[] array){
 
