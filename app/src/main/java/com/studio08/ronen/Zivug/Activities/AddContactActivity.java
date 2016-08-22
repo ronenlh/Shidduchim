@@ -397,6 +397,12 @@ public class AddContactActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == REQUEST_PHOTO) {
+            mPicturePath = mPhotoFile.getPath();
+
+            if (radioGroup.getCheckedRadioButtonId() == 0)
+                loadImage(Contact.MALE);
+            else
+                loadImage(Contact.FEMALE);
 
         } else if (requestCode == SET_LOCATION_RESULT) {
 
