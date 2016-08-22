@@ -51,7 +51,7 @@ public class AddTagsActivity extends AppCompatActivity implements AdapterView.On
                 android.R.layout.simple_dropdown_item_1line, this.mStringTags));
 
         mListView.setAdapter(new ArrayAdapter<>(this,
-                android.R.layout.simple_list_item_1, this.mStringTags));
+                R.layout.tag_list_item, R.id.tag_list_text, this.mStringTags));
 
         mListView.setOnItemClickListener(this);
     }

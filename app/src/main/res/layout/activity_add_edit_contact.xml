@@ -189,7 +189,9 @@
         android:id="@+id/tags_textview"
         android:layout_marginBottom="5dp"
         android:layout_marginRight="5dp"
-        android:layout_marginLeft="5dp"/>
+        android:layout_marginLeft="5dp"
+        android:textColor="@color/common_google_signin_btn_text_dark_focused"
+        android:textSize="17sp"/>
 
     <Button
         android:text="@string/delete"
