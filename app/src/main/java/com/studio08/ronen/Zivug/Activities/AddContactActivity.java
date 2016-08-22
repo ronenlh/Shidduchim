@@ -387,7 +387,9 @@ public class AddContactActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == SET_LOCATION_RESULT) {
+        if (requestCode == REQUEST_PHOTO) {
+
+        } else if (requestCode == SET_LOCATION_RESULT) {
 
         } else if (requestCode == SET_TAGS_RESULT) {
             ContactLab.Tag mTag = (ContactLab.Tag) data.getSerializableExtra(AddTagsActivity.TAG_RESULT);

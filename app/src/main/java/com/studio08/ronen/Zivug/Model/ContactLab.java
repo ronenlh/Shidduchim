@@ -101,7 +101,7 @@ public class ContactLab {
             cursor.close();
             return null;
         }
-        return new ContactCursorWraper(cursor);
+        return new ContactCursorWraper(cursor, mContext);
     }
 
     public ContactCursorWraper queryTags(String selection, String[] selectionArgs) {
@@ -118,7 +118,7 @@ public class ContactLab {
             cursor.close();
             return null;
         }
-        return new ContactCursorWraper(cursor);
+        return new ContactCursorWraper(cursor, mContext);
     }
 
     public List<Contact> getContacts() {
@@ -196,6 +196,7 @@ public class ContactLab {
         values.put(DatabaseContract.Entry.COLUMN_NAME_EMAIL, contact.getEmail());
         values.put(DatabaseContract.Entry.COLUMN_NAME_LOCATION, convertArrayToString(contact.getLocationsIdArray()));
         values.put(DatabaseContract.Entry.COLUMN_NAME_TAGS, convertArrayToString(contact.getTagsIdArray()));
+        values.put(DatabaseContract.Entry.COLUMN_NAME_DATE_ADED, contact.getDate().toString());
 //        values.put(DatabaseContract.Entry.COLUMN_NAME_PREV_DATES, content); // same as location and mTags but with UUIDs
 
         return values;
@@ -249,7 +250,7 @@ public class ContactLab {
         return stringBuilder.toString();
     }
 
-    private static String[] convertStringToArray(String str){
+    public static String[] convertStringToArray(String str){
         String[] arr = str.split(separator);
         return arr;
     }
@@ -266,7 +267,7 @@ public class ContactLab {
 
         public Filter(String name) {
             this();
-            this.name = name;
+            setName(name);
         }
 
         public Filter() {
@@ -274,7 +275,20 @@ public class ContactLab {
         }
 
         public void setName(String name) {
-            this.name = name;
+
+            // Capitalize
+            StringBuilder stringBuilder = new StringBuilder();
+
+            String[] strArr = name.split(" ");
+
+            for (String str : strArr) {
+                char[] stringArray = str.trim().toCharArray();
+                stringArray[0] = Character.toUpperCase(stringArray[0]);
+                str = new String(stringArray);
+                stringBuilder.append(str).append(" ");
+            }
+
+            this.name = stringBuilder.toString().trim();
         }
 
         public String getName() {
@@ -298,6 +312,10 @@ public class ContactLab {
         public Tag() {
         }
 
+        @Override
+        public String toString() {
+            return name;
+        }
     }
 
     public static class Location extends Filter {

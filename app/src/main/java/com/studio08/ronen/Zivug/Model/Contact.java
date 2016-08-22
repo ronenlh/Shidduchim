@@ -26,6 +26,7 @@ public class Contact {
     private Set<ContactLab.Location> mLocations;
 
     private static Random r;
+    private String[] mTagsArray;
 
     public Contact() {
         mId = UUID.randomUUID();
@@ -232,5 +233,13 @@ public class Contact {
 
     public void removeLocation(String location) {
         this.mLocations.remove(location);
+    }
+
+    public Date getDate() {
+        return mDate;
+    }
+
+    public void setTagsArray(String[] tagsArray) {
+        mTagsArray = tagsArray;
     }
 }

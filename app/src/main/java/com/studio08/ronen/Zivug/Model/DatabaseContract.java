@@ -29,6 +29,7 @@ public class DatabaseContract {
         public static final String COLUMN_NAME_PHONE = "phone";
         public static final String COLUMN_NAME_PHONE2 = "phone2";
         public static final String COLUMN_NAME_EMAIL = "email";
+        public static final String COLUMN_NAME_DATE_ADED = "date";
         public static final String COLUMN_NAME_NULLABLE = "nullable";
 
         // remember to change as well in DatabaseHelper in SQL_CREATE_ENTRIES
