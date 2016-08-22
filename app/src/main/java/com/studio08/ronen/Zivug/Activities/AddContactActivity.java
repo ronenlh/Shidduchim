@@ -223,6 +223,15 @@ public class AddContactActivity extends AppCompatActivity {
         notesEditText.setText(mContact.getNotes());
         mPicturePath = mContact.getPicturePath();
         deleteContactButton.setVisibility(View.VISIBLE);
+
+        StringBuilder stringBuilder = new StringBuilder();
+        for (ContactLab.Tag tag : mContact.getTags()) {
+            if (!stringBuilder.toString().isEmpty()) stringBuilder.append(", ");
+            stringBuilder.append(tag.toString());
+        }
+        stringBuilder.trimToSize();
+
+        mTagsTextView.setText(stringBuilder.toString());
         setGenderRadioButtons(mContact.getGender());
         loadImage(mContact.getGender());
     }

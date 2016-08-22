@@ -150,6 +150,7 @@ public class Contact {
                 ", mGender=" + mGender +
                 ", mTags=" + mTags +
                 ", mLocations=" + mLocations +
+                ", mDate=" + mDate +
                 '}';
     }
 
