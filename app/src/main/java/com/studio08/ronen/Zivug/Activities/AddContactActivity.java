@@ -225,13 +225,14 @@ public class AddContactActivity extends AppCompatActivity {
         deleteContactButton.setVisibility(View.VISIBLE);
 
         StringBuilder stringBuilder = new StringBuilder();
-        for (ContactLab.Tag tag : mContact.getTags()) {
-            if (!stringBuilder.toString().isEmpty()) stringBuilder.append(", ");
-            stringBuilder.append(tag.toString());
+        if (mContact.getTags() != null) {
+            for (ContactLab.Tag tag : mContact.getTags()) {
+                if (!stringBuilder.toString().isEmpty()) stringBuilder.append(", ");
+                stringBuilder.append(tag.toString());
+            }
+            stringBuilder.trimToSize();
+            mTagsTextView.setText(stringBuilder.toString());
         }
-        stringBuilder.trimToSize();
-
-        mTagsTextView.setText(stringBuilder.toString());
         setGenderRadioButtons(mContact.getGender());
         loadImage(mContact.getGender());
     }
