@@ -136,7 +136,7 @@ public class ContactsRVFragment extends Fragment {
                     @Override public void run() {
                         swLayout.setRefreshing(false);
                     }
-                }, 5000);
+                }, 3000);
             }
         });
 

@@ -55,16 +55,17 @@ public class ContactCursorWraper extends CursorWrapper {
         contact.setPhone(phoneNumber);
 
         String[] tagsArray = ContactLab.convertStringToArray(mTagsString);
-        Set<ContactLab.Tag> tagSet = new HashSet<>();
 
-        ContactLab contactLab = ContactLab.get(mContext);
+        if (tagsArray != null) {
+            Set<ContactLab.Tag> tagSet = new HashSet<>();
+            ContactLab contactLab = ContactLab.get(mContext);
 
-        for (int i = 0; i < tagsArray.length; i++) {
-            ContactLab.Tag tag = contactLab.getTag(UUID.fromString(tagsArray[i]));
-            tagSet.add(tag);
+            for (int i = 0; i < tagsArray.length; i++) {
+                ContactLab.Tag tag = contactLab.getTag(UUID.fromString(tagsArray[i]));
+                tagSet.add(tag);
+            }
+            contact.setTags(tagSet);
         }
-
-        contact.setTags(tagSet);
 
         return contact;
     }

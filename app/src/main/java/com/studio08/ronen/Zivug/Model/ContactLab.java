@@ -92,7 +92,12 @@ public class ContactLab {
         DatabaseHelper mDatabaseOpenHelper = new DatabaseHelper(mContext);
 
         Cursor cursor = builder.query(mDatabaseOpenHelper.getReadableDatabase(),
-                null, selection, selectionArgs, null, null, DatabaseContract.Entry.COLUMN_NAME_FULL_NAME);
+                null,
+                selection,
+                selectionArgs,
+                null,
+                null,
+                DatabaseContract.Entry.COLUMN_NAME_FULL_NAME);
 
         if (cursor == null) {
             return null;
@@ -251,6 +256,7 @@ public class ContactLab {
     }
 
     public static String[] convertStringToArray(String str){
+        if (str == null || str.isEmpty()) return null;
         String[] arr = str.split(separator);
         return arr;
     }
