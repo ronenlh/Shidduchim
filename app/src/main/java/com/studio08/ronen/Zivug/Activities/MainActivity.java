@@ -55,6 +55,7 @@ public class MainActivity extends AppCompatActivity
     private Map<String, List<ContactLab.Tag>> mNameAndListMap;
     private ExpandableListView expandableListView;
     public ExpandableListAdapter expandableListAdapter;
+    private boolean isTagsExpanded, isLocationsExpanded;
 
     private DrawerLayout mDrawerList;
 
@@ -85,24 +86,50 @@ public class MainActivity extends AppCompatActivity
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, mDrawerList, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
 //        mDrawerList.setDrawerListener(toggle);
         mDrawerList.addDrawerListener(toggle);
+        mDrawerList.addDrawerListener(new DrawerLayout.DrawerListener() {
+            @Override
+            public void onDrawerSlide(View drawerView, float slideOffset) {
+
+            }
+
+            @Override
+            public void onDrawerOpened(View drawerView) {
+                Log.d(TAG, "onDrawerOpened: " + drawerView.toString());
+                updateTagsAndLocations();
+            }
+
+            @Override
+            public void onDrawerClosed(View drawerView) {
+                // maybe not the best place, but record whether the items are expanded or not
+                isTagsExpanded = expandableListView.isGroupExpanded(0);
+                isLocationsExpanded = expandableListView.isGroupExpanded(1);
+            }
+
+            @Override
+            public void onDrawerStateChanged(int newState) {
+
+            }
+        });
         toggle.syncState();
 
 //        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
 //        navigationView.setNavigationItemSelectedListener(this);
 
-        // Drawer Sample List
-/*        String[] mSampleTitles = {"Mars", "Jupiter", "Uranus"};
-        String[] mSampleTitles2 = {"Earth", "Mercury", "Saturn"};
-        List<String> mSampleTitlesList = new ArrayList<>(Arrays.asList(mSampleTitles));
-        List<String> mSampleTitles2List = new ArrayList<>(Arrays.asList(mSampleTitles2));*/
+        setupTagsAndLocations();
 
-        // Drawer Tag List
-        List<ContactLab.Tag> mTagList = ContactLab.get(this).getTags();
-        List<ContactLab.Tag> mLocationList = ContactLab.get(this).getLocations();
+        // Tabs setup
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        viewPager = (ViewPager) findViewById(R.id.viewpager);
+        setupViewPager(viewPager);
+        tabLayout = (TabLayout) findViewById(R.id.tabs);
+        tabLayout.setupWithViewPager(viewPager);
+    }
+
+    private void setupTagsAndLocations() {
 
         mNameAndListMap = new HashMap<>();
-        mNameAndListMap.put("Tags", mTagList);
-        mNameAndListMap.put("Locations", mLocationList);
+        mNameAndListMap.put("Tags",         ContactLab.get(this).getTags());
+        mNameAndListMap.put("Locations",    ContactLab.get(this).getLocations());
 
         List<String> groupNames = new ArrayList<>();
         groupNames.add("Tags");
@@ -110,11 +137,10 @@ public class MainActivity extends AppCompatActivity
 
         expandableListView = (ExpandableListView) findViewById(R.id.drawer_exp_list);
         expandableListAdapter = new ExpandableListAdapter(this, groupNames, mNameAndListMap);
-        expandableListView.setAdapter(expandableListAdapter);
-
         /* The choice mode has been moved from list view to adapter in order
             to not extend the class ExpansibleListView */
         expandableListAdapter.setChoiceMode(ExpandableListAdapter.CHOICE_MODE_MULTIPLE);
+        expandableListView.setAdapter(expandableListAdapter);
 
         // Handle the click when the user clicks an any child
         expandableListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
@@ -130,7 +156,7 @@ public class MainActivity extends AppCompatActivity
 
         // expand them by default
         expandableListView.expandGroup(0);
-//        expandableListView.expandGroup(1);
+        expandableListView.expandGroup(1);
 
 //        // Set the adapter for the list view
 //        mDrawerList.setAdapter(new ArrayAdapter<String>(this,
@@ -144,13 +170,25 @@ public class MainActivity extends AppCompatActivity
 //        // Set the list's click listener
 //        mDrawerList2.setOnItemClickListener(new DrawerItemClickListener());
 
+    }
 
-        // Tabs setup
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        viewPager = (ViewPager) findViewById(R.id.viewpager);
-        setupViewPager(viewPager);
-        tabLayout = (TabLayout) findViewById(R.id.tabs);
-        tabLayout.setupWithViewPager(viewPager);
+    private void updateTagsAndLocations() {
+        mNameAndListMap = new HashMap<>();
+        mNameAndListMap.put("Tags",         ContactLab.get(this).getTags());
+        mNameAndListMap.put("Locations",    ContactLab.get(this).getLocations());
+
+        List<String> groupNames = new ArrayList<>();
+        groupNames.add("Tags");
+        groupNames.add("Locations");
+
+        expandableListAdapter = new ExpandableListAdapter(this, groupNames, mNameAndListMap);
+        /* The choice mode has been moved from list view to adapter in order
+            to not extend the class ExpansibleListView */
+        expandableListAdapter.setChoiceMode(ExpandableListAdapter.CHOICE_MODE_MULTIPLE);
+        expandableListView.setAdapter(expandableListAdapter);
+
+        if (isTagsExpanded) expandableListView.expandGroup(0);
+        if (isLocationsExpanded) expandableListView.expandGroup(1);
     }
 
     @Override
@@ -335,11 +373,5 @@ public class MainActivity extends AppCompatActivity
     private void selectItem(int position) {
         // update the contacts list by updating the cursor paramenter
 
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        expandableListAdapter.notifyDataSetChanged();
     }
 }
