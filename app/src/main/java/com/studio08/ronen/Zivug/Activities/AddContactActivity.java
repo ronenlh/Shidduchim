@@ -45,6 +45,9 @@ import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * TODO: populate recyclerview with previous dates from a cursor querying the UUIDs from a list inside contact (like the tags)
+ * */
 
 public class AddContactActivity extends AppCompatActivity {
 

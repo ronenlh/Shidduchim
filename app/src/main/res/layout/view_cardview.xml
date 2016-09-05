@@ -100,7 +100,13 @@
                     android:layout_height="wrap_content"
                     android:textColor="#000000"
                     android:id="@+id/contact_dates"
-                    android:text="@string/no_previous_dates_listed" />
+                    android:text="@string/no_previous_dates_listed"
+                    android:visibility="gone"/>
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/card_recyclerview"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
 
             </LinearLayout>
 
