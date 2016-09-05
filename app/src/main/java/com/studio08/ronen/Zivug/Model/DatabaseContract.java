@@ -40,6 +40,7 @@ public class DatabaseContract {
         public static final String TABLE_NAME = "tag";
         public static final String COLUMN_NAME_ENTRY_UUID = "entryid";
         public static final String COLUMN_NAME_NAME = "name";
+        public static final String COLUMN_NAME_NULLABLE = "nullable";
     }
 
 }

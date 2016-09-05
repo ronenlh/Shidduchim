@@ -50,7 +50,7 @@ public class ContactLab {
     public void addTag(Tag tag) {
         ContentValues values = getContentValues(tag);
         mDatabase.insert(DatabaseContract.TagEntry.TABLE_NAME,
-                DatabaseContract.Entry.COLUMN_NAME_NULLABLE,
+                DatabaseContract.TagEntry.COLUMN_NAME_NULLABLE,
                 values);
     }
 
@@ -186,6 +186,11 @@ public class ContactLab {
         }
     }
 
+    public List<Tag> getLocations() {
+        return null;
+    }
+
+
     private static ContentValues getContentValues(Contact contact) {
         // Create a new map of values, where column names are the keys
         ContentValues values = new ContentValues();
@@ -260,6 +265,7 @@ public class ContactLab {
         String[] arr = str.split(separator);
         return arr;
     }
+
 
 
     public static class Filter implements Serializable {

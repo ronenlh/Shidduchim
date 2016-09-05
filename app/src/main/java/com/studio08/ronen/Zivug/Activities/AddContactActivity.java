@@ -397,7 +397,7 @@ public class AddContactActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == REQUEST_PHOTO) {
+        if (requestCode == REQUEST_PHOTO  && data != null) {
             mPicturePath = mPhotoFile.getPath();
 
             if (radioGroup.getCheckedRadioButtonId() == 0)
@@ -405,9 +405,9 @@ public class AddContactActivity extends AppCompatActivity {
             else
                 loadImage(Contact.FEMALE);
 
-        } else if (requestCode == SET_LOCATION_RESULT) {
+        } else if (requestCode == SET_LOCATION_RESULT  && data != null) {
 
-        } else if (requestCode == SET_TAGS_RESULT) {
+        } else if (requestCode == SET_TAGS_RESULT && data != null) {
             ContactLab.Tag mTag = (ContactLab.Tag) data.getSerializableExtra(AddTagsActivity.TAG_RESULT);
             StringBuilder stringBuilder = new StringBuilder();
             if (!mTagsTextView.getText().toString().isEmpty()) {

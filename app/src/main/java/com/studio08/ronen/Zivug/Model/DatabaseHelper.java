@@ -39,17 +39,18 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String TAGS_TABLE = "CREATE TABLE " + DatabaseContract.TagEntry.TABLE_NAME + " (" +
             DatabaseContract.TagEntry._ID + " INTEGER AUTO_INCREMENT PRIMARY KEY, \n" +
             DatabaseContract.TagEntry.COLUMN_NAME_ENTRY_UUID + TEXT_TYPE + COMMA_SEP +
-            DatabaseContract.TagEntry.COLUMN_NAME_NAME + TEXT_TYPE +
+            DatabaseContract.TagEntry.COLUMN_NAME_NAME + TEXT_TYPE + COMMA_SEP +
+            DatabaseContract.TagEntry.COLUMN_NAME_NULLABLE + TEXT_TYPE +
             ")";
 
     private static final String SQL_DELETE_ENTRIES =
             "DROP TABLE IF EXISTS " + DatabaseContract.Entry.TABLE_NAME;
 
-    private static final String SQL_TABLE_DELETE_ENTRIES =
+    private static final String SQL_TAG_DELETE_ENTRIES =
             "DROP TABLE IF EXISTS " + DatabaseContract.TagEntry.TABLE_NAME;
 
     // If you change the database schema, you must increment the database version.
-    public static final int DATABASE_VERSION = 7;
+    public static final int DATABASE_VERSION = 8;
     public static final String DATABASE_NAME = "Zivug.db";
 
     public DatabaseHelper(Context context) {
@@ -67,7 +68,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         // This database is only a cache for online data, so its upgrade policy is
         // to simply to discard the data and start over
         db.execSQL(SQL_DELETE_ENTRIES);
-        db.execSQL(SQL_TABLE_DELETE_ENTRIES);
+        db.execSQL(SQL_TAG_DELETE_ENTRIES);
         onCreate(db);
     }
 

@@ -51,7 +51,10 @@ public class MainActivity extends AppCompatActivity
     ContactsRVFragment menFragment;
     ContactsRVFragment womenFragment;
 
+    // Tags and Locations in drawer properties
     Map<String, List<ContactLab.Tag>> mNameAndListMap;
+    ExpandableListView expandableListView;
+    ExpandableListAdapter expandableListAdapter;
 
     DrawerLayout mDrawerList;
 
@@ -93,26 +96,25 @@ public class MainActivity extends AppCompatActivity
 //        List<String> mSampleTitlesList = new ArrayList<>(Arrays.asList(mSampleTitles));
 //        List<String> mSampleTitles2List = new ArrayList<>(Arrays.asList(mSampleTitles2));
 
-        // Drawer Sample List
+        // Drawer Tag List
         List<ContactLab.Tag> mTagList = ContactLab.get(this).getTags();
+//        List<ContactLab.Tag> mLocationList = ContactLab.get(this).getLocations();
 
         mNameAndListMap = new HashMap<>();
         mNameAndListMap.put("Tags", mTagList);
-//        mNameAndListMap.put("Locations", mTagList2);
+//        mNameAndListMap.put("Locations", mLocationList);
 
         List<String> groupNames = new ArrayList<>();
         groupNames.add("Tags");
 //        groupNames.add("Locations");
 
-        ExpandableListView expandableListView = (ExpandableListView) findViewById(R.id.drawer_exp_list);
-        final ExpandableListAdapter adapter = new ExpandableListAdapter(this, groupNames, mNameAndListMap);
+        expandableListView = (ExpandableListView) findViewById(R.id.drawer_exp_list);
+        expandableListAdapter = new ExpandableListAdapter(this, groupNames, mNameAndListMap);
+        expandableListView.setAdapter(expandableListAdapter);
 
-
-        expandableListView.setAdapter(adapter);
-
-        // The choice mode has been moved from list view to adapter in order
-        // to not extend the class ExpansibleListView
-        adapter.setChoiceMode(ExpandableListAdapter.CHOICE_MODE_MULTIPLE);
+        /* The choice mode has been moved from list view to adapter in order
+            to not extend the class ExpansibleListView */
+        expandableListAdapter.setChoiceMode(ExpandableListAdapter.CHOICE_MODE_MULTIPLE);
 
         // Handle the click when the user clicks an any child
         expandableListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
@@ -120,7 +122,7 @@ public class MainActivity extends AppCompatActivity
             @Override
             public boolean onChildClick(ExpandableListView parent, View v,
                                         int groupPosition, int childPosition, long id) {
-                adapter.setClicked(groupPosition, childPosition);
+                expandableListAdapter.setClicked(groupPosition, childPosition);
                 return false;
             }
         });
@@ -335,4 +337,9 @@ public class MainActivity extends AppCompatActivity
 
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        expandableListAdapter.notifyDataSetInvalidated();
+    }
 }
