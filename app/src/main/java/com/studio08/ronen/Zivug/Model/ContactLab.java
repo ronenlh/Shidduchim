@@ -8,6 +8,8 @@ import android.database.sqlite.SQLiteQueryBuilder;
 import android.os.Environment;
 import android.util.Log;
 
+import com.studio08.ronen.Zivug.Activities.MainActivity;
+
 import java.io.File;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -187,7 +189,7 @@ public class ContactLab {
     }
 
     public List<Tag> getLocations() {
-        return null;
+        return new ArrayList<>();
     }
 
 

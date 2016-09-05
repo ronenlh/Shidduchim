@@ -48,15 +48,15 @@ public class MainActivity extends AppCompatActivity
     private ViewPager viewPager;
 
     // Fragments
-    ContactsRVFragment menFragment;
-    ContactsRVFragment womenFragment;
+    private ContactsRVFragment menFragment;
+    private ContactsRVFragment womenFragment;
 
     // Tags and Locations in drawer properties
-    Map<String, List<ContactLab.Tag>> mNameAndListMap;
-    ExpandableListView expandableListView;
-    ExpandableListAdapter expandableListAdapter;
+    private Map<String, List<ContactLab.Tag>> mNameAndListMap;
+    private ExpandableListView expandableListView;
+    public ExpandableListAdapter expandableListAdapter;
 
-    DrawerLayout mDrawerList;
+    private DrawerLayout mDrawerList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,31 +82,31 @@ public class MainActivity extends AppCompatActivity
 
         // Drawer
         mDrawerList = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, mDrawerList, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        mDrawerList.setDrawerListener(toggle);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, mDrawerList, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+//        mDrawerList.setDrawerListener(toggle);
+        mDrawerList.addDrawerListener(toggle);
         toggle.syncState();
 
 //        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
 //        navigationView.setNavigationItemSelectedListener(this);
 
         // Drawer Sample List
-//        String[] mSampleTitles = {"Mars", "Jupiter", "Uranus"};
-//        String[] mSampleTitles2 = {"Earth", "Mercury", "Saturn"};
-//        List<String> mSampleTitlesList = new ArrayList<>(Arrays.asList(mSampleTitles));
-//        List<String> mSampleTitles2List = new ArrayList<>(Arrays.asList(mSampleTitles2));
+/*        String[] mSampleTitles = {"Mars", "Jupiter", "Uranus"};
+        String[] mSampleTitles2 = {"Earth", "Mercury", "Saturn"};
+        List<String> mSampleTitlesList = new ArrayList<>(Arrays.asList(mSampleTitles));
+        List<String> mSampleTitles2List = new ArrayList<>(Arrays.asList(mSampleTitles2));*/
 
         // Drawer Tag List
         List<ContactLab.Tag> mTagList = ContactLab.get(this).getTags();
-//        List<ContactLab.Tag> mLocationList = ContactLab.get(this).getLocations();
+        List<ContactLab.Tag> mLocationList = ContactLab.get(this).getLocations();
 
         mNameAndListMap = new HashMap<>();
         mNameAndListMap.put("Tags", mTagList);
-//        mNameAndListMap.put("Locations", mLocationList);
+        mNameAndListMap.put("Locations", mLocationList);
 
         List<String> groupNames = new ArrayList<>();
         groupNames.add("Tags");
-//        groupNames.add("Locations");
+        groupNames.add("Locations");
 
         expandableListView = (ExpandableListView) findViewById(R.id.drawer_exp_list);
         expandableListAdapter = new ExpandableListAdapter(this, groupNames, mNameAndListMap);
@@ -340,6 +340,6 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onResume() {
         super.onResume();
-        expandableListAdapter.notifyDataSetInvalidated();
+        expandableListAdapter.notifyDataSetChanged();
     }
 }
