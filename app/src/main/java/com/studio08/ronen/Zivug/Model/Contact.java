@@ -252,4 +252,16 @@ public class Contact {
     public void setDates(Set<UUID> dates) {
         mPreviousDates = dates;
     }
+
+    public String getPreviousDatesAsString() {
+        return "";
+    }
+
+    public Set<UUID> getPreviousDates() {
+        return mPreviousDates;
+    }
+
+    public boolean addPreviousDate(Contact date) {
+        return mPreviousDates.add(date.getId());
+    }
 }

@@ -12,6 +12,7 @@ import java.io.File;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 /**
@@ -50,6 +51,25 @@ public class ContactLab {
         mDatabase.insert(DatabaseContract.TagEntry.TABLE_NAME,
                 DatabaseContract.TagEntry.COLUMN_NAME_NULLABLE,
                 values);
+    }
+
+    public void addLocation(Location location) {
+        ContentValues values = getContentValues(location);
+        mDatabase.insert(DatabaseContract.LocationEntry.TABLE_NAME,
+                DatabaseContract.LocationEntry.COLUMN_NAME_NULLABLE,
+                values);
+    }
+
+    public void addPreviousDateToDb(Contact contact, Contact date) {
+        // this isn't about adding a new row to a table but appending a string to a value
+        contact.addPreviousDate(date);
+        ContentValues values = new ContentValues();
+        values.put(DatabaseContract.Entry.COLUMN_NAME_PREV_DATES, contact.getPreviousDatesAsString());
+
+        mDatabase.update(DatabaseContract.TagEntry.TABLE_NAME,
+                values,
+                null,
+                null);
     }
 
     public void updateContact(Contact contact) {
@@ -243,6 +263,16 @@ public class ContactLab {
         ContentValues values = new ContentValues();
         values.put(DatabaseContract.TagEntry.COLUMN_NAME_ENTRY_UUID, tag.getId().toString());
         values.put(DatabaseContract.TagEntry.COLUMN_NAME_NAME, tag.getName());
+
+        return values;
+
+    }
+
+    private static ContentValues getContentValues(Location location) {
+        // Create a new map of values, where column names are the keys
+        ContentValues values = new ContentValues();
+        values.put(DatabaseContract.LocationEntry.COLUMN_NAME_ENTRY_UUID, location.getId().toString());
+        values.put(DatabaseContract.LocationEntry.COLUMN_NAME_NAME, location.getName());
 
         return values;
 
