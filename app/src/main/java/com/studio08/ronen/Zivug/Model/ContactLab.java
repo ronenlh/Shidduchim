@@ -81,6 +81,9 @@ public class ContactLab {
     }
 
     public ContactCursorWraper getWordMatches(String query) {
+
+        if (query.isEmpty()) return queryContactsTable(null, null);
+
         String selection = DatabaseContract.Entry.TABLE_NAME + " MATCH ?";
         String[] selectionArgs = new String[] {query+"*"};
 
@@ -89,32 +92,27 @@ public class ContactLab {
         return queryContactsTable(selection, selectionArgs);
     }
 
-    public Cursor getTagMatches(Tag[] tags) {
+    public Cursor getTagMatches(Tag[] tags, int genderParam) {
 
         // SELECT * FROM entry WHERE tags LIKE '%817d944e-0ad0-491f-b9a5-121448926097%' AND  tags LIKE '%507e4f71-9d2b-465b-b932-94754a4d1992%'
 
-//        String sampleCursor = "SELECT * FROM entry WHERE tags LIKE '%817d944e-0ad0-491f-b9a5-121448926097%'";
         StringBuilder sqlQuery = new StringBuilder();
-        sqlQuery.append("SELECT * FROM " + DatabaseContract.Entry.TABLE_NAME);
+        sqlQuery.append("SELECT * FROM " + DatabaseContract.Entry.TABLE_NAME
+                + " WHERE " + DatabaseContract.Entry.COLUMN_NAME_GENDER + " MATCH " + genderParam);
 
         if(tags.length > 0)
             for (int i = 0; i < tags.length; i++) {
                 // here I construct the query arguments based on the arguments
-                if (i == 0) sqlQuery.append(" WHERE tags LIKE '%" + tags[0].getId().toString() + "%'");
-                if (i > 0)
-                    sqlQuery.append(" AND " + DatabaseContract.Entry.COLUMN_NAME_TAGS + " LIKE '%" + tags[i].getId().toString() + "%'");
+                sqlQuery.append(" AND " + DatabaseContract.Entry.COLUMN_NAME_TAGS + " LIKE '%" + tags[i].getId().toString() + "%'");
             }
 
         sqlQuery.append(";");
 
         Log.d(TAG, "getTagMatches: query: " + sqlQuery.toString());
-//        Log.d(TAG, "getTagMatches: sample: "+ sampleCursor);
-
 
         DatabaseHelper mDatabaseOpenHelper = new DatabaseHelper(mContext);
         SQLiteDatabase db = mDatabaseOpenHelper.getReadableDatabase();
         Cursor cursor = db.rawQuery(sqlQuery.toString(), null);
-//        Cursor cursor = db.rawQuery(sampleCursor, null);
 
         if (cursor == null) {
             return null;

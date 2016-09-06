@@ -48,8 +48,7 @@ public class MainActivity extends AppCompatActivity
     private ViewPager viewPager;
 
     // Fragments
-    private ContactsRVFragment menFragment;
-    private ContactsRVFragment womenFragment;
+    private ContactsRVFragment menFragment, womenFragment, currentFragment;
 
     // Tags and Locations in drawer properties
     private Map<String, List<ContactLab.Tag>> mNameAndListMap;
@@ -232,13 +231,16 @@ public class MainActivity extends AppCompatActivity
     private void searchContacts(String query) {
         // I need to update the cursor where clause with every onQueryTextChange,
         // not just for the name but for all fields
-        menFragment.searchContacts(query);
+        if (currentFragment == null) currentFragment = menFragment;
+        if (query.isEmpty()) currentFragment.updateUI();
+        else currentFragment.searchContacts(query);
     }
 
     private void searchbyTags(ContactLab.Tag[] tags) {
         // I need to update the cursor where clause with every onQueryTextChange,
         // not just for the name but for all fields
-        menFragment.searchbyTags(tags);
+        if (currentFragment == null) currentFragment = menFragment;
+        currentFragment.searchbyTags(tags);
 
     }
 
@@ -303,6 +305,23 @@ public class MainActivity extends AppCompatActivity
         adapter.addFragment(womenFragment, "WOMEN");
 
         viewPager.setAdapter(adapter);
+        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                currentFragment = (position == 0)? menFragment : womenFragment;
+                Log.d(TAG, "onPageSelected: currentFragment " + currentFragment.toString());
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
     }
 
     @Override

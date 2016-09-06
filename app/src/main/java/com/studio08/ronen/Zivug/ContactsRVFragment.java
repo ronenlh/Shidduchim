@@ -143,7 +143,7 @@ public class ContactsRVFragment extends Fragment {
         return rootView;
     }
 
-    private void updateUI() {
+    public void updateUI() {
         ContactLab contactLab = ContactLab.get(getContext());
         Cursor cursor;
 
@@ -182,7 +182,7 @@ public class ContactsRVFragment extends Fragment {
     }
 
     public void searchbyTags(ContactLab.Tag[] tags) {
-        Cursor cursor = ContactLab.get(getContext()).getTagMatches(tags);
+        Cursor cursor = ContactLab.get(getContext()).getTagMatches(tags, mGenderParam);
 
         if (mCursorAdapter == null)
             mCursorAdapter = new ContactsRVCursorAdapter(getContext(), cursor);
