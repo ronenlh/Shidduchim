@@ -1,8 +1,10 @@
 package com.studio08.ronen.Zivug.Activities;
 
 import android.content.Intent;
+import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Menu;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -15,7 +17,7 @@ import com.studio08.ronen.Zivug.R;
 
 import java.util.List;
 
-public class AddTagsActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
+public class AddTagsActivity extends AppCompatActivity implements AdapterView.OnItemClickListener, AddTagDialogFragment.onAddSelectedListener {
 
     public static final String TAG_RESULT = "tag";
     private AutoCompleteTextView mTextView;
@@ -56,17 +58,27 @@ public class AddTagsActivity extends AppCompatActivity implements AdapterView.On
         mListView.setOnItemClickListener(this);
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        super.onCreateOptionsMenu(menu);
+        getMenuInflater().inflate(R.menu.add_tag_menu, menu);
+
+        return true;
+    }
 
     public void addTag(View view) {
-        String text = mTextView.getText().toString();
+//        String text = mTextView.getText().toString();
+//
+//        mTag = new ContactLab.Tag(text);
+//        ContactLab.get(this).addTag(mTag);
+//
+//        Toast.makeText(this, "Tag " + mTag.getName() + " Added", Toast.LENGTH_SHORT).show();
 
-        mTag = new ContactLab.Tag(text);
-        ContactLab.get(this).addTag(mTag);
+        DialogFragment dialogFragment = new AddTagDialogFragment();
+        dialogFragment.show(getSupportFragmentManager(), "AddTagDialogFragment");
 
-        Toast.makeText(this, "Tag " + mTag.getName() + " Added", Toast.LENGTH_SHORT).show();
 
-        loadData();
-        setData();
     }
 
     @Override
@@ -75,5 +87,13 @@ public class AddTagsActivity extends AppCompatActivity implements AdapterView.On
         returnIntent.putExtra(TAG_RESULT, mTags.get(i));
         setResult(RESULT_OK, returnIntent);
         finish();
+    }
+
+    @Override
+    public void onAddSelected(String tag) {
+        mTag = new ContactLab.Tag(tag);
+        ContactLab.get(this).addTag(mTag);
+        loadData();
+        setData();
     }
 }
