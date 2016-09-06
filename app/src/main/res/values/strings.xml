@@ -43,4 +43,5 @@
     <string name="no_data_to_show">Nothing to show.</string>
     <string name="add_tag">Add Tag</string>
     <string name="cancel">Cancel</string>
+    <string name="update_tag">Update</string>
 </resources>

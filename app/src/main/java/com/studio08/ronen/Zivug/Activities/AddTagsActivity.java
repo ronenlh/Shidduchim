@@ -1,7 +1,6 @@
 package com.studio08.ronen.Zivug.Activities;
 
 import android.content.Intent;
-import android.database.Cursor;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -15,16 +14,12 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.studio08.ronen.Zivug.Model.ContactLab;
-import com.studio08.ronen.Zivug.Model.DatabaseContract;
 import com.studio08.ronen.Zivug.R;
 
 import java.util.List;
 import java.util.UUID;
-
-import static java.security.AccessController.getContext;
 
 public class AddTagsActivity extends AppCompatActivity implements AdapterView.OnItemClickListener, AddTagDialogFragment.onAddSelectedListener, AdapterView.OnItemLongClickListener {
 
@@ -103,10 +98,17 @@ public class AddTagsActivity extends AppCompatActivity implements AdapterView.On
 //
 //        Toast.makeText(this, "Tag " + mTag.getName() + " Added", Toast.LENGTH_SHORT).show();
 
+        openDialogFragment("");
+    }
+
+    private void openDialogFragment(String arg) {
         DialogFragment dialogFragment = new AddTagDialogFragment();
-        dialogFragment.show(getSupportFragmentManager(), "AddTagDialogFragment");
 
+        Bundle args = new Bundle();
+        args.putString("id", arg);
+        dialogFragment.setArguments(args);
 
+        dialogFragment.show(getSupportFragmentManager(), "TagDialogFragment");
     }
 
     @Override
@@ -132,9 +134,15 @@ public class AddTagsActivity extends AppCompatActivity implements AdapterView.On
     }
 
     @Override
-    public void onAddSelected(String tag) {
-        mTag = new ContactLab.Tag(tag);
-        ContactLab.get(this).addTag(mTag);
+    public void onAddSelected(ContactLab.Tag tag) {
+        ContactLab.get(this).addTag(tag);
+        loadData();
+        setData();
+    }
+
+    @Override
+    public void onEditSelected(ContactLab.Tag tag) {
+        ContactLab.get(this).updateTag(tag);
         loadData();
         setData();
     }
@@ -163,6 +171,7 @@ public class AddTagsActivity extends AppCompatActivity implements AdapterView.On
             switch (item.getItemId()) {
                 case R.id.action_edit:
 
+                    openDialogFragment((String) mode.getTag());
 
                     mode.finish(); // Action picked, so close the CAB
                     return true;

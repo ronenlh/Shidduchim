@@ -14,6 +14,8 @@ import android.widget.EditText;
 import com.studio08.ronen.Zivug.Model.ContactLab;
 import com.studio08.ronen.Zivug.R;
 
+import java.util.UUID;
+
 /**
  * Created by Ronen on 6/9/16.
  */
@@ -22,9 +24,13 @@ public class AddTagDialogFragment extends DialogFragment {
 
     private onAddSelectedListener mCallback;
     private EditText editTextName;
+    private ContactLab.Tag mTag;
+    private boolean editing;
 
     interface onAddSelectedListener {
-        void onAddSelected(String tag);
+        void onAddSelected(ContactLab.Tag tag);
+
+        void onEditSelected(ContactLab.Tag tag);
     }
 
     @Override
@@ -42,6 +48,15 @@ public class AddTagDialogFragment extends DialogFragment {
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
 
+        String id = getArguments().getString("id");
+
+        if (!id.isEmpty())
+            editing = true;
+
+        if (editing) {
+            UUID mId = UUID.fromString(id);
+            mTag = ContactLab.get(getContext()).getTag(mId);
+        }
         // Use the Builder class for convenient dialog construction
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
@@ -52,15 +67,27 @@ public class AddTagDialogFragment extends DialogFragment {
         // Pass null as the parent view because its going in the dialog layout
         View content = inflater.inflate(R.layout.fragment_dialog_tag, null);
         builder.setView(content);
+
         editTextName = (EditText) content.findViewById(R.id.editTextName);
 
-        builder.setPositiveButton(R.string.add_tag, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                mCallback.onAddSelected(editTextName.getText().toString());
-            }
-        });
+        if (mTag != null) editTextName.setText(mTag.getName());
 
+        if (editing) {
+            builder.setPositiveButton(R.string.update_tag, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    mTag.setName(editTextName.getText().toString());
+                    mCallback.onEditSelected(mTag);
+                }
+            });
+        } else {
+            builder.setPositiveButton(R.string.add_tag, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    mCallback.onAddSelected(new ContactLab.Tag(editTextName.getText().toString()));
+                }
+            });
+        }
         builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {

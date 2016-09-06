@@ -80,6 +80,15 @@ public class ContactLab {
                 new String[] {uuidString});
     }
 
+    public void updateTag(Tag tag) {
+        String uuidString = tag.getId().toString();
+        ContentValues values = getContentValues(tag);
+        mDatabase.update(DatabaseContract.TagEntry.TABLE_NAME,
+                values, DatabaseContract.TagEntry.COLUMN_NAME_ENTRY_UUID + " = ?", // this is a WHERE clause, we use ? to avoid SQL injection from the literal string
+                new String[] {uuidString});
+    }
+
+
     public ContactCursorWraper getWordMatches(String query) {
 
         if (query.isEmpty()) return queryContactsTable(null, null);
@@ -211,44 +220,46 @@ public class ContactLab {
     public Contact getContact(UUID id) {
         ContactCursorWraper cursor = queryContactsTable(DatabaseContract.Entry.COLUMN_NAME_ENTRY_UUID + " = ?",
                 new String[] {id.toString()});
-        try {
-            if (cursor.getCount() == 0) {
-                return null;
-            }
-            cursor.moveToFirst();
-            return cursor.getContact();
-        } finally {
+
+        if (cursor == null) {
+            return null;
+        } else if (!cursor.moveToFirst()) { // cursor.moveToFirst() return false if cursor is empty
             cursor.close();
+            return null;
         }
+        return cursor.getContact();
+
     }
 
     public Tag getTag(UUID id) {
         ContactCursorWraper cursor = queryTagsTable(DatabaseContract.TagEntry.COLUMN_NAME_ENTRY_UUID + " = ?",
                 new String[] {id.toString()});
-        try {
-            if (cursor.getCount() == 0) {
-                return null;
-            }
-            cursor.moveToFirst();
-            return cursor.getTag();
-        } finally {
+
+        if (cursor == null) {
+            return null;
+        } else if (!cursor.moveToFirst()) { // cursor.moveToFirst() return false if cursor is empty
             cursor.close();
+            return null;
         }
+
+        return cursor.getTag();
+
     }
 
 
     public Location getLocation(UUID id) {
         ContactCursorWraper cursor = queryLocationsTable(DatabaseContract.TagEntry.COLUMN_NAME_ENTRY_UUID + " = ?",
                 new String[] {id.toString()});
-        try {
-            if (cursor.getCount() == 0) {
-                return null;
-            }
-            cursor.moveToFirst();
-            return cursor.getLocation();
-        } finally {
+
+        if (cursor == null) {
+            return null;
+        } else if (!cursor.moveToFirst()) { // cursor.moveToFirst() return false if cursor is empty
             cursor.close();
+            return null;
         }
+
+        return cursor.getLocation();
+
     }
 
     public List<Tag> getLocations() {
@@ -351,6 +362,7 @@ public class ContactLab {
         String[] arr = str.split(separator);
         return arr;
     }
+
 
 
     public static class Filter implements Serializable {
