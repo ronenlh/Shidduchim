@@ -4,15 +4,9 @@
 
     <!-- "Mark Favorite", should appear as action button if possible -->
     <item
-        android:id="@+id/action_done"
-        android:icon="@drawable/ic_done_white_24dp"
-        android:title="Done Editing"
-        app:showAsAction="ifRoom"/>
-
-    <item
-        android:id="@+id/action_contacts"
-        android:icon="@drawable/ic_import_contacts_white_24dp"
-        android:title="Import Contact"
+        android:id="@+id/action_add"
+        android:icon="@drawable/ic_add_white_24dp"
+        android:title="Add Tag"
         app:showAsAction="ifRoom"/>
 
     <!-- Settings, should always be in the overflow -->

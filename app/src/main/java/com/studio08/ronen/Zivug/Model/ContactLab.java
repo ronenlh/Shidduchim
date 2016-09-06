@@ -311,6 +311,17 @@ public class ContactLab {
         mDatabase.delete(DatabaseContract.Entry.TABLE_NAME, selection, selectionArgs);
     }
 
+    public void deleteTag(UUID id) {
+        // Define 'where' part of query.
+        String selection = DatabaseContract.TagEntry.COLUMN_NAME_ENTRY_UUID + " LIKE ?";
+
+        // Specify arguments in placeholder order.
+        String[] selectionArgs = { String.valueOf(id) };
+
+        // Issue SQL statement.
+        mDatabase.delete(DatabaseContract.TagEntry.TABLE_NAME, selection, selectionArgs);
+    }
+
     public File getPhotoFile(Contact contact) {
         File externalFilesDir = mContext.getExternalFilesDir(Environment.DIRECTORY_PICTURES);
         if (externalFilesDir == null) return null;
@@ -340,8 +351,6 @@ public class ContactLab {
         String[] arr = str.split(separator);
         return arr;
     }
-
-
 
 
     public static class Filter implements Serializable {
