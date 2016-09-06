@@ -1,16 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               xmlns:app="http://schemas.android.com/apk/res-auto"
+              xmlns:tools="http://schemas.android.com/tools"
               android:orientation="vertical"
               android:id="@+id/item_linear_layout"
-              android:layout_width="wrap_content"
+              android:gravity="center"
+              android:layout_width="match_parent"
               android:layout_height="wrap_content">
 
     <com.mikhaellopez.circularimageview.CircularImageView
         android:id="@+id/contact_iw"
-        android:layout_width="120dp"
-        android:layout_height="120dp"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
         android:layout_margin="10dp"
+        android:layout_gravity="center"
+        tools:src="@drawable/male_avatar"
         app:civ_border_color="#EEEEEE"
         app:civ_border_width="4dp"
         app:civ_shadow="true"
@@ -20,6 +24,7 @@
 
 <TextView
     android:text=""
+    tools:text="Full Name"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:gravity="center"
