@@ -8,15 +8,11 @@ import android.database.sqlite.SQLiteQueryBuilder;
 import android.os.Environment;
 import android.util.Log;
 
-import com.studio08.ronen.Zivug.Activities.MainActivity;
-
 import java.io.File;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-
-import static com.google.android.gms.wearable.DataMap.TAG;
 
 /**
  * Created by Ronen on 9/8/16.
@@ -70,7 +66,7 @@ public class ContactLab {
 
 //        if (query.isEmpty()) return queryContacts(null, null);
 
-        return queryContacts(selection, selectionArgs);
+        return queryContactsTable(selection, selectionArgs);
     }
 
     public Cursor getTagMatches(Tag[] tags) {
@@ -85,33 +81,45 @@ public class ContactLab {
             Log.v(TAG, selectionArgs[i]);
         }
 
-        return queryContacts(selection.toString(), selectionArgs);
+        return queryTagsTable(selection.toString(), selectionArgs);
     }
 
-    public ContactCursorWraper queryContacts(String selection, String[] selectionArgs) {
+    public ContactCursorWraper queryContactsTable(String selection, String[] selectionArgs) {
         SQLiteQueryBuilder builder = new SQLiteQueryBuilder();
         builder.setTables(DatabaseContract.Entry.TABLE_NAME);
         DatabaseHelper mDatabaseOpenHelper = new DatabaseHelper(mContext);
 
         Cursor cursor = builder.query(mDatabaseOpenHelper.getReadableDatabase(),
-                null,
-                selection,
-                selectionArgs,
-                null,
-                null,
-                DatabaseContract.Entry.COLUMN_NAME_FULL_NAME);
+                null, selection, selectionArgs, null, null, DatabaseContract.Entry.COLUMN_NAME_FULL_NAME);
 
         if (cursor == null) {
             return null;
-        } else if (!cursor.moveToFirst()) {
-            // cursor is empty
+        } else if (!cursor.moveToFirst()) { // cursor.moveToFirst() return false if cursor is empty
             cursor.close();
             return null;
         }
         return new ContactCursorWraper(cursor, mContext);
     }
 
-    public ContactCursorWraper queryTags(String selection, String[] selectionArgs) {
+
+    public ContactCursorWraper queryTagsTable(String selection, String[] selectionArgs) {
+        SQLiteQueryBuilder builder = new SQLiteQueryBuilder();
+        builder.setTables(DatabaseContract.TagEntry.TABLE_NAME);
+        DatabaseHelper mDatabaseOpenHelper = new DatabaseHelper(mContext);
+
+        Cursor cursor = builder.query(mDatabaseOpenHelper.getReadableDatabase(),
+                null, selection, selectionArgs, null, null, null);
+
+        if (cursor == null) {
+            return null;
+        } else if (!cursor.moveToFirst()) { // cursor.moveToFirst() return false if cursor is empty
+            cursor.close();
+            return null;
+        }
+        return new ContactCursorWraper(cursor, mContext);
+    }
+
+    public ContactCursorWraper queryLocationsTable(String selection, String[] selectionArgs) {
         SQLiteQueryBuilder builder = new SQLiteQueryBuilder();
         builder.setTables(DatabaseContract.TagEntry.TABLE_NAME);
         DatabaseHelper mDatabaseOpenHelper = new DatabaseHelper(mContext);
@@ -130,7 +138,7 @@ public class ContactLab {
 
     public List<Contact> getContacts() {
         List<Contact> contacts = new ArrayList<>();
-        ContactCursorWraper cursor = queryContacts(null, null); // this might return null
+        ContactCursorWraper cursor = queryContactsTable(null, null); // this might return null
         if (cursor == null) return contacts;
         try {
             cursor.moveToFirst();
@@ -146,7 +154,7 @@ public class ContactLab {
 
     public List<Tag> getTags() {
         List<Tag> tags = new ArrayList<>();
-        ContactCursorWraper cursor = queryTags(null, null);
+        ContactCursorWraper cursor = queryTagsTable(null, null);
         if (cursor == null) return tags;
         try {
             cursor.moveToFirst();
@@ -161,7 +169,7 @@ public class ContactLab {
     }
 
     public Contact getContact(UUID id) {
-        ContactCursorWraper cursor = queryContacts(DatabaseContract.Entry.COLUMN_NAME_ENTRY_UUID + " = ?",
+        ContactCursorWraper cursor = queryContactsTable(DatabaseContract.Entry.COLUMN_NAME_ENTRY_UUID + " = ?",
                 new String[] {id.toString()});
         try {
             if (cursor.getCount() == 0) {
@@ -175,7 +183,7 @@ public class ContactLab {
     }
 
     public Tag getTag(UUID id) {
-        ContactCursorWraper cursor = queryTags(DatabaseContract.TagEntry.COLUMN_NAME_ENTRY_UUID + " = ?",
+        ContactCursorWraper cursor = queryTagsTable(DatabaseContract.TagEntry.COLUMN_NAME_ENTRY_UUID + " = ?",
                 new String[] {id.toString()});
         try {
             if (cursor.getCount() == 0) {
@@ -183,6 +191,21 @@ public class ContactLab {
             }
             cursor.moveToFirst();
             return cursor.getTag();
+        } finally {
+            cursor.close();
+        }
+    }
+
+
+    public Location getLocation(UUID id) {
+        ContactCursorWraper cursor = queryLocationsTable(DatabaseContract.TagEntry.COLUMN_NAME_ENTRY_UUID + " = ?",
+                new String[] {id.toString()});
+        try {
+            if (cursor.getCount() == 0) {
+                return null;
+            }
+            cursor.moveToFirst();
+            return cursor.getLocation();
         } finally {
             cursor.close();
         }
@@ -270,6 +293,7 @@ public class ContactLab {
 
 
 
+
     public static class Filter implements Serializable {
 
         UUID mUUID;
@@ -333,11 +357,8 @@ public class ContactLab {
     }
 
     public static class Location extends Filter {
-        public Location(String name) {
-            super(name);
-        }
-
-        public Location() {
+        public Location(UUID UUID) {
+            super(UUID);
         }
     }
 

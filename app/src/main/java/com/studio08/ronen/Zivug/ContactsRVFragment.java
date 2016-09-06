@@ -148,16 +148,16 @@ public class ContactsRVFragment extends Fragment {
         Cursor cursor;
 
         if (mGenderParam == Contact.MALE)
-            cursor = contactLab.queryContacts(
+            cursor = contactLab.queryContactsTable(
                     DatabaseContract.Entry.COLUMN_NAME_GENDER + " MATCH ?",
                     new String[] { "" + Contact.MALE }
             );
         else if (mGenderParam == Contact.FEMALE)
-            cursor = contactLab.queryContacts(
+            cursor = contactLab.queryContactsTable(
                     DatabaseContract.Entry.COLUMN_NAME_GENDER + " MATCH ?",
                     new String[] { "" + Contact.FEMALE }
             );
-        else cursor = ContactLab.get(getContext()).queryContacts(null, null);
+        else cursor = ContactLab.get(getContext()).queryContactsTable(null, null);
 
         if (mCursorAdapter == null) {
             mCursorAdapter = new ContactsRVCursorAdapter(getContext(), cursor);

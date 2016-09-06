@@ -17,6 +17,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -192,6 +193,8 @@ public class AddContactActivity extends AppCompatActivity {
         ageEditText = (EditText) findViewById(R.id.add_age);
         notesEditText = (EditText) findViewById(R.id.add_notes);
         deleteContactButton = (Button) findViewById(R.id.delete_contact);
+
+
 
         // This disable hardware acceleration to fix a bug
         // https://github.com/hdodenhof/CircleImageView/issues/31

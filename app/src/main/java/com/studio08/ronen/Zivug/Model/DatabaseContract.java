@@ -43,4 +43,11 @@ public class DatabaseContract {
         public static final String COLUMN_NAME_NULLABLE = "nullable";
     }
 
+    public static abstract class LocationEntry implements BaseColumns {
+        public static final String TABLE_NAME = "location";
+        public static final String COLUMN_NAME_ENTRY_UUID = "entryid";
+        public static final String COLUMN_NAME_NAME = "name";
+        public static final String COLUMN_NAME_NULLABLE = "nullable";
+    }
+
 }

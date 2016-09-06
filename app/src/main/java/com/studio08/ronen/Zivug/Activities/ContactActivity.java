@@ -2,6 +2,7 @@ package com.studio08.ronen.Zivug.Activities;
 
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -10,6 +11,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.graphics.Palette;
 
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -19,6 +22,8 @@ import android.widget.TextView;
 import com.squareup.picasso.Picasso;
 import com.studio08.ronen.Zivug.Model.Contact;
 import com.studio08.ronen.Zivug.Model.ContactLab;
+import com.studio08.ronen.Zivug.Model.ContactsRVCursorAdapter;
+import com.studio08.ronen.Zivug.Model.DatabaseContract;
 import com.studio08.ronen.Zivug.R;
 
 import java.io.File;
@@ -37,6 +42,8 @@ public class ContactActivity extends AppCompatActivity {
     private Contact mContact;
 
     TextView contactDetailsTextView, contactOverviewTextView, contactDatesTextView, contactNotesTextView;
+    private RecyclerView mRecyclerView;
+    private ContactsRVCursorAdapter mCursorAdapter;
 
     public static Intent newIntent(Context packageContext, UUID contactId) {
         Intent intent = new Intent(packageContext, ContactActivity.class);
@@ -60,6 +67,7 @@ public class ContactActivity extends AppCompatActivity {
         initViews();
         if (mContact.getPicturePath() != null) initHeader();
         initInfo();
+        initRecyclerView();
     }
 
     private void initViews() {
@@ -67,6 +75,7 @@ public class ContactActivity extends AppCompatActivity {
         contactOverviewTextView = (TextView) findViewById(R.id.contact_overview);
         contactDatesTextView = (TextView) findViewById(R.id.contact_dates);
         contactNotesTextView = (TextView) findViewById(R.id.contact_notes);
+        mRecyclerView = (RecyclerView) findViewById(R.id.card_recyclerview);
     }
 
     private void initHeader() {
@@ -132,6 +141,22 @@ public class ContactActivity extends AppCompatActivity {
         contactNotesTextView.setText(mNotes);
 
         contactOverviewTextView.setText(mContact.toString());
+    }
+
+    private void initRecyclerView() {
+
+        ContactLab contactLab = ContactLab.get(this);
+        Cursor cursor = contactLab.queryContactsTable(
+                DatabaseContract.Entry.COLUMN_NAME_ENTRY_UUID + " MATCH ?",
+                mContact.getPreviousDatesStringArray()
+        );
+
+        RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(this, 3);
+        mRecyclerView.setLayoutManager(mLayoutManager);
+
+        mCursorAdapter = new ContactsRVCursorAdapter(this, cursor);
+        mRecyclerView.setAdapter(mCursorAdapter);
+
     }
 
     @Override

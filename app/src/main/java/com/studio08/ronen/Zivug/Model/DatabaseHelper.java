@@ -36,7 +36,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     "FOREIGN KEY( " + DatabaseContract.Entry.COLUMN_NAME_TAGS + " ) REFERENCES "+DatabaseContract.TagEntry.TABLE_NAME+"( "+DatabaseContract.TagEntry._ID+" ) " +
                     " )";
 
-    private static final String TAGS_TABLE = "CREATE TABLE " + DatabaseContract.TagEntry.TABLE_NAME + " (" +
+    private static final String SQL_TAGS_TABLE = "CREATE TABLE " + DatabaseContract.TagEntry.TABLE_NAME + " (" +
+            DatabaseContract.TagEntry._ID + " INTEGER AUTO_INCREMENT PRIMARY KEY, \n" +
+            DatabaseContract.TagEntry.COLUMN_NAME_ENTRY_UUID + TEXT_TYPE + COMMA_SEP +
+            DatabaseContract.TagEntry.COLUMN_NAME_NAME + TEXT_TYPE + COMMA_SEP +
+            DatabaseContract.TagEntry.COLUMN_NAME_NULLABLE + TEXT_TYPE +
+            ")";
+
+    private static final String SQL_LOCATION_TABLE = "CREATE TABLE " + DatabaseContract.LocationEntry.TABLE_NAME + " (" +
             DatabaseContract.TagEntry._ID + " INTEGER AUTO_INCREMENT PRIMARY KEY, \n" +
             DatabaseContract.TagEntry.COLUMN_NAME_ENTRY_UUID + TEXT_TYPE + COMMA_SEP +
             DatabaseContract.TagEntry.COLUMN_NAME_NAME + TEXT_TYPE + COMMA_SEP +
@@ -49,8 +56,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String SQL_TAG_DELETE_ENTRIES =
             "DROP TABLE IF EXISTS " + DatabaseContract.TagEntry.TABLE_NAME;
 
+    private static final String SQL_LOCATION_DELETE_ENTRIES =
+            "DROP TABLE IF EXISTS " + DatabaseContract.LocationEntry.TABLE_NAME;
+
     // If you change the database schema, you must increment the database version.
-    public static final int DATABASE_VERSION = 8;
+    public static final int DATABASE_VERSION = 9;
     public static final String DATABASE_NAME = "Zivug.db";
 
     public DatabaseHelper(Context context) {
@@ -60,7 +70,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(SQL_CREATE_ENTRIES);
-        db.execSQL(TAGS_TABLE);
+        db.execSQL(SQL_TAGS_TABLE);
+        db.execSQL(SQL_LOCATION_TABLE);
     }
 
     @Override
@@ -69,6 +80,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         // to simply to discard the data and start over
         db.execSQL(SQL_DELETE_ENTRIES);
         db.execSQL(SQL_TAG_DELETE_ENTRIES);
+        db.execSQL(SQL_LOCATION_DELETE_ENTRIES);
         onCreate(db);
     }
 

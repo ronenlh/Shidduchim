@@ -4,9 +4,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.CursorWrapper;
 
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
@@ -39,9 +37,9 @@ public class ContactCursorWraper extends CursorWrapper {
         String picturePath =    getString(getColumnIndexOrThrow(DatabaseContract.Entry.COLUMN_NAME_IMAGE_RESOURCE));
         String eMail =          getString(getColumnIndexOrThrow(DatabaseContract.Entry.COLUMN_NAME_EMAIL));
         String phoneNumber =    getString(getColumnIndexOrThrow(DatabaseContract.Entry.COLUMN_NAME_PHONE));
-        String location =       getString(getColumnIndexOrThrow(DatabaseContract.Entry.COLUMN_NAME_LOCATION));
+        String mlocationString =getString(getColumnIndexOrThrow(DatabaseContract.Entry.COLUMN_NAME_LOCATION));
         String mTagsString =    getString(getColumnIndexOrThrow(DatabaseContract.Entry.COLUMN_NAME_TAGS));
-//        String dates =        getString(getColumnIndexOrThrow(DatabaseContract.Entry.COLUMN_NAME_PREV_DATES));
+        String mdatesString =   getString(getColumnIndexOrThrow(DatabaseContract.Entry.COLUMN_NAME_PREV_DATES));
 
         Contact contact = new Contact(UUID.fromString(uuidString));
         contact.setName(name);
@@ -55,16 +53,40 @@ public class ContactCursorWraper extends CursorWrapper {
         contact.setPhone(phoneNumber);
 
         String[] tagsArray = ContactLab.convertStringToArray(mTagsString);
+        String[] locationArray = ContactLab.convertStringToArray(mlocationString);
+        String[] dateArray = ContactLab.convertStringToArray(mdatesString);
 
         if (tagsArray != null) {
             Set<ContactLab.Tag> tagSet = new HashSet<>();
             ContactLab contactLab = ContactLab.get(mContext);
 
             for (int i = 0; i < tagsArray.length; i++) {
-                ContactLab.Tag tag = contactLab.getTag(UUID.fromString(tagsArray[i]));
-                tagSet.add(tag);
+                ContactLab.Tag t = contactLab.getTag(UUID.fromString(tagsArray[i]));
+                tagSet.add(t);
             }
             contact.setTags(tagSet);
+        }
+
+        if (locationArray != null) {
+            Set<ContactLab.Location> locationSet = new HashSet<>();
+            ContactLab contactLab = ContactLab.get(mContext);
+
+            for (int i = 0; i < locationArray.length; i++) {
+                ContactLab.Location l = contactLab.getLocation(UUID.fromString(locationArray[i]));
+                locationSet.add(l);
+            }
+            contact.setLocations(locationSet);
+        }
+
+        if (dateArray != null) {
+            Set<UUID> datesSet = new HashSet<>();
+            ContactLab contactLab = ContactLab.get(mContext);
+
+            for (int i = 0; i < dateArray.length; i++) {
+                UUID d = UUID.fromString(dateArray[i]);
+                datesSet.add(d);
+            }
+            contact.setDates(datesSet);
         }
 
         return contact;
@@ -78,5 +100,15 @@ public class ContactCursorWraper extends CursorWrapper {
         tag.setName(name);
 
         return tag;
+    }
+
+    public ContactLab.Location getLocation() {
+        String uuidString = getString(getColumnIndexOrThrow(DatabaseContract.LocationEntry.COLUMN_NAME_ENTRY_UUID));
+        String name = getString(getColumnIndexOrThrow(DatabaseContract.LocationEntry.COLUMN_NAME_NAME));
+
+        ContactLab.Location location = new ContactLab.Location(UUID.fromString(uuidString));
+        location.setName(name);
+
+        return location;
     }
 }

@@ -24,6 +24,7 @@ public class Contact {
     private int mAge, mGender;
     private Set<ContactLab.Tag> mTags;
     private Set<ContactLab.Location> mLocations;
+    private Set<UUID> mPreviousDates;
 
     private static Random r;
     private String[] mTagsArray;
@@ -242,5 +243,13 @@ public class Contact {
 
     public void setTagsArray(String[] tagsArray) {
         mTagsArray = tagsArray;
+    }
+
+    public String[] getPreviousDatesStringArray() {
+        return null;
+    }
+
+    public void setDates(Set<UUID> dates) {
+        mPreviousDates = dates;
     }
 }
