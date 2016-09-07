@@ -27,7 +27,6 @@ public class Contact {
     private Set<UUID> mPreviousDates;
 
     private static Random r;
-    private String[] mTagsArray;
 
     public Contact() {
         mId = UUID.randomUUID();
@@ -184,8 +183,11 @@ public class Contact {
 
         String[] idArray = new String[tagList.size()];
 
+        ContactLab.Tag t;
         for (int i = 0; i < tagList.size(); i++) {
-            idArray[i] = tagList.get(i).getId().toString();
+            t = tagList.get(i);
+            if (t == null) idArray[i] = null;
+            else idArray[i] = t.getId().toString();
         }
 
         return idArray;
@@ -239,10 +241,6 @@ public class Contact {
 
     public Date getDate() {
         return mDate;
-    }
-
-    public void setTagsArray(String[] tagsArray) {
-        mTagsArray = tagsArray;
     }
 
     public String[] getPreviousDatesStringArray() {

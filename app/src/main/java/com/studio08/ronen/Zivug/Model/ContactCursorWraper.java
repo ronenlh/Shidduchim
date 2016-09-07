@@ -3,6 +3,7 @@ package com.studio08.ronen.Zivug.Model;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.CursorWrapper;
+import android.util.Log;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -14,6 +15,7 @@ import java.util.UUID;
 
 public class ContactCursorWraper extends CursorWrapper {
 
+    private static final String TAG = "ContactCursorWraper";
     // need context for the ContactLab instance
     Context mContext;
 
@@ -52,20 +54,36 @@ public class ContactCursorWraper extends CursorWrapper {
         contact.setEmail(eMail);
         contact.setPhone(phoneNumber);
 
-        String[] tagsArray = ContactLab.convertStringToArray(mTagsString);
-        String[] locationArray = ContactLab.convertStringToArray(mlocationString);
-        String[] dateArray = ContactLab.convertStringToArray(mdatesString);
+        String[] tagsArrayNull = ContactLab.convertStringToArray(mTagsString);
+        String[] locationArrayNull = ContactLab.convertStringToArray(mlocationString);
+        String[] dateArrayNull = ContactLab.convertStringToArray(mdatesString);
 
+        String[] tagsArray = ContactLab.removeNullValues(tagsArrayNull);
+        String[] locationArray = ContactLab.removeNullValues(locationArrayNull);
+        String[] dateArray = ContactLab.removeNullValues(dateArrayNull);
+
+        Log.d(TAG, "getContact: Name: " + contact.getName());
         if (tagsArray != null) {
             Set<ContactLab.Tag> tagSet = new HashSet<>();
             ContactLab contactLab = ContactLab.get(mContext);
 
             for (int i = 0; i < tagsArray.length; i++) {
-                ContactLab.Tag t = contactLab.getTag(UUID.fromString(tagsArray[i]));
-                tagSet.add(t);
+                Log.d(TAG, "getContact: tag: " + tagsArray[i]);
+                String s = tagsArray[i];
+                try {
+                    ContactLab.Tag t = contactLab.getTag(UUID.fromString(s));
+                    tagSet.add(t);
+                } catch (IllegalArgumentException e) {
+                    Log.w(TAG, "getContact: ", e);
+                }
             }
             contact.setTags(tagSet);
         }
+
+        /** TODO:
+         * cleanup old tags, location, and dates ids from the database in case the original was deleted,
+         * I don't know where and when should I do that, but I know how
+         */
 
         if (locationArray != null) {
             Set<ContactLab.Location> locationSet = new HashSet<>();
@@ -80,7 +98,6 @@ public class ContactCursorWraper extends CursorWrapper {
 
         if (dateArray != null) {
             Set<UUID> datesSet = new HashSet<>();
-            ContactLab contactLab = ContactLab.get(mContext);
 
             for (int i = 0; i < dateArray.length; i++) {
                 UUID d = UUID.fromString(dateArray[i]);

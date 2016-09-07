@@ -11,6 +11,7 @@ import android.util.Log;
 import java.io.File;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
@@ -363,6 +364,20 @@ public class ContactLab {
         return arr;
     }
 
+    public static String[] removeNullValues(String[] arrayWithsNulls) {
+
+        if (arrayWithsNulls == null) return null;
+
+        List<String> idList = new ArrayList<>();
+
+        for (int i = 0; i < arrayWithsNulls.length; i++) {
+            if (arrayWithsNulls[i] != null) idList.add(arrayWithsNulls[i]);
+        }
+
+        if (idList.isEmpty()) return null;
+
+        return idList.toArray(new String[idList.size()]);
+    }
 
 
     public static class Filter implements Serializable {
