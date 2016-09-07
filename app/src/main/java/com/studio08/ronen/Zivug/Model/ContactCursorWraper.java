@@ -90,8 +90,13 @@ public class ContactCursorWraper extends CursorWrapper {
             ContactLab contactLab = ContactLab.get(mContext);
 
             for (int i = 0; i < locationArray.length; i++) {
-                ContactLab.Location l = contactLab.getLocation(UUID.fromString(locationArray[i]));
-                locationSet.add(l);
+                String s = locationArray[i];
+                try {
+                    ContactLab.Location l = contactLab.getLocation(UUID.fromString(s));
+                    locationSet.add(l);
+                } catch (IllegalArgumentException e) {
+                    Log.w(TAG, "getContact: ", e);
+                }
             }
             contact.setLocations(locationSet);
         }
@@ -100,8 +105,13 @@ public class ContactCursorWraper extends CursorWrapper {
             Set<UUID> datesSet = new HashSet<>();
 
             for (int i = 0; i < dateArray.length; i++) {
-                UUID d = UUID.fromString(dateArray[i]);
-                datesSet.add(d);
+                String s = dateArray[i];
+                try {
+                    UUID d = UUID.fromString(s);
+                    datesSet.add(d);
+                } catch (IllegalArgumentException e) {
+                    Log.w(TAG, "getContact: ", e);
+                }
             }
             contact.setDates(datesSet);
         }
