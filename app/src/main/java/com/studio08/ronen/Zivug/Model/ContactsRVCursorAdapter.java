@@ -59,7 +59,7 @@ public class ContactsRVCursorAdapter extends CursorRecyclerAdapter<ContactsRVCur
                     .error(mPlaceholder)
                     .into(holder.mPictureImageView);
 
-        // This disable hardware acceleration to fix a bug
+        // This disables hardware acceleration to fix a bug
         // https://github.com/hdodenhof/CircleImageView/issues/31
         holder.mItemLinearLayout.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
 

@@ -152,18 +152,24 @@ public class ContactsRVFragment extends Fragment {
                     DatabaseContract.Entry.COLUMN_NAME_GENDER + " MATCH ?",
                     new String[] { "" + Contact.MALE }
             );
+
         else if (mGenderParam == Contact.FEMALE)
             cursor = contactLab.queryContactsTable(
                     DatabaseContract.Entry.COLUMN_NAME_GENDER + " MATCH ?",
                     new String[] { "" + Contact.FEMALE }
             );
+
         else cursor = ContactLab.get(getContext()).queryContactsTable(null, null);
 
-        if (mCursorAdapter == null) {
-            mCursorAdapter = new ContactsRVCursorAdapter(getContext(), cursor);
-            mRecyclerView.setAdapter(mCursorAdapter);
-        } else {
-            mCursorAdapter.swapCursor(cursor);
+        try {
+            if (mCursorAdapter == null) {
+                mCursorAdapter = new ContactsRVCursorAdapter(getContext(), cursor);
+                mRecyclerView.setAdapter(mCursorAdapter);
+            } else {
+                mCursorAdapter.swapCursor(cursor);
+            }
+        } finally {
+            cursor.close();
         }
 
     }
@@ -171,26 +177,32 @@ public class ContactsRVFragment extends Fragment {
     public void searchContacts(String query) {
 
         Cursor cursor = ContactLab.get(getContext()).getWordMatches(query);
+        try {
+            if (mCursorAdapter == null)
+                mCursorAdapter = new ContactsRVCursorAdapter(getContext(), cursor);
+            else
+                mCursorAdapter.swapCursor(cursor);
 
-        if (mCursorAdapter == null)
-            mCursorAdapter = new ContactsRVCursorAdapter(getContext(), cursor);
-        else
-            mCursorAdapter.swapCursor(cursor);
-
-        if (mRecyclerView != null)
-            mRecyclerView.setAdapter(mCursorAdapter);
+            if (mRecyclerView != null)
+                mRecyclerView.setAdapter(mCursorAdapter);
+        } finally {
+           cursor.close();
+        }
     }
 
     public void searchbyTags(ContactLab.Tag[] tags) {
         Cursor cursor = ContactLab.get(getContext()).getTagMatches(tags, mGenderParam);
+        try {
+            if (mCursorAdapter == null)
+                mCursorAdapter = new ContactsRVCursorAdapter(getContext(), cursor);
+            else
+                mCursorAdapter.swapCursor(cursor);
 
-        if (mCursorAdapter == null)
-            mCursorAdapter = new ContactsRVCursorAdapter(getContext(), cursor);
-        else
-            mCursorAdapter.swapCursor(cursor);
-
-        if (mRecyclerView != null)
-            mRecyclerView.setAdapter(mCursorAdapter);
+            if (mRecyclerView != null)
+                mRecyclerView.setAdapter(mCursorAdapter);
+        } finally {
+            cursor.close();
+        }
     }
 
     public void onButtonPressed(Uri uri) {

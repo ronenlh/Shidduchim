@@ -150,13 +150,15 @@ public class ContactActivity extends AppCompatActivity {
                 DatabaseContract.Entry.COLUMN_NAME_ENTRY_UUID + " MATCH ?",
                 mContact.getPreviousDatesStringArray()
         );
+        try {
+            RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(this, 3);
+            mRecyclerView.setLayoutManager(mLayoutManager);
 
-        RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(this, 3);
-        mRecyclerView.setLayoutManager(mLayoutManager);
-
-        mCursorAdapter = new ContactsRVCursorAdapter(this, cursor);
-        mRecyclerView.setAdapter(mCursorAdapter);
-
+            mCursorAdapter = new ContactsRVCursorAdapter(this, cursor);
+            mRecyclerView.setAdapter(mCursorAdapter);
+        } finally {
+            cursor.close();
+        }
     }
 
     @Override

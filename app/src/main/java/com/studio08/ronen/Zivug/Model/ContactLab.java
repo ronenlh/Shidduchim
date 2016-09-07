@@ -37,7 +37,8 @@ public class ContactLab {
 
     public ContactLab(Context context) {
         this.mContext = context.getApplicationContext(); // because it is a singleton, we use the application context so we don't maintain a link to an activity than should be garbage collected.
-        this.mDatabase = new DatabaseHelper(mContext).getWritableDatabase();
+        this.mDatabase = new DatabaseHelper(mContext).getWritableDatabase(); // when should this db be closed?
+        Log.d(TAG, "ContactLab created");
     }
 
     public void addContact(Contact contact) {
@@ -130,7 +131,7 @@ public class ContactLab {
             cursor.close();
             return null;
         }
-
+        db.close();
         return new ContactCursorWraper(cursor, null);
     }
 
@@ -139,8 +140,9 @@ public class ContactLab {
         builder.setTables(DatabaseContract.Entry.TABLE_NAME);
         DatabaseHelper mDatabaseOpenHelper = new DatabaseHelper(mContext);
 
-        Cursor cursor = builder.query(mDatabaseOpenHelper.getReadableDatabase(),
-                null, selection, selectionArgs, null, null, DatabaseContract.Entry.COLUMN_NAME_FULL_NAME);
+        SQLiteDatabase db = mDatabaseOpenHelper.getReadableDatabase();
+
+        Cursor cursor = builder.query(db, null, selection, selectionArgs, null, null, DatabaseContract.Entry.COLUMN_NAME_FULL_NAME);
 
         if (cursor == null) {
             return null;
@@ -148,6 +150,8 @@ public class ContactLab {
             cursor.close();
             return null;
         }
+
+        db.close();
         return new ContactCursorWraper(cursor, mContext);
     }
 
@@ -157,8 +161,8 @@ public class ContactLab {
         builder.setTables(DatabaseContract.TagEntry.TABLE_NAME);
         DatabaseHelper mDatabaseOpenHelper = new DatabaseHelper(mContext);
 
-        Cursor cursor = builder.query(mDatabaseOpenHelper.getReadableDatabase(),
-                null, selection, selectionArgs, null, null, null);
+        SQLiteDatabase db = mDatabaseOpenHelper.getReadableDatabase();
+        Cursor cursor = builder.query(db, null, selection, selectionArgs, null, null, null);
 
         if (cursor == null) {
             return null;
@@ -166,6 +170,8 @@ public class ContactLab {
             cursor.close();
             return null;
         }
+
+        db.close();
         return new ContactCursorWraper(cursor, mContext);
     }
 
@@ -174,8 +180,9 @@ public class ContactLab {
         builder.setTables(DatabaseContract.TagEntry.TABLE_NAME);
         DatabaseHelper mDatabaseOpenHelper = new DatabaseHelper(mContext);
 
-        Cursor cursor = builder.query(mDatabaseOpenHelper.getReadableDatabase(),
-                null, selection, selectionArgs, null, null, null);
+        SQLiteDatabase db = mDatabaseOpenHelper.getReadableDatabase();
+
+        Cursor cursor = builder.query(db, null, selection, selectionArgs, null, null, null);
 
         if (cursor == null) {
             return null;
@@ -183,6 +190,8 @@ public class ContactLab {
             cursor.close();
             return null;
         }
+
+        db.close();
         return new ContactCursorWraper(cursor, mContext);
     }
 
