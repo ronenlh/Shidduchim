@@ -157,7 +157,7 @@ public class ContactActivity extends AppCompatActivity {
             mCursorAdapter = new ContactsRVCursorAdapter(this, cursor);
             mRecyclerView.setAdapter(mCursorAdapter);
         } finally {
-            cursor.close();
+            if (cursor != null) cursor.close();
         }
     }
 

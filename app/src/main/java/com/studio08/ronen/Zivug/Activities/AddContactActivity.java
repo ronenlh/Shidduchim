@@ -234,7 +234,7 @@ public class AddContactActivity extends AppCompatActivity {
         if (mContact.getTags() != null) {
             for (ContactLab.Tag tag : mContact.getTags()) {
                 if (!stringBuilder.toString().isEmpty()) stringBuilder.append(", ");
-                stringBuilder.append(tag.toString());
+                if (tag != null) stringBuilder.append(tag.toString());
             }
             stringBuilder.trimToSize();
             mTagsTextView.setText(stringBuilder.toString());
