@@ -169,7 +169,7 @@ public class ContactsRVFragment extends Fragment {
                 mCursorAdapter.swapCursor(cursor);
             }
         } finally {
-            cursor.close();
+//            cursor.close(); // If I close here nothing will be shown on the UI
         }
 
     }
@@ -201,7 +201,7 @@ public class ContactsRVFragment extends Fragment {
             if (mRecyclerView != null)
                 mRecyclerView.setAdapter(mCursorAdapter);
         } finally {
-            cursor.close();
+            if (cursor != null) cursor.close();
         }
     }
 
