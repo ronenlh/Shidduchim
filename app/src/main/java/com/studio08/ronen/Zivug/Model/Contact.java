@@ -262,4 +262,8 @@ public class Contact {
     public boolean addPreviousDate(Contact date) {
         return mPreviousDates.add(date.getId());
     }
+
+    public void deleteTag(ContactLab.Tag tag) {
+        mTags.remove(tag);
+    }
 }

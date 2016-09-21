@@ -17,7 +17,6 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -25,6 +24,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
@@ -40,6 +40,7 @@ import com.squareup.picasso.Picasso;
 import com.studio08.ronen.Zivug.Model.Contact;
 import com.studio08.ronen.Zivug.Model.ContactLab;
 import com.studio08.ronen.Zivug.R;
+import com.studio08.ronen.Zivug.TagView;
 
 import java.io.File;
 import java.util.UUID;
@@ -50,7 +51,7 @@ import java.util.regex.Pattern;
  * TODO: populate recyclerview with previous dates from a cursor querying the UUIDs from a list inside contact (like the tags)
  * */
 
-public class AddContactActivity extends AppCompatActivity {
+public class AddContactActivity extends AppCompatActivity implements TagView.OnTagDeletedListener {
 
     public static final String EXTRA_UPDATING = "updating";
     public static final String EXTRA_CONTACT_ID = "UUID";
@@ -83,6 +84,7 @@ public class AddContactActivity extends AppCompatActivity {
     private EditText nameEditText, ageEditText, notesEditText;
     private Button deleteContactButton;
     private RelativeLayout mLinearLayout;
+    private LinearLayout mTagsLinearLayout;
 
     private boolean isInPermission = false;
     /**
@@ -184,7 +186,7 @@ public class AddContactActivity extends AppCompatActivity {
         mImageView = (CircularImageView) findViewById(R.id.add_profile_pic);
         maleRadioButton = (RadioButton) findViewById(R.id.male_selection);
         femaleRadioButton = (RadioButton) findViewById(R.id.female_selection);
-        mTagsTextView = (TextView) findViewById(R.id.tags_textview);
+//        mTagsTextView = (TextView) findViewById(R.id.tags_textview);
 
         mPhotoImage = (ImageView) findViewById(R.id.camera_image);
         mGalleryImage = (ImageView) findViewById(R.id.gallery_image);
@@ -193,7 +195,7 @@ public class AddContactActivity extends AppCompatActivity {
         ageEditText = (EditText) findViewById(R.id.add_age);
         notesEditText = (EditText) findViewById(R.id.add_notes);
         deleteContactButton = (Button) findViewById(R.id.delete_contact);
-
+        mTagsLinearLayout = (LinearLayout) findViewById(R.id.tagsLayout);
 
 
         // This disable hardware acceleration to fix a bug
@@ -230,17 +232,38 @@ public class AddContactActivity extends AppCompatActivity {
         mPicturePath = mContact.getPicturePath();
         deleteContactButton.setVisibility(View.VISIBLE);
 
-        StringBuilder stringBuilder = new StringBuilder();
-        if (mContact.getTags() != null) {
-            for (ContactLab.Tag tag : mContact.getTags()) {
-                if (!stringBuilder.toString().isEmpty()) stringBuilder.append(", ");
-                if (tag != null) stringBuilder.append(tag.toString());
-            }
-            stringBuilder.trimToSize();
-            mTagsTextView.setText(stringBuilder.toString());
-        }
+        updateTags();
+
         setGenderRadioButtons(mContact.getGender());
         loadImage(mContact.getGender());
+
+    }
+
+    private void updateTags() {
+//        StringBuilder stringBuilder = new StringBuilder();
+//        if (mContact.getTags() != null) {
+//            for (ContactLab.Tag tag : mContact.getTags()) {
+//                if (!stringBuilder.toString().isEmpty()) stringBuilder.append(", ");
+//                if (tag != null) stringBuilder.append(tag.toString());
+//            }
+//            stringBuilder.trimToSize();
+//            mTagsTextView.setText(stringBuilder.toString());
+//        }
+
+        if (mContact.getTags() != null) {
+            TagView tagView;
+            mTagsLinearLayout.removeAllViews();
+            for (ContactLab.Tag tag : mContact.getTags()) {
+                tagView = new TagView(this, tag);
+                mTagsLinearLayout.addView(tagView);
+            }
+        }
+    }
+
+    @Override
+    public void tagDeleted(ContactLab.Tag tag) {
+        mContact.deleteTag(tag);
+        updateTags();
     }
 
     @TargetApi(Build.VERSION_CODES.M)
@@ -291,7 +314,6 @@ public class AddContactActivity extends AppCompatActivity {
                     // permission denied, boo! Disable the
                     // functionality that depends on this permission.
                 }
-                return;
             }
 
             // other 'case' lines to check for other
@@ -404,7 +426,7 @@ public class AddContactActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == REQUEST_PHOTO  && data != null) {
-            mPicturePath = mPhotoFile.getPath();
+            mPicturePath = mPhotoFile.getAbsolutePath();
 
             if (radioGroup.getCheckedRadioButtonId() == 0)
                 loadImage(Contact.MALE);
@@ -415,16 +437,18 @@ public class AddContactActivity extends AppCompatActivity {
 
         } else if (requestCode == SET_TAGS_RESULT && data != null) {
             ContactLab.Tag mTag = (ContactLab.Tag) data.getSerializableExtra(AddTagsActivity.TAG_RESULT);
-            StringBuilder stringBuilder = new StringBuilder();
-            if (!mTagsTextView.getText().toString().isEmpty()) {
-                stringBuilder.append(mTagsTextView.getText().toString());
-                stringBuilder.append(", ");
-            }
-            stringBuilder.append(mTag.getName());
-
-            mTagsTextView.setText(stringBuilder.toString());
+//            StringBuilder stringBuilder = new StringBuilder();
+//            if (!mTagsTextView.getText().toString().isEmpty()) {
+//                stringBuilder.append(mTagsTextView.getText().toString());
+//                stringBuilder.append(", ");
+//            }
+//            stringBuilder.append(mTag.getName());
+//
+//            mTagsTextView.setText(stringBuilder.toString());
 
             mContact.addTag(mTag);
+
+            updateTags();
 
         } else if (requestCode == REQUEST_CONTACT && data != null) {
             Uri contactUri = data.getData();

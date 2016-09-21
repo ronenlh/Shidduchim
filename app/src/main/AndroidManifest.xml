@@ -35,6 +35,7 @@
         </activity>
         <activity android:name=".Activities.ContactActivity">
         </activity>
+        <activity android:name="com.theartofdev.edmodo.cropper.CropImageActivity"/>
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
