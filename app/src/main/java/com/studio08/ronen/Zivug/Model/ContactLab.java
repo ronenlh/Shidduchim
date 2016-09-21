@@ -11,9 +11,7 @@ import android.util.Log;
 import java.io.File;
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Set;
 import java.util.UUID;
 
 /**
@@ -285,7 +283,7 @@ public class ContactLab {
         values.put(DatabaseContract.Entry.COLUMN_NAME_FIRST_NAME, contact.getFirstName());
         values.put(DatabaseContract.Entry.COLUMN_NAME_LAST_NAME, contact.getLastName());
         values.put(DatabaseContract.Entry.COLUMN_NAME_GENDER, contact.getGender());
-        values.put(DatabaseContract.Entry.COLUMN_NAME_AGE, contact.getAge());
+        values.put(DatabaseContract.Entry.COLUMN_NAME_BIRTHTIME, contact.getBirthTimeMillis1970());
         values.put(DatabaseContract.Entry.COLUMN_NAME_IMAGE_RESOURCE, contact.getPicturePath());
         values.put(DatabaseContract.Entry.COLUMN_NAME_NOTES, contact.getNotes());
         values.put(DatabaseContract.Entry.COLUMN_NAME_PHONE, contact.getPhone());

@@ -51,6 +51,13 @@ public class Contact {
         return mId;
     }
 
+    public long getBirthTimeMillis1970() {
+        return mBirthTimeMillis1970;
+    }
+
+    public void setBirthTimeMillis1970(long birthTimeMillis1970) {
+        mBirthTimeMillis1970 = birthTimeMillis1970;
+    }
 
     public void setId(UUID id) {
         mId = id;

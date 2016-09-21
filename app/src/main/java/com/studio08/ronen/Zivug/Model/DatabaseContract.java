@@ -20,7 +20,7 @@ public class DatabaseContract {
         public static final String COLUMN_NAME_FIRST_NAME = "first";
         public static final String COLUMN_NAME_LAST_NAME  = "last";
         public static final String COLUMN_NAME_GENDER = "gender";
-        public static final String COLUMN_NAME_AGE = "age";
+        public static final String COLUMN_NAME_BIRTHTIME = "birthtime";
         public static final String COLUMN_NAME_IMAGE_RESOURCE = "image";
         public static final String COLUMN_NAME_NOTES = "notes";
         public static final String COLUMN_NAME_LOCATION = "location";
