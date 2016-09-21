@@ -44,4 +44,5 @@
     <string name="add_tag">Add Tag</string>
     <string name="cancel">Cancel</string>
     <string name="update_tag">Update</string>
+    <string name="login">Login</string>
 </resources>
