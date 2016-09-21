@@ -21,7 +21,8 @@ public class Contact {
     private UUID mId;
     private Date mDate;
     private String mName, mFirstName, mLastName, mNotes, mPhone, mEmail, mPicturePath;
-    private int mAge, mGender;
+    private long mBirthTimeMillis1970;
+    private int mGender;
     private Set<ContactLab.Tag> mTags;
     private Set<ContactLab.Location> mLocations;
     private Set<UUID> mPreviousDates;
@@ -56,11 +57,12 @@ public class Contact {
     }
 
     public int getAge() {
-        return mAge;
+        return (int) ((System.currentTimeMillis()) - mBirthTimeMillis1970);
     }
 
     public void setAge(int age) {
-        this.mAge = age;
+        // save the approximate birthday from the set age
+        this.mBirthTimeMillis1970 = (java.lang.System.currentTimeMillis()) - age;
     }
 
     public String getNotes() {
@@ -146,7 +148,7 @@ public class Contact {
                 ", mPhone='" + mPhone + '\'' +
                 ", mEmail='" + mEmail + '\'' +
                 ", mPicturePath='" + mPicturePath + '\'' +
-                ", mAge=" + mAge +
+                ", mBirthTimeMillis1970=" + mBirthTimeMillis1970 +
                 ", mGender=" + mGender +
                 ", mTags=" + mTags +
                 ", mLocations=" + mLocations +
