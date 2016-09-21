@@ -283,7 +283,7 @@ public class ContactLab {
         values.put(DatabaseContract.Entry.COLUMN_NAME_FIRST_NAME, contact.getFirstName());
         values.put(DatabaseContract.Entry.COLUMN_NAME_LAST_NAME, contact.getLastName());
         values.put(DatabaseContract.Entry.COLUMN_NAME_GENDER, contact.getGender());
-        values.put(DatabaseContract.Entry.COLUMN_NAME_BIRTHTIME, contact.getBirthTimeMillis1970());
+        values.put(DatabaseContract.Entry.COLUMN_NAME_BIRTHTIME, contact.getBirthYear());
         values.put(DatabaseContract.Entry.COLUMN_NAME_IMAGE_RESOURCE, contact.getPicturePath());
         values.put(DatabaseContract.Entry.COLUMN_NAME_NOTES, contact.getNotes());
         values.put(DatabaseContract.Entry.COLUMN_NAME_PHONE, contact.getPhone());

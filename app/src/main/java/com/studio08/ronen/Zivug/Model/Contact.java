@@ -1,6 +1,9 @@
 package com.studio08.ronen.Zivug.Model;
 
+import android.util.Log;
+
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -17,11 +20,12 @@ public class Contact {
     public static final int MALE = 0;
     public static final int FEMALE = 1;
     public static final int NOT_SET = 2;
+    private static final String TAG = "Contact";
 
     private UUID mId;
     private Date mDate;
     private String mName, mFirstName, mLastName, mNotes, mPhone, mEmail, mPicturePath;
-    private long mBirthTimeMillis1970;
+    private int mBirthYear;
     private int mGender;
     private Set<ContactLab.Tag> mTags;
     private Set<ContactLab.Location> mLocations;
@@ -51,12 +55,12 @@ public class Contact {
         return mId;
     }
 
-    public long getBirthTimeMillis1970() {
-        return mBirthTimeMillis1970;
+    public int getBirthYear() {
+        return mBirthYear;
     }
 
-    public void setBirthTimeMillis1970(long birthTimeMillis1970) {
-        mBirthTimeMillis1970 = birthTimeMillis1970;
+    public void setBirthYear(int birthYear) {
+        mBirthYear = birthYear;
     }
 
     public void setId(UUID id) {
@@ -64,12 +68,16 @@ public class Contact {
     }
 
     public int getAge() {
-        return (int) ((System.currentTimeMillis()) - mBirthTimeMillis1970);
+        Calendar c = Calendar.getInstance();
+        c.setTime(new Date());
+        return c.get(Calendar.YEAR) - mBirthYear;
     }
 
     public void setAge(int age) {
         // save the approximate birthday from the set age
-        this.mBirthTimeMillis1970 = (java.lang.System.currentTimeMillis()) - age;
+        Calendar c = Calendar.getInstance();
+        c.setTime(new Date());
+        this.mBirthYear =  c.get(Calendar.YEAR) - age;
     }
 
     public String getNotes() {
@@ -155,7 +163,7 @@ public class Contact {
                 ", mPhone='" + mPhone + '\'' +
                 ", mEmail='" + mEmail + '\'' +
                 ", mPicturePath='" + mPicturePath + '\'' +
-                ", mBirthTimeMillis1970=" + mBirthTimeMillis1970 +
+                ", mBirthYear=" + mBirthYear +
                 ", mGender=" + mGender +
                 ", mTags=" + mTags +
                 ", mLocations=" + mLocations +

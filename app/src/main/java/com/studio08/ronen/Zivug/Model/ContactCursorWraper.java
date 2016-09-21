@@ -34,7 +34,7 @@ public class ContactCursorWraper extends CursorWrapper {
         String firstName =      getString(getColumnIndexOrThrow(DatabaseContract.Entry.COLUMN_NAME_FIRST_NAME));
         String lastName =       getString(getColumnIndexOrThrow(DatabaseContract.Entry.COLUMN_NAME_LAST_NAME));
         int gender =            getInt(getColumnIndexOrThrow(DatabaseContract.Entry.COLUMN_NAME_GENDER));
-        long mBirthTime =       getInt(getColumnIndexOrThrow(DatabaseContract.Entry.COLUMN_NAME_BIRTHTIME));
+        int mBirthTime =        getInt(getColumnIndexOrThrow(DatabaseContract.Entry.COLUMN_NAME_BIRTHTIME));
         String notes =          getString(getColumnIndexOrThrow(DatabaseContract.Entry.COLUMN_NAME_NOTES));
         String picturePath =    getString(getColumnIndexOrThrow(DatabaseContract.Entry.COLUMN_NAME_IMAGE_RESOURCE));
         String eMail =          getString(getColumnIndexOrThrow(DatabaseContract.Entry.COLUMN_NAME_EMAIL));
@@ -48,7 +48,7 @@ public class ContactCursorWraper extends CursorWrapper {
         contact.setFirstName(firstName);
         contact.setLastName(lastName);
         contact.setGender(gender);
-        contact.setBirthTimeMillis1970(mBirthTime);
+        contact.setBirthYear(mBirthTime);
         contact.setNotes(notes);
         contact.setPicturePath(picturePath);
         contact.setEmail(eMail);
