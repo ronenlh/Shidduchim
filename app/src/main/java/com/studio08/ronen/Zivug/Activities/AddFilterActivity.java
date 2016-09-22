@@ -21,7 +21,7 @@ import com.studio08.ronen.Zivug.R;
 import java.util.List;
 import java.util.UUID;
 
-abstract class AddFilterActivity<E extends ContactLab.Filter> extends AppCompatActivity implements AdapterView.OnItemClickListener, AddTagDialogFragment.onAddSelectedListener, AdapterView.OnItemLongClickListener {
+abstract class AddFilterActivity<E extends ContactLab.Filter> extends AppCompatActivity implements AdapterView.OnItemClickListener, AddFilterDialogFragment.onAddSelectedListener, AdapterView.OnItemLongClickListener {
 
     public static final String FIlTER_RESULT = "tag";
     private static final String TAG = "AddFilterActivity";
@@ -31,6 +31,8 @@ abstract class AddFilterActivity<E extends ContactLab.Filter> extends AppCompatA
 
     protected String[] mStringFilter;
     protected List<E> mFilterList;
+
+    protected DialogFragment dialogFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,13 +44,17 @@ abstract class AddFilterActivity<E extends ContactLab.Filter> extends AppCompatA
 
         loadData();
         setData();
+
+        dialogFragment = setDialogFragment();
     }
 
 
 
     abstract void loadData();
 
-    private void setData() {
+    abstract DialogFragment setDialogFragment();
+
+    protected void setData() {
         mListView.setAdapter(new ArrayAdapter<>(this,
                 R.layout.filter_list_item, R.id.filter_list_text, this.mStringFilter));
 
@@ -85,7 +91,6 @@ abstract class AddFilterActivity<E extends ContactLab.Filter> extends AppCompatA
     }
 
     private void openDialogFragment(String arg) {
-        DialogFragment dialogFragment = new AddTagDialogFragment();
 
         Bundle args = new Bundle();
         args.putString("id", arg);
@@ -114,20 +119,6 @@ abstract class AddFilterActivity<E extends ContactLab.Filter> extends AppCompatA
         view.setSelected(true);
         Log.d(TAG, "onItemLongClick: itemId "+ itemId.toString());
         return true;
-    }
-
-    @Override
-    public void onAddSelected(ContactLab.Tag tag) {
-        ContactLab.get(this).addTag(tag);
-        loadData();
-        setData();
-    }
-
-    @Override
-    public void onEditSelected(ContactLab.Tag tag) {
-        ContactLab.get(this).updateTag(tag);
-        loadData();
-        setData();
     }
 
     private final ActionMode.Callback mActionModeCallback = new ActionMode.Callback() {

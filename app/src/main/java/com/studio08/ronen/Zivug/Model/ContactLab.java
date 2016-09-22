@@ -88,6 +88,14 @@ public class ContactLab {
                 new String[] {uuidString});
     }
 
+    public void updateLocation(Location location) {
+        String uuidString = location.getId().toString();
+        ContentValues values = getContentValues(location);
+        mDatabase.update(DatabaseContract.LocationEntry.TABLE_NAME,
+                values, DatabaseContract.LocationEntry.COLUMN_NAME_ENTRY_UUID + " = ?", // this is a WHERE clause, we use ? to avoid SQL injection from the literal string
+                new String[] {uuidString});
+    }
+
 
     public ContactCursorWraper getWordMatches(String query) {
 
@@ -175,7 +183,7 @@ public class ContactLab {
 
     public ContactCursorWraper queryLocationsTable(String selection, String[] selectionArgs) {
         SQLiteQueryBuilder builder = new SQLiteQueryBuilder();
-        builder.setTables(DatabaseContract.TagEntry.TABLE_NAME);
+        builder.setTables(DatabaseContract.LocationEntry.TABLE_NAME);
         DatabaseHelper mDatabaseOpenHelper = new DatabaseHelper(mContext);
 
         SQLiteDatabase db = mDatabaseOpenHelper.getReadableDatabase();

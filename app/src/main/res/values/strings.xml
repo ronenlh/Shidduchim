@@ -45,4 +45,5 @@
     <string name="cancel">Cancel</string>
     <string name="update_tag">Update</string>
     <string name="login">Login</string>
+    <string name="update_location">Update Location</string>
 </resources>

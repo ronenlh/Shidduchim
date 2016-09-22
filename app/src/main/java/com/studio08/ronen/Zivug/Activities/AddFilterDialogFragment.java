@@ -20,17 +20,24 @@ import java.util.UUID;
  * Created by Ronen on 6/9/16.
  */
 
-public class AddTagDialogFragment extends DialogFragment {
+public abstract class AddFilterDialogFragment<E extends ContactLab.Filter> extends DialogFragment {
 
     private onAddSelectedListener mCallback;
     private EditText editTextName;
-    private ContactLab.Tag mTag;
+    private E mFilter;
     private boolean editing;
 
-    interface onAddSelectedListener {
-        void onAddSelected(ContactLab.Tag tag);
+    int updateButton = R.string.update_tag;
+    int addButton = R.string.add_tag;
 
-        void onEditSelected(ContactLab.Tag tag);
+    abstract E getFilter(UUID mId); // ContactLab.get(getContext()).getTag(mId);
+    abstract void setButtonText();
+
+
+    interface onAddSelectedListener {
+        void onAddSelected(ContactLab.Filter filter);
+
+        void onEditSelected(ContactLab.Filter filter);
     }
 
     @Override
@@ -50,12 +57,15 @@ public class AddTagDialogFragment extends DialogFragment {
 
         String id = getArguments().getString("id");
 
+        setButtonText();
+
         if (!id.isEmpty())
             editing = true;
 
         if (editing) {
             UUID mId = UUID.fromString(id);
-            mTag = ContactLab.get(getContext()).getTag(mId);
+
+            mFilter = getFilter(mId);
         }
         // Use the Builder class for convenient dialog construction
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
@@ -70,18 +80,18 @@ public class AddTagDialogFragment extends DialogFragment {
 
         editTextName = (EditText) content.findViewById(R.id.editTextName);
 
-        if (mTag != null) editTextName.setText(mTag.getName());
+        if (mFilter != null) editTextName.setText(mFilter.getName());
 
         if (editing) {
-            builder.setPositiveButton(R.string.update_tag, new DialogInterface.OnClickListener() {
+            builder.setPositiveButton(updateButton, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialogInterface, int i) {
-                    mTag.setName(editTextName.getText().toString());
-                    mCallback.onEditSelected(mTag);
+                    mFilter.setName(editTextName.getText().toString());
+                    mCallback.onEditSelected(mFilter);
                 }
             });
         } else {
-            builder.setPositiveButton(R.string.add_tag, new DialogInterface.OnClickListener() {
+            builder.setPositiveButton(addButton, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialogInterface, int i) {
                     mCallback.onAddSelected(new ContactLab.Tag(editTextName.getText().toString()));
