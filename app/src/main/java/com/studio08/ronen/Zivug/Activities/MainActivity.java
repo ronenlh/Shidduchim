@@ -124,12 +124,12 @@ public class MainActivity extends AppCompatActivity
     private void setupTagsAndLocations() {
 
         mNameAndListMap = new HashMap<>();
-        mNameAndListMap.put("Tags",         (List<ContactLab.Filter>)(List<?>) ContactLab.get(this).getTags());
-        mNameAndListMap.put("Locations",    (List<ContactLab.Filter>)(List<?>) ContactLab.get(this).getLocations());
+        mNameAndListMap.put(ContactLab.TAG_NAME,         (List<ContactLab.Filter>)(List<?>) ContactLab.get(this).getTags());
+        mNameAndListMap.put(ContactLab.LOCATION_NAME,    (List<ContactLab.Filter>)(List<?>) ContactLab.get(this).getLocations());
 
         List<String> groupNames = new ArrayList<>();
-        groupNames.add("Tags");
-        groupNames.add("Locations");
+        groupNames.add(ContactLab.TAG_NAME);
+        groupNames.add(ContactLab.LOCATION_NAME);
 
         expandableListView = (ExpandableListView) findViewById(R.id.drawer_exp_list);
         expandableListAdapter = new ExpandableListAdapter(this, groupNames, mNameAndListMap);
@@ -170,12 +170,12 @@ public class MainActivity extends AppCompatActivity
 
     private void updateTagsAndLocations() {
         mNameAndListMap = new HashMap<>();
-        mNameAndListMap.put("Tags",         (List<ContactLab.Filter>)(List<?>) ContactLab.get(this).getTags());
-        mNameAndListMap.put("Locations",    (List<ContactLab.Filter>)(List<?>) ContactLab.get(this).getLocations());
+        mNameAndListMap.put(ContactLab.TAG_NAME,         (List<ContactLab.Filter>)(List<?>) ContactLab.get(this).getTags());
+        mNameAndListMap.put(ContactLab.LOCATION_NAME,    (List<ContactLab.Filter>)(List<?>) ContactLab.get(this).getLocations());
 
         List<String> groupNames = new ArrayList<>();
-        groupNames.add("Tags");
-        groupNames.add("Locations");
+        groupNames.add(ContactLab.TAG_NAME);
+        groupNames.add(ContactLab.LOCATION_NAME);
 
         expandableListAdapter = new ExpandableListAdapter(this, groupNames, mNameAndListMap);
         /* The choice mode has been moved from list view to adapter in order
@@ -237,7 +237,15 @@ public class MainActivity extends AppCompatActivity
         // I need to update the cursor where clause with every onQueryTextChange,
         // not just for the name but for all fields
         if (currentFragment == null) currentFragment = menFragment;
-        currentFragment.searchbyTags(tags);
+        currentFragment.searchByTags(tags);
+
+    }
+
+    private void searchbyLocation(ContactLab.Location[] locations) {
+        // I need to update the cursor where clause with every onQueryTextChange,
+        // not just for the name but for all fields
+        if (currentFragment == null) currentFragment = menFragment;
+        currentFragment.searchByLocation(locations);
 
     }
 
@@ -333,22 +341,33 @@ public class MainActivity extends AppCompatActivity
         Log.d(TAG, checkedPositions.toString());
         Log.d(TAG, "\t"+ mNameAndListMap.toString());
 
-        SparseBooleanArray tagGroupBooleanArray = checkedPositions.get(0); // 0 is the tags array
-        List<ContactLab.Tag> tagList = (List<ContactLab.Tag>) (List<?>) mNameAndListMap.get("Tags");
+        SparseBooleanArray groupBooleanArray;
 
+        if ((groupBooleanArray = checkedPositions.get(0)) != null) {
+            List<ContactLab.Tag> tagList = (List<ContactLab.Tag>)(List<?>) mNameAndListMap.get(ContactLab.TAG_NAME);
+            List<ContactLab.Tag> tmpTagList = new ArrayList<>(groupBooleanArray.size());
 
-        List<ContactLab.Tag> tmpTagList = new ArrayList<>(tagGroupBooleanArray.size());
+            for (int i = 0; i < tagList.size(); i++)
+                if (groupBooleanArray.get(i, false)) // false is a default value
+                    tmpTagList.add(tagList.get(i)); // if true I add it to the list to send only the selected true values to the query
 
-        for (int i = 0; i < tagList.size(); i++)
-            if (tagGroupBooleanArray.get(i, false)) // false is a default value
-                tmpTagList.add(tagList.get(i)); // if true I add it to the list to send only the selected true values to the query
+            ContactLab.Tag[] tags = tmpTagList.toArray(new ContactLab.Tag[tmpTagList.size()]);
 
-        ContactLab.Tag[] tags = tmpTagList.toArray(new ContactLab.Tag[tmpTagList.size()]);
+            searchbyTags(tags);
+            // need to correlate checkedPositions with mNameAndListMap and then query the true Tag
+        }
+        if ((groupBooleanArray = checkedPositions.get(1)) != null) {
+            List<ContactLab.Location> locationList = (List<ContactLab.Location>)(List<?>) mNameAndListMap.get(ContactLab.LOCATION_NAME);
+            List<ContactLab.Location> tmpLocationList = new ArrayList<>(groupBooleanArray.size());
 
-        searchbyTags(tags);
+            for (int i = 0; i < locationList.size(); i++)
+                if (groupBooleanArray.get(i, false)) // false is a default value
+                    tmpLocationList.add(locationList.get(i)); // if true I add it to the list to send only the selected true values to the query
 
-        // need to correlate checkedPositions with mNameAndListMap and then query the true Tag
+            ContactLab.Location[] locations = tmpLocationList.toArray(new ContactLab.Location[tmpLocationList.size()]);
 
+            searchbyLocation(locations);
+        }
     }
 
     class ViewPagerAdapter extends FragmentPagerAdapter {

@@ -53,5 +53,10 @@ public class AddLocationActivity extends AddFilterActivity<ContactLab.Location> 
             updateButton = R.string.update_location;
             addButton = R.string.add_location;
         }
+
+        @Override
+        protected ContactLab.Location createFilter(String name) {
+            return new ContactLab.Location(name);
+        }
     }
 }

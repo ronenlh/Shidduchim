@@ -94,7 +94,7 @@ public abstract class AddFilterDialogFragment<E extends ContactLab.Filter> exten
             builder.setPositiveButton(addButton, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialogInterface, int i) {
-                    mCallback.onAddSelected(new ContactLab.Tag(editTextName.getText().toString()));
+                    mCallback.onAddSelected(createFilter(editTextName.getText().toString()));
                 }
             });
         }
@@ -108,4 +108,6 @@ public abstract class AddFilterDialogFragment<E extends ContactLab.Filter> exten
         // Create the AlertDialog object and return it
         return builder.create();
     }
+
+    protected abstract E createFilter(String name);
 }

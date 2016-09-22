@@ -190,8 +190,23 @@ public class ContactsRVFragment extends Fragment {
         }
     }
 
-    public void searchbyTags(ContactLab.Tag[] tags) {
+    public void searchByTags(ContactLab.Tag[] tags) {
         Cursor cursor = ContactLab.get(getContext()).getTagMatches(tags, mGenderParam);
+        try {
+            if (mCursorAdapter == null)
+                mCursorAdapter = new ContactsRVCursorAdapter(getContext(), cursor);
+            else
+                mCursorAdapter.swapCursor(cursor);
+
+            if (mRecyclerView != null)
+                mRecyclerView.setAdapter(mCursorAdapter);
+        } finally {
+            if (cursor != null) cursor.close();
+        }
+    }
+
+    public void searchByLocation(ContactLab.Location[] locations) {
+        Cursor cursor = ContactLab.get(getContext()).getLocationMatches(locations, mGenderParam);
         try {
             if (mCursorAdapter == null)
                 mCursorAdapter = new ContactsRVCursorAdapter(getContext(), cursor);

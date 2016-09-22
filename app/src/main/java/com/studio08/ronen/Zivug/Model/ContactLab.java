@@ -21,6 +21,8 @@ import java.util.UUID;
 
 public class ContactLab {
     private static ContactLab mContactLab;
+    public static String TAG_NAME = "tags";
+    public static String LOCATION_NAME = "locations";
     private final String TAG = "ContactLab";
 
     private Context mContext;
@@ -140,6 +142,41 @@ public class ContactLab {
         db.close();
         return new ContactCursorWraper(cursor, null);
     }
+
+    public Cursor getLocationMatches(Location[] locations, int genderParam) {
+        // SELECT * FROM entry WHERE locations LIKE '%817d944e-0ad0-491f-b9a5-121448926097%' OR tags LIKE '%507e4f71-9d2b-465b-b932-94754a4d1992%'
+
+        StringBuilder sqlQuery = new StringBuilder();
+        sqlQuery.append("SELECT * FROM " + DatabaseContract.Entry.TABLE_NAME
+                + " WHERE " + DatabaseContract.Entry.COLUMN_NAME_GENDER + " MATCH " + genderParam);
+
+        if(locations.length > 0) {
+            sqlQuery.append(" AND (");
+            for (int i = 0; i < locations.length; i++) {
+                // here I construct the query arguments based on the arguments
+                if (i > 0) sqlQuery.append(" OR ");
+                sqlQuery.append(DatabaseContract.Entry.COLUMN_NAME_LOCATION + " LIKE '%" + locations[i].getId().toString() + "%'");
+            }
+        }
+
+        sqlQuery.append(");");
+
+        Log.d(TAG, "getLocationMatches: query: " + sqlQuery.toString());
+
+        DatabaseHelper mDatabaseOpenHelper = new DatabaseHelper(mContext);
+        SQLiteDatabase db = mDatabaseOpenHelper.getReadableDatabase();
+        Cursor cursor = db.rawQuery(sqlQuery.toString(), null);
+
+        if (cursor == null) {
+            return null;
+        } else if (!cursor.moveToFirst()) { // cursor.moveToFirst() return false if cursor is empty
+            cursor.close();
+            return null;
+        }
+        db.close();
+        return new ContactCursorWraper(cursor, null);
+    }
+
 
     public ContactCursorWraper queryContactsTable(String selection, String[] selectionArgs) {
         SQLiteQueryBuilder builder = new SQLiteQueryBuilder();
@@ -407,6 +444,7 @@ public class ContactLab {
     }
 
 
+
     public static class Filter implements Serializable {
 
         UUID mUUID;
@@ -472,6 +510,10 @@ public class ContactLab {
     public static class Location extends Filter {
         public Location(UUID UUID) {
             super(UUID);
+        }
+
+        public Location(String name) {
+            super(name);
         }
     }
 

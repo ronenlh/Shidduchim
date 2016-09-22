@@ -52,5 +52,10 @@ public class AddTagsActivity extends AddFilterActivity<ContactLab.Tag> {
             updateButton = R.string.update_tag;
             addButton = R.string.add_tag;
         }
+
+        @Override
+        protected ContactLab.Tag createFilter(String name) {
+            return new ContactLab.Tag(name);
+        }
     }
 }
