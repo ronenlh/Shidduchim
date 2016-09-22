@@ -119,7 +119,7 @@ public class ContactLab {
         sqlQuery.append("SELECT * FROM " + DatabaseContract.Entry.TABLE_NAME
                 + " WHERE " + DatabaseContract.Entry.COLUMN_NAME_GENDER + " MATCH " + genderParam);
 
-        if(tags.length > 0)
+        if (tags.length > 0)
             for (int i = 0; i < tags.length; i++) {
                 // here I construct the query arguments based on the arguments
                 sqlQuery.append(" AND " + DatabaseContract.Entry.COLUMN_NAME_TAGS + " LIKE '%" + tags[i].getId().toString() + "%'");
@@ -150,7 +150,7 @@ public class ContactLab {
         sqlQuery.append("SELECT * FROM " + DatabaseContract.Entry.TABLE_NAME
                 + " WHERE " + DatabaseContract.Entry.COLUMN_NAME_GENDER + " MATCH " + genderParam);
 
-        if(locations.length > 0) {
+        if (locations.length > 0) {
             sqlQuery.append(" AND (");
             for (int i = 0; i < locations.length; i++) {
                 // here I construct the query arguments based on the arguments
@@ -158,8 +158,8 @@ public class ContactLab {
                 sqlQuery.append(DatabaseContract.Entry.COLUMN_NAME_LOCATION + " LIKE '%" + locations[i].getId().toString() + "%'");
             }
         }
-
-        sqlQuery.append(");");
+        if (locations.length > 0) sqlQuery.append(")");
+        sqlQuery.append(";");
 
         Log.d(TAG, "getLocationMatches: query: " + sqlQuery.toString());
 
