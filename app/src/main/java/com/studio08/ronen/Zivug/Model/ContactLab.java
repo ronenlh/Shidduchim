@@ -270,8 +270,20 @@ public class ContactLab {
 
     }
 
-    public List<Tag> getLocations() {
-        return new ArrayList<>();
+    public List<Location> getLocations() {
+        List<Location> locations = new ArrayList<>();
+        ContactCursorWraper cursor = queryLocationsTable(null, null);
+        if (cursor == null) return locations;
+        try {
+            cursor.moveToFirst();
+            while (!cursor.isAfterLast()) {
+                locations.add(cursor.getLocation());
+                cursor.moveToNext();
+            }
+        } finally {
+            cursor.close();
+        }
+        return locations;
     }
 
 

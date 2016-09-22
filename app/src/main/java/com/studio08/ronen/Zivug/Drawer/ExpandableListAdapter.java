@@ -61,7 +61,7 @@ public class ExpandableListAdapter extends android.widget.BaseExpandableListAdap
 
     private static final String TAG = ExpandableListAdapter.class.getSimpleName();
     private Activity mContext;
-    private Map<String, List<ContactLab.Tag>> collections;
+    private Map<String, List<ContactLab.Filter>> collections;
     private List<String> data;
     private LayoutInflater inflater;
     private SparseArray<SparseBooleanArray> checkedPositions;
@@ -71,7 +71,7 @@ public class ExpandableListAdapter extends android.widget.BaseExpandableListAdap
     private int choiceMode = CHOICE_MODE_MULTIPLE;;
 
     public ExpandableListAdapter(Activity context, List<String> names,
-                                 Map<String, List<ContactLab.Tag>> collections) {
+                                 Map<String, List<ContactLab.Filter>> collections) {
         this.mContext = context;
         this.collections = collections;
         this.data = names;
@@ -85,7 +85,7 @@ public class ExpandableListAdapter extends android.widget.BaseExpandableListAdap
     }
 
     public ExpandableListAdapter(Activity context, List<String> data,
-                                 Map<String, List<ContactLab.Tag>> collections, int choiceMode) {
+                                 Map<String, List<ContactLab.Filter>> collections, int choiceMode) {
         this(context, data, collections);
         // For now the choice mode CHOICE_MODE_MULTIPLE_MODAL
         // is not implemented
@@ -113,9 +113,9 @@ public class ExpandableListAdapter extends android.widget.BaseExpandableListAdap
             convertView = inflater.inflate(R.layout.drawer_list_item, null);
         }
 
-        ContactLab.Tag tag = (ContactLab.Tag) getChild(groupPosition, childPosition);
+        ContactLab.Filter filter = (ContactLab.Filter) getChild(groupPosition, childPosition);
         CheckedTextView checkedTextView = (CheckedTextView) convertView;
-        checkedTextView.setText(tag.getName());
+        checkedTextView.setText(filter.getName());
 
         if (checkedPositions.get(groupPosition) != null) {
 

@@ -45,18 +45,15 @@ public class MainActivity extends AppCompatActivity
 
     // Tabs Vars
     private TabLayout tabLayout;
-    private ViewPager viewPager;
 
     // Fragments
     private ContactsRVFragment menFragment, womenFragment, currentFragment;
 
     // Tags and Locations in drawer properties
-    private Map<String, List<ContactLab.Tag>> mNameAndListMap;
+    private Map<String, List<ContactLab.Filter>> mNameAndListMap;
     private ExpandableListView expandableListView;
     public ExpandableListAdapter expandableListAdapter;
     private boolean isTagsExpanded, isLocationsExpanded;
-
-    private DrawerLayout mDrawerList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,11 +78,11 @@ public class MainActivity extends AppCompatActivity
         });
 
         // Drawer
-        mDrawerList = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, mDrawerList, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        DrawerLayout drawerList = (DrawerLayout) findViewById(R.id.drawer_layout);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerList, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
 //        mDrawerList.setDrawerListener(toggle);
-        mDrawerList.addDrawerListener(toggle);
-        mDrawerList.addDrawerListener(new DrawerLayout.DrawerListener() {
+        drawerList.addDrawerListener(toggle);
+        drawerList.addDrawerListener(new DrawerLayout.DrawerListener() {
             @Override
             public void onDrawerSlide(View drawerView, float slideOffset) {
 
@@ -118,7 +115,7 @@ public class MainActivity extends AppCompatActivity
 
         // Tabs setup
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        viewPager = (ViewPager) findViewById(R.id.viewpager);
+        ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);
         setupViewPager(viewPager);
         tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);
@@ -127,8 +124,8 @@ public class MainActivity extends AppCompatActivity
     private void setupTagsAndLocations() {
 
         mNameAndListMap = new HashMap<>();
-        mNameAndListMap.put("Tags",         ContactLab.get(this).getTags());
-        mNameAndListMap.put("Locations",    ContactLab.get(this).getLocations());
+        mNameAndListMap.put("Tags",         (List<ContactLab.Filter>)(List<?>) ContactLab.get(this).getTags());
+        mNameAndListMap.put("Locations",    (List<ContactLab.Filter>)(List<?>) ContactLab.get(this).getLocations());
 
         List<String> groupNames = new ArrayList<>();
         groupNames.add("Tags");
@@ -173,8 +170,8 @@ public class MainActivity extends AppCompatActivity
 
     private void updateTagsAndLocations() {
         mNameAndListMap = new HashMap<>();
-        mNameAndListMap.put("Tags",         ContactLab.get(this).getTags());
-        mNameAndListMap.put("Locations",    ContactLab.get(this).getLocations());
+        mNameAndListMap.put("Tags",         (List<ContactLab.Filter>)(List<?>) ContactLab.get(this).getTags());
+        mNameAndListMap.put("Locations",    (List<ContactLab.Filter>)(List<?>) ContactLab.get(this).getLocations());
 
         List<String> groupNames = new ArrayList<>();
         groupNames.add("Tags");
@@ -337,7 +334,7 @@ public class MainActivity extends AppCompatActivity
         Log.d(TAG, "\t"+ mNameAndListMap.toString());
 
         SparseBooleanArray tagGroupBooleanArray = checkedPositions.get(0); // 0 is the tags array
-        List<ContactLab.Tag> tagList = mNameAndListMap.get("Tags");
+        List<ContactLab.Tag> tagList = (List<ContactLab.Tag>) (List<?>) mNameAndListMap.get("Tags");
 
 
         List<ContactLab.Tag> tmpTagList = new ArrayList<>(tagGroupBooleanArray.size());
